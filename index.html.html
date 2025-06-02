@@ -1,97 +1,198 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Pedidos - Dulce Sabor</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dulce Sabor - Pastelería</title>
   <style>
+    /* Reset y básicos */
+    * {
+      box-sizing: border-box;
+    }
     body {
-      font-family: 'Arial', sans-serif;
-      background: #fff8f2;
       margin: 0;
-      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #fff8f2;
+      color: #333;
     }
-
-    .container {
-      max-width: 600px;
-      margin: 40px auto;
-      background: #fff;
-      padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 0 10px rgba(255, 175, 200, 0.4);
-    }
-
-    h1 {
+    header {
+      background-color: #d66d8c;
+      color: white;
+      padding: 1.5rem 1rem;
       text-align: center;
-      color: #d66d8c;
+      font-weight: 700;
+      font-size: 1.8rem;
     }
-
+    main {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    h2 {
+      color: #d66d8c;
+      border-bottom: 3px solid #f0c3cf;
+      padding-bottom: 0.3rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+    /* Productos */
+    .productos {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+    .producto {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(214, 109, 140, 0.25);
+      padding: 1rem 1.2rem;
+      transition: transform 0.2s ease;
+    }
+    .producto:hover {
+      transform: scale(1.05);
+    }
+    .producto h3 {
+      margin-top: 0;
+      margin-bottom: 0.4rem;
+      color: #b04062;
+    }
+    .producto p {
+      margin: 0.2rem 0 1rem 0;
+      font-size: 0.9rem;
+      color: #555;
+    }
+    .precio {
+      font-weight: 700;
+      color: #d66d8c;
+      font-size: 1.1rem;
+    }
+    /* Formulario */
+    form {
+      background: white;
+      padding: 2rem 1.5rem;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(214, 109, 140, 0.3);
+      max-width: 600px;
+      margin: 0 auto 3rem auto;
+    }
     label {
       display: block;
-      margin-top: 15px;
-      font-weight: bold;
+      margin-bottom: 6px;
+      font-weight: 600;
       color: #444;
     }
-
     input, select, textarea {
       width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      font-size: 16px;
+      padding: 10px 12px;
+      margin-bottom: 1.2rem;
+      border: 1.5px solid #ddd;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-family: inherit;
+      transition: border-color 0.3s ease;
     }
-
+    input:focus, select:focus, textarea:focus {
+      border-color: #d66d8c;
+      outline: none;
+    }
     button {
-      background: #d66d8c;
-      color: white;
-      padding: 12px 20px;
+      background-color: #d66d8c;
       border: none;
-      border-radius: 8px;
+      color: white;
+      padding: 14px 20px;
+      font-size: 1.1rem;
+      border-radius: 12px;
       cursor: pointer;
-      font-size: 16px;
-      margin-top: 20px;
+      font-weight: 700;
       width: 100%;
+      transition: background-color 0.3s ease;
     }
-
     button:hover {
-      background: #c05577;
+      background-color: #b04062;
     }
-
-    .section-title {
-      margin-top: 30px;
-      font-size: 18px;
-      color: #d66d8c;
-      border-bottom: 1px solid #f0c3cf;
-      padding-bottom: 5px;
+    /* Pasarela de pago */
+    .pasarela {
+      max-width: 600px;
+      margin: 0 auto 3rem auto;
+      background: white;
+      padding: 1.8rem 1.5rem;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(214, 109, 140, 0.3);
+      text-align: center;
+    }
+    .pasarela h2 {
+      margin-bottom: 1rem;
+    }
+    .mensaje-pago {
+      font-size: 1.1rem;
+      margin: 1.5rem 0;
+      color: #444;
+    }
+    /* Responsive */
+    @media (max-width: 650px) {
+      header {
+        font-size: 1.5rem;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>🧁 Pedido Pastelería Dulce Sabor</h1>
 
-    <form action="https://script.google.com/macros/s/AKfycbwIrvksKP5Azs7WcySAKHxeV54yGcrkzDvFfjXXEpcLgUBkJyFNl55iuzPxFZzxA8g3/exec" method="POST">
+<header>
+  Pastelería Dulce Sabor 🎂
+</header>
 
-      <div class="section-title">Información del Cliente</div>
+<main>
 
-      <label>Nombre completo</label>
-      <input type="text" name="nombre" required>
+  <section class="productos">
+    <h2>Productos destacados</h2>
+    <div class="producto">
+      <h3>Torta personalizada</h3>
+      <p>Diseñamos tu torta ideal para cualquier ocasión.</p>
+      <div class="precio">Desde $70,000 COP</div>
+    </div>
+    <div class="producto">
+      <h3>Cupcakes</h3>
+      <p>Deliciosos cupcakes con sabores variados.</p>
+      <div class="precio">Desde $5,000 COP c/u</div>
+    </div>
+    <div class="producto">
+      <h3>Galletas decoradas</h3>
+      <p>Galletas con diseños únicos para eventos especiales.</p>
+      <div class="precio">Desde $4,000 COP c/u</div>
+    </div>
+    <div class="producto">
+      <h3>Postres fríos</h3>
+      <p>Variedad de postres frescos y deliciosos.</p>
+      <div class="precio">Desde $12,000 COP</div>
+    </div>
+    <div class="producto">
+      <h3>Combo especial</h3>
+      <p>Paquete de productos surtidos para compartir.</p>
+      <div class="precio">Desde $90,000 COP</div>
+    </div>
+  </section>
 
-      <label>Número de WhatsApp</label>
-      <input type="tel" name="telefono" required>
+  <section>
+    <h2>Haz tu pedido</h2>
+    <form action="https://script.google.com/macros/s/AKfycbwIrvksKP5Azs7WcySAKHxeV54yGcrkzDvFfjXXEpcLgUBkJyFNl55iuzPxFZzxA8g3/exec" method="POST" enctype="multipart/form-data" id="pedidoForm">
 
-      <label>Dirección de entrega</label>
-      <textarea name="direccion" rows="2" required></textarea>
+      <label for="nombre">Nombre completo</label>
+      <input type="text" id="nombre" name="nombre" required>
 
-      <label>Fecha y hora de entrega</label>
-      <input type="datetime-local" name="fecha_entrega" required>
+      <label for="telefono">Número de WhatsApp</label>
+      <input type="tel" id="telefono" name="telefono" required pattern="[0-9\s+-]{7,15}" placeholder="Ej: 3112345678">
 
-      <div class="section-title">Tipo de Pedido</div>
+      <label for="direccion">Dirección de entrega</label>
+      <textarea id="direccion" name="direccion" rows="2" required></textarea>
 
-      <label>¿Qué deseas pedir?</label>
-      <select name="tipo_pedido" required>
-        <option value="">Selecciona una opción</option>
+      <label for="fecha_entrega">Fecha y hora de entrega</label>
+      <input type="datetime-local" id="fecha_entrega" name="fecha_entrega" required>
+
+      <label for="tipo_pedido">¿Qué deseas pedir?</label>
+      <select id="tipo_pedido" name="tipo_pedido" required>
+        <option value="" disabled selected>Selecciona una opción</option>
         <option value="Torta personalizada">🎂 Torta personalizada</option>
         <option value="Cupcakes">🧁 Cupcakes</option>
         <option value="Galletas decoradas">🍪 Galletas decoradas</option>
@@ -99,9 +200,9 @@
         <option value="Combo especial">🎁 Combo especial</option>
       </select>
 
-      <label>Sabor</label>
-      <select name="sabor" required>
-        <option value="">Selecciona un sabor</option>
+      <label for="sabor">Sabor</label>
+      <select id="sabor" name="sabor" required>
+        <option value="" disabled selected>Selecciona un sabor</option>
         <option value="Chocolate">Chocolate</option>
         <option value="Vainilla">Vainilla</option>
         <option value="Red Velvet">Red Velvet</option>
@@ -109,25 +210,23 @@
         <option value="Tres Leches">Tres Leches</option>
       </select>
 
-      <label>Cantidad</label>
-      <input type="number" name="cantidad" min="1" required>
+      <label for="cantidad">Cantidad</label>
+      <input type="number" id="cantidad" name="cantidad" min="1" value="1" required>
 
-      <label>¿Deseas dedicatoria o diseño personalizado?</label>
-      <select name="dedicatoria">
-        <option value="No">No</option>
+      <label for="dedicatoria">¿Deseas dedicatoria o diseño personalizado?</label>
+      <select id="dedicatoria" name="dedicatoria">
+        <option value="No" selected>No</option>
         <option value="Sí">Sí</option>
       </select>
 
-      <label>Descripción de la dedicatoria o diseño (opcional)</label>
-      <textarea name="detalle_dedicatoria" rows="3"></textarea>
+      <label for="detalle_dedicatoria">Descripción de la dedicatoria o diseño (opcional)</label>
+      <textarea id="detalle_dedicatoria" name="detalle_dedicatoria" rows="3"></textarea>
 
-      <label>Sube una imagen de referencia (opcional)</label>
-      <input type="file" name="imagen">
+      <label for="imagen">Sube una imagen de referencia (opcional)</label>
+      <input type="file" id="imagen" name="imagen" accept="image/*">
 
-      <div class="section-title">Confirmación</div>
-
-      <label>Método de pago</label>
-      <select name="pago" required>
+      <label for="pago">Método de pago</label>
+      <select id="pago" name="pago" required>
         <option value="Contra entrega">Contra entrega</option>
         <option value="Transferencia">Transferencia</option>
       </select>
@@ -139,26 +238,52 @@
 
       <button type="submit">Enviar Pedido</button>
     </form>
-  </div>
+  </section>
+
+  <section class="pasarela" id="pasarelaPago">
+    <h2>Simulación Pasarela de Pago</h2>
+    <p class="mensaje-pago" id="mensajePago">Selecciona un método de pago y haz tu pedido.</p>
+  </section>
+
+</main>
 
 <script>
-  const form = document.querySelector("form");
-  form.addEventListener("submit", function (e) {
+  const form = document.getElementById('pedidoForm');
+  const mensajePago = document.getElementById('mensajePago');
+
+  form.addEventListener('submit', function(e) {
     e.preventDefault();
     const data = new FormData(form);
+
     fetch(form.action, {
-      method: "POST",
+      method: 'POST',
       body: data
     })
     .then(res => {
-      alert("¡Gracias! Tu pedido fue recibido correctamente 🎉");
-      form.reset();
+      if (res.ok) {
+        alert('¡Gracias! Tu pedido fue recibido correctamente 🎉');
+        form.reset();
+        mensajePago.textContent = 'Selecciona un método de pago y haz tu pedido.';
+      } else {
+        throw new Error('Error al enviar el pedido');
+      }
     })
-    .catch(err => {
-      alert("Ocurrió un error. Intenta de nuevo.");
+    .catch(() => {
+      alert('Ocurrió un error. Intenta de nuevo.');
     });
   });
 
+  // Mostrar mensaje según método de pago seleccionado
+  const pagoSelect = document.getElementById('pago');
+  pagoSelect.addEventListener('change', () => {
+    if(pagoSelect.value === 'Contra entrega'){
+      mensajePago.textContent = 'Has elegido pago contra entrega. Paga cuando recibas tu pedido.';
+    } else if(pagoSelect.value === 'Transferencia') {
+      mensajePago.textContent = 'Has elegido pago por transferencia. Te enviaremos los datos para realizarla.';
+    } else {
+      mensajePago.textContent = 'Selecciona un método de pago y haz tu pedido.';
+    }
+  });
 </script>
 
 </body>
