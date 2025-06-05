@@ -8,7 +8,8 @@
     body {
       font-family: Arial, sans-serif;
       background: #fff8f2;
-      margin: 0; padding: 0;
+      margin: 0;
+      padding: 0;
     }
     .container {
       max-width: 600px;
@@ -47,6 +48,7 @@
       font-size: 16px;
       margin-top: 20px;
       width: 100%;
+      transition: background 0.3s;
     }
     button:hover {
       background: #c05577;
@@ -60,6 +62,7 @@
     }
     .hidden {
       display: none;
+      transition: all 0.3s ease;
     }
     /* Botón flotante WhatsApp */
     .whatsapp-button {
@@ -87,17 +90,17 @@
 </head>
 <body>
   <div class="container">
-    <h1>🧁Pedido Pastelería Dulce Sabor 🧁</h1>
+    <h1>🧁 Pedido - Pastelería Dulce Sabor</h1>
 
     <form id="pedidoForm" action="https://script.google.com/macros/s/AKfycbwIrvksKP5Azs7WcySAKHxeV54yGcrkzDvFfjXXEpcLgUBkJyFNl55iuzPxFZzxA8g3/exec" method="POST" enctype="multipart/form-data">
-
+      
       <div class="section-title">Información del Cliente</div>
 
       <label>Nombre Completo</label>
       <input type="text" name="nombre" required />
 
       <label>Número de WhatsApp</label>
-      <input type="tel" name="telefono" required />
+      <input type="tel" name="telefono" pattern="[0-9+ ]{7,15}" placeholder="+57 300 1234567" required />
 
       <label>Tipo de entrega</label>
       <select name="tipo_entrega" id="tipoEntrega" required>
@@ -146,16 +149,14 @@
       </select>
 
       <div id="detalleDedicatoriaGroup" class="hidden">
-        <label>Descripción de la dedicatoria o diseño (opcional)</label>
-        <textarea name="detalle_dedicatoria" rows="3"></textarea>
+        <label>Descripción de la dedicatoria o diseño</label>
+        <textarea name="detalle_dedicatoria" rows="3" placeholder="Escribe aquí la dedicatoria o instrucciones de diseño..."></textarea>
       </div>
 
       <div class="section-title">Confirmación</div>
 
       <label>Método de pago</label>
-      <select name="pago" id="metodoPago" required>
-        <!-- Se llenará dinámicamente -->
-      </select>
+      <select name="pago" id="metodoPago" required></select>
 
       <label>
         <input type="checkbox" name="acepto" required />
@@ -166,9 +167,9 @@
     </form>
   </div>
 
-  <!-- Botón WhatsApp -->
+  <!-- Botón flotante WhatsApp con ícono correcto -->
   <a href="https://wa.me/573219177941" target="_blank" class="whatsapp-button" aria-label="Contactar por WhatsApp">
-    &#x2709;
+    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg" alt="WhatsApp" width="30" height="30" style="filter: invert(1);" />
   </a>
 
   <script>
@@ -179,31 +180,25 @@
     const detalleDedicatoriaGroup = document.getElementById("detalleDedicatoriaGroup");
 
     const pagosDomicilio = [
-      {value: "Contraentrega", text: "Contra entrega"},
-      {value: "Transferencia", text: "Transferencia"}
+      { value: "Contraentrega", text: "Contra entrega" },
+      { value: "Transferencia", text: "Transferencia" }
     ];
     const pagosTienda = [
-      {value: "Efectivo", text: "Efectivo"},
-      {value: "Transferencia", text: "Transferencia"}
+      { value: "Efectivo", text: "Efectivo" },
+      { value: "Transferencia", text: "Transferencia" }
     ];
 
     function actualizarMetodoPago() {
       const tipo = tipoEntrega.value;
       metodoPago.innerHTML = "";
-      if(tipo === "Domicilio") {
+      if (tipo === "Domicilio") {
         pagosDomicilio.forEach(pago => {
-          const option = document.createElement("option");
-          option.value = pago.value;
-          option.text = pago.text;
-          metodoPago.appendChild(option);
+          metodoPago.innerHTML += `<option value="${pago.value}">${pago.text}</option>`;
         });
         direccionGroup.classList.remove("hidden");
-      } else if(tipo === "Recoger en tienda") {
+      } else if (tipo === "Recoger en tienda") {
         pagosTienda.forEach(pago => {
-          const option = document.createElement("option");
-          option.value = pago.value;
-          option.text = pago.text;
-          metodoPago.appendChild(option);
+          metodoPago.innerHTML += `<option value="${pago.value}">${pago.text}</option>`;
         });
         direccionGroup.classList.add("hidden");
       } else {
@@ -212,7 +207,7 @@
     }
 
     function actualizarDedicatoria() {
-      if(dedicatoria.value === "Sí") {
+      if (dedicatoria.value === "Sí") {
         detalleDedicatoriaGroup.classList.remove("hidden");
       } else {
         detalleDedicatoriaGroup.classList.add("hidden");
@@ -222,31 +217,29 @@
     tipoEntrega.addEventListener("change", actualizarMetodoPago);
     dedicatoria.addEventListener("change", actualizarDedicatoria);
 
-    // Inicializamos
     actualizarMetodoPago();
     actualizarDedicatoria();
 
-    // Envío con fetch para mejor UX
-    const form = document.getElementById("pedidoForm");
-    form.addEventListener("submit", function(e) {
+    document.getElementById("pedidoForm").addEventListener("submit", function (e) {
       e.preventDefault();
-      const data = new FormData(form);
+      const data = new FormData(this);
 
-      fetch(form.action, {
+      fetch(this.action, {
         method: "POST",
         body: data
-      }).then(res => res.text())
-      .then(urlWhatsapp => {
-        alert("🎂 ¡Gracias por tu pedido!\nAhora te llevaremos a WhatsApp para confirmar todo contigo.");
-        form.reset();
-        actualizarMetodoPago();
-        actualizarDedicatoria();
-        window.location.href = urlWhatsapp.trim();  // Redirigir a WhatsApp
       })
-      .catch(err => {
-        alert("Error al enviar el pedido. Intenta de nuevo.");
-        console.error(err);
-      });
+        .then(res => res.text())
+        .then(urlWhatsapp => {
+          alert("🎉 ¡Pedido enviado!\nSerás redirigido a WhatsApp para confirmar.");
+          this.reset();
+          actualizarMetodoPago();
+          actualizarDedicatoria();
+          window.location.href = urlWhatsapp.trim();
+        })
+        .catch(err => {
+          alert("Hubo un error al enviar el pedido. Por favor, intenta de nuevo.");
+          console.error(err);
+        });
     });
   </script>
 </body>
