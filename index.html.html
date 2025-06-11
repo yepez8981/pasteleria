@@ -1,246 +1,249 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Pedidos - Dulce Sabor</title>
+  <meta charset="UTF-8">
+  <title>Panadería Manolos</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #fff8f2;
-      margin: 0;
-      padding: 0;
-    }
-    .container {
-      max-width: 600px;
-      margin: 40px auto;
-      background: #fff;
-      padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 0 10px rgba(255, 175, 200, 0.4);
-    }
-    h1 {
-      text-align: center;
-      color: #d66d8c;
-    }
-    label {
-      display: block;
-      margin-top: 15px;
-      font-weight: bold;
-      color: #444;
-    }
-    input, select, textarea {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      font-size: 16px;
-      box-sizing: border-box;
-    }
-    button {
-      background: #d66d8c;
-      color: white;
-      padding: 12px 20px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 16px;
-      margin-top: 20px;
-      width: 100%;
-      transition: background 0.3s;
-    }
-    button:hover {
-      background: #c05577;
-    }
-    .section-title {
-      margin-top: 30px;
-      font-size: 18px;
-      color: #d66d8c;
-      border-bottom: 1px solid #f0c3cf;
-      padding-bottom: 5px;
-    }
-    .hidden {
-      display: none;
-      transition: all 0.3s ease;
-    }
-    /* Botón flotante WhatsApp */
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f8f8f8; }
+    h2 { color: #444; }
+    .section { background: #fff; padding: 20px; margin-bottom: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    label { display: block; margin: 10px 0 5px; }
+    input, select, textarea { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 5px; }
+    button { background: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; }
+    button:hover { background: #218838; }
+    img.preview { max-width: 200px; margin-top: 10px; }
     .whatsapp-button {
       position: fixed;
-      bottom: 25px;
-      right: 25px;
-      background-color: #25d366;
+      bottom: 20px;
+      right: 20px;
+      background-color: #25D366;
       color: white;
-      border-radius: 50%;
-      width: 60px;
-      height: 60px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+      border-radius: 50px;
+      padding: 12px 18px;
+      font-size: 16px;
+      text-decoration: none;
       display: flex;
       align-items: center;
-      justify-content: center;
-      text-decoration: none;
-      font-size: 30px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
       z-index: 1000;
-      transition: background-color 0.3s;
     }
     .whatsapp-button:hover {
-      background-color: #1ebe57;
+      background-color: #1ebe5d;
+    }
+    .whatsapp-button img {
+      width: 24px;
+      height: 24px;
+      margin-right: 8px;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>🧁 Pedido - Pastelería Dulce Sabor</h1>
 
-    <form id="pedidoForm" action="https://script.google.com/macros/s/AKfycbwIrvksKP5Azs7WcySAKHxeV54yGcrkzDvFfjXXEpcLgUBkJyFNl55iuzPxFZzxA8g3/exec" method="POST" enctype="multipart/form-data">
-      
-      <div class="section-title">Información del Cliente</div>
+  <h2> 🎂Formulario de Pedido Prueba 1.0 - Panadería Manolos🎂 </h2>
 
-      <label>Nombre Completo</label>
-      <input type="text" name="nombre" required />
+  <form id="cakeForm">
 
-      <label>Número de WhatsApp</label>
-      <input type="tel" name="telefono" pattern="[0-9+ ]{7,15}" placeholder="+57 300 1234567" required />
+    <!-- Idioma -->
+    <div class="section">
+      <label for="idioma">🌐 Idioma:</label>
+      <select id="idioma" name="idioma" required>
+        <option value="es">Español</option>
+        <option value="en">English</option>
+        <option value="it">Italiano</option>
+        <option value="otro">Otro</option>
+      </select>
+    </div>
 
-      <label>Tipo de entrega</label>
-      <select name="tipo_entrega" id="tipoEntrega" required>
-        <option value="">Selecciona una opción</option>
-        <option value="Recoger en tienda">Recoger en tienda</option>
+    <!-- Modelo vitrina -->
+    <div class="section">
+      <label for="modelo">🍰 Modelo (vitrina):</label>
+      <select id="modelo" name="modelo">
+        <option value="Durazno">Durazno</option>
+        <option value="Chocolate">Chocolate</option>
+        <option value="Mocha">Mocha</option>
+        <option value="Caramelo">Caramelo</option>
+        <option value="Churros">Churros</option>
+      </select>
+
+      <label for="tamanoVitrina">Tamaño:</label>
+      <select id="tamanoVitrina" name="tamanoVitrina">
+        <option value="6\"">6"</option>
+        <option value="8\"">8"</option>
+        <option value="10\"">10"</option>
+      </select>
+
+      <label for="fecha">🗓 Fecha de recogida:</label>
+      <input type="date" name="fecha" id="fecha">
+
+      <label for="hora">⏰ Hora:</label>
+      <input type="time" name="hora" id="hora">
+
+      <label for="entrega">🚚 ¿Cómo deseas recibirlo?</label>
+      <select id="entrega" name="entrega" required>
+        <option value="">Seleccione</option>
+        <option value="Recoger en la pastelería">Recoger en la pastelería</option>
         <option value="Domicilio">Domicilio</option>
       </select>
+    </div>
 
-      <div id="direccionGroup" class="hidden">
-        <label>Dirección de entrega</label>
-        <textarea name="direccion" rows="2"></textarea>
-      </div>
-
-      <label>Fecha y hora de entrega</label>
-      <input type="datetime-local" name="fecha_entrega" required />
-
-      <div class="section-title">Tipo de Pedido</div>
-
-      <label>¿Qué deseas pedir?</label>
-      <select name="tipo_pedido" required>
-        <option value="">Selecciona una opción</option>
-        <option value="Torta personalizada">🎂 Torta personalizada</option>
-        <option value="Cupcakes">🧁 Cupcakes</option>
-        <option value="Galletas decoradas">🍪 Galletas decoradas</option>
-        <option value="Postres fríos">🍰 Postres fríos</option>
-        <option value="Combo especial">🎁 Combo especial</option>
+    <!-- Personalización pastel -->
+    <div class="section">
+      <h3>🍰 Pastel Personalizado</h3>
+      <label for="forma">Forma y Tamaño:</label>
+      <select id="forma" name="forma">
+        <option value="Circular 6\"">Circular 6"</option>
+        <option value="Circular 8\"">Circular 8"</option>
+        <option value="Circular 10\"">Circular 10"</option>
+        <option value="Cuadrado 1/4 Sheet">Cuadrado 1/4 Sheet</option>
+        <option value="Rectangular 1/2 Sheet">Rectangular 1/2 Sheet</option>
       </select>
 
-      <label>Sabor</label>
-      <select name="sabor" required>
-        <option value="">Selecciona un sabor</option>
-        <option value="Chocolate">Chocolate</option>
-        <option value="Vainilla">Vainilla</option>
-        <option value="Red Velvet">Red Velvet</option>
-        <option value="Oreo">Oreo</option>
-        <option value="Tres Leches">Tres Leches</option>
+      <label for="tipoMasa">Tipo de Pastel:</label>
+      <select id="tipoMasa" name="tipoMasa">
+        <option value="Tres Leches Vainilla">Tres Leches / Vainilla</option>
+        <option value="Tres Leches Chocolate">Tres Leches / Chocolate</option>
+        <option value="Vainilla seco">Vainilla seco</option>
+        <option value="Chocolate seco">Chocolate seco</option>
+        <option value="Marmolado">Marmolado</option>
+        <option value="Mocca">Mocca</option>
+        <option value="Maracuya">Maracuyá</option>
+        <option value="Otro">Otro</option>
       </select>
 
-      <label>Cantidad</label>
-      <input type="number" name="cantidad" min="1" required />
+      <label for="capas">Capas:</label>
+      <input type="number" name="capas" min="1" max="5" placeholder="Ej: 2">
 
-      <label>¿Deseas dedicatoria o diseño personalizado?</label>
-      <select name="dedicatoria" id="dedicatoria" required>
-        <option value="No">No</option>
-        <option value="Sí">Sí</option>
+      <label for="rellenos">Rellenos (selección múltiple):</label>
+      <select id="rellenos" name="rellenos" multiple size="6">
+        <option value="Durazno">Durazno</option>
+        <option value="Nuez">Nuez</option>
+        <option value="Chocolate Chips">Chocolate Chips</option>
+        <option value="Mocca">Mocca</option>
+        <option value="Cereza">Cereza</option>
+        <option value="Fresa Natural">Fresa Natural</option>
+        <option value="Fresa Mermelada">Fresa Mermelada</option>
+        <option value="Chocolate Seco">Chocolate Seco</option>
+        <option value="Piña Mermelada">Piña Mermelada</option>
+        <option value="Caramelo">Caramelo</option>
       </select>
 
-      <div id="detalleDedicatoriaGroup" class="hidden">
-        <label>Descripción de la dedicatoria o diseño</label>
-        <textarea name="detalle_dedicatoria" rows="3" placeholder="Escribe aquí la dedicatoria o instrucciones de diseño..."></textarea>
-      </div>
+      <label for="mezcla">¿Cómo deseas los rellenos?</label>
+      <select id="mezcla" name="mezcla">
+        <option value="Mixeado">Mixeado</option>
+        <option value="Mitad y Mitad">Mitad y Mitad</option>
+      </select>
+    </div>
 
-      <div class="section-title">Confirmación</div>
+    <!-- Decoración -->
+    <div class="section">
+      <label for="decoracion">🎨 Detalles de Decoración:</label>
+      <textarea id="decoracion" name="decoracion" placeholder="Describe decoraciones, temática o instrucciones específicas"></textarea>
 
-      <label>Método de pago</label>
-      <select name="pago" id="metodoPago" required></select>
+      <label for="mensajePastel">📝 Mensaje en el pastel:</label>
+      <input type="text" id="mensajePastel" name="mensajePastel">
 
-      <label>
-        <input type="checkbox" name="acepto" required />
-        Acepto que este pedido es personalizado y no tiene devolución.
-      </label>
+      <label for="color">🎨 Colores predominantes:</label>
+      <input type="text" id="color" name="color">
 
-      <button type="submit">Enviar Pedido</button>
-    </form>
+      <label for="imagen">📷 Imagen de referencia:</label>
+      <input type="file" id="imagen" name="imagen" accept="image/*">
+      <img class="preview" id="previewImg" style="display: none;" />
+    </div>
+
+    <!-- ... tu código HTML arriba sin cambios ... -->
+
+<!-- Datos del Cliente -->
+<div class="section">
+  <label for="nombre">👤 Nombre completo:</label>
+  <input type="text" id="nombre" name="nombre" required>
+
+<label for="telefono">📞 Teléfono:</label>
+<input type="tel" id="telefono" name="telefono" placeholder="+57 3001234567" pattern="^\+\d{10,15}$" required>
+<small>Incluye el indicativo del país. Ejemplo: +57 3001234567</small>
+
+  <label for="correo">📧 Correo electrónico:</label>
+  <input type="email" id="correo" name="correo" required>
+
+  <div id="direccionSection" style="display:none;">
+    <label for="direccion">📍 Dirección:</label>
+    <textarea id="direccion" name="direccion" placeholder="Ingresa tu dirección completa para el domicilio"></textarea>
   </div>
+</div>
 
-  <!-- Botón flotante WhatsApp con ícono correcto -->
-  <a href="https://wa.me/573219177941" target="_blank" class="whatsapp-button" aria-label="Contactar por WhatsApp">
-    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg" alt="WhatsApp" width="30" height="30" style="filter: invert(1);" />
-  </a>
+<!-- Envío -->
+<div class="section">
+  <p>🍾 Al hacer clic en enviar, se generará tu número de orden y se confirmará el pedido a través WhatsApp.</p>
+  <button type="submit">✅ Enviar Pedido</button>
+</div>
 
-  <script>
-    const tipoEntrega = document.getElementById("tipoEntrega");
-    const direccionGroup = document.getElementById("direccionGroup");
-    const metodoPago = document.getElementById("metodoPago");
-    const dedicatoria = document.getElementById("dedicatoria");
-    const detalleDedicatoriaGroup = document.getElementById("detalleDedicatoriaGroup");
+<!-- Botón flotante de WhatsApp -->
+<a class="whatsapp-button" href="https://wa.me/573027697351?text=Hola%2C%20necesito%20ayuda%20con%20mi%20pedido%20de%20pastel" target="_blank">
+  <img src="https://cdn-icons-png.flaticon.com/512/220/220236.png" alt="WhatsApp"> ¿Necesitas ayuda?
+</a>
 
-    const pagosDomicilio = [
-      { value: "Contraentrega", text: "Contra entrega" },
-      { value: "Transferencia", text: "Transferencia" }
-    ];
-    const pagosTienda = [
-      { value: "Efectivo", text: "Efectivo" },
-      { value: "Transferencia", text: "Transferencia" }
-    ];
+<script>
 
-    function actualizarMetodoPago() {
-      const tipo = tipoEntrega.value;
-      metodoPago.innerHTML = "";
-      if (tipo === "Domicilio") {
-        pagosDomicilio.forEach(pago => {
-          metodoPago.innerHTML += `<option value="${pago.value}">${pago.text}</option>`;
-        });
-        direccionGroup.classList.remove("hidden");
-      } else if (tipo === "Recoger en tienda") {
-        pagosTienda.forEach(pago => {
-          metodoPago.innerHTML += `<option value="${pago.value}">${pago.text}</option>`;
-        });
-        direccionGroup.classList.add("hidden");
-      } else {
-        direccionGroup.classList.add("hidden");
-      }
+  const form = document.getElementById('cakeForm');
+  const preview = document.getElementById('previewImg');
+  const entregaSelect = document.getElementById('entrega');
+  const direccionSection = document.getElementById('direccionSection');
+
+  // Mostrar/Ocultar dirección según entrega
+  entregaSelect.addEventListener('change', function () {
+    if (this.value === 'Domicilio') {
+      direccionSection.style.display = 'block';
+    } else {
+      direccionSection.style.display = 'none';
     }
+  });
 
-    function actualizarDedicatoria() {
-      if (dedicatoria.value === "Sí") {
-        detalleDedicatoriaGroup.classList.remove("hidden");
-      } else {
-        detalleDedicatoriaGroup.classList.add("hidden");
-      }
+  document.getElementById('imagen').addEventListener('change', function (e) {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        preview.src = e.target.result;
+        preview.style.display = 'block';
+      };
+      reader.readAsDataURL(file);
     }
+  });
 
-    tipoEntrega.addEventListener("change", actualizarMetodoPago);
-    dedicatoria.addEventListener("change", actualizarDedicatoria);
-
-    actualizarMetodoPago();
-    actualizarDedicatoria();
-
-    document.getElementById("pedidoForm").addEventListener("submit", function (e) {
-      e.preventDefault();
-      const data = new FormData(this);
-
-      fetch(this.action, {
-        method: "POST",
-        body: data
-      })
-        .then(res => res.text())
-        .then(urlWhatsapp => {
-          alert("🎉 ¡Pedido enviado!\nSerás redirigido a WhatsApp para confirmar.");
-          this.reset();
-          actualizarMetodoPago();
-          actualizarDedicatoria();
-          window.location.href = urlWhatsapp.trim();
-        })
-        .catch(err => {
-          alert("Hubo un error al enviar el pedido. Por favor, intenta de nuevo.");
-          console.error(err);
-        });
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    const formData = new FormData(form);
+    const pedido = {};
+    formData.forEach((value, key) => {
+      if (pedido[key]) {
+        if (!Array.isArray(pedido[key])) pedido[key] = [pedido[key]];
+        pedido[key].push(value);
+      } else {
+        pedido[key] = value;
+      }
     });
-  </script>
+
+    const ordenID = 'ORD-' + Date.now();
+    pedido.orden = ordenID;
+
+    console.log('Pedido generado:', pedido);
+
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxfywNHFtn9MvLmvQjLL6RQIFY90-XFOwTUqAzqnDCZOORvDgxCxcy_r5NK8xZnqiZj/exec';
+
+    fetch(scriptURL, {
+      method: 'POST',
+      body: new URLSearchParams(pedido),
+      mode: 'no-cors'
+    }).then(() => {
+      alert(`🎉 Pedido enviado con éxito. Tu número de orden es: ${ordenID}`);
+      form.reset();
+      preview.style.display = 'none';
+      direccionSection.style.display = 'none';
+    }).catch(err => {
+      alert('Error al enviar el formulario.');
+      console.error('Error:', err);
+    });
+  });
+
+</script>
 </body>
 </html>
