@@ -1,290 +1,368 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Panadería Manolos</title>
-  <style>
-    body { font-family: Arial, sans-serif; padding: 20px; background: #f8f8f8; }
-    h2 { color: #444; }
-    .section { background: #fff; padding: 20px; margin-bottom: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-    label { display: block; margin: 10px 0 5px; }
-    input, select, textarea { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 5px; }
-    button { background: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; }
-    button:hover { background: #218838; }
-    img.preview { max-width: 200px; margin-top: 10px; }
-    .whatsapp-button {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background-color: #25D366;
-      color: white;
-      border-radius: 50px;
-      padding: 12px 18px;
-      font-size: 16px;
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-      z-index: 1000;
-    }
-    .whatsapp-button:hover {
-      background-color: #1ebe5d;
-    }
-    .whatsapp-button img {
-      width: 24px;
-      height: 24px;
-      margin-right: 8px;
-    }
-
-    /* === Estilos responsivos === */
-    @media (max-width: 600px) {
-      body {
-        padding: 10px;
-      }
-      .section {
-        padding: 15px;
-      }
-      input, select, textarea, button {
-        font-size: 16px;
-      }
-      button {
-        width: 100%;
-      }
-      .whatsapp-button {
-        padding: 10px 14px;
-        font-size: 14px;
-        bottom: 15px;
-        right: 15px;
-      }
-      .whatsapp-button img {
-        width: 20px;
-        height: 20px;
-      }
-      img.preview {
-        max-width: 100%;
-        height: auto;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Pedido de Pastel</title>
+    <style>
+        /* Estilos CSS */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #e9ecef;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Alinea arriba si el contenido es largo */
+            min-height: 100vh;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 30px 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            max-width: 650px;
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 30px;
+        }
+        h2 {
+            text-align: center;
+            color: #343a40;
+            margin-bottom: 25px;
+            font-size: 2em;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+        }
+        h3 {
+            color: #007bff;
+            border-bottom: 1px solid #ced4da;
+            padding-bottom: 8px;
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 18px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #495057;
+            font-size: 0.95em;
+        }
+        input[type="text"],
+        input[type="tel"],
+        input[type="email"],
+        input[type="date"],
+        input[type="time"],
+        input[type="number"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 1em;
+            color: #495057;
+            transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        input[type="text"]:focus,
+        input[type="tel"]:focus,
+        type="email"]:focus,
+        input[type="date"]:focus,
+        input[type="time"]:focus,
+        input[type="number"]:focus,
+        textarea:focus,
+        select:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+            outline: none;
+        }
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 5px;
+        }
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            margin-right: 15px;
+            font-weight: normal;
+            cursor: pointer;
+            color: #343a40;
+        }
+        .checkbox-group input[type="checkbox"] {
+            margin-right: 8px;
+            width: auto;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #007bff;
+            border-radius: 4px;
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+        .checkbox-group input[type="checkbox"]:checked {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .checkbox-group input[type="checkbox"]:checked::after {
+            content: '\2713'; /* Tick mark */
+            display: block;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            padding: 14px 25px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            width: 100%;
+            margin-top: 20px;
+            transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+        }
+        button:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+        }
+        button:active {
+            transform: translateY(0);
+        }
+        .message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 0.95em;
+            text-align: center;
+            animation: fadeIn 0.5s ease-out;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 </head>
 <body>
+    <div class="container">
+        <h2>🍰 Pedido de Pastel Personalizado 🎂</h2>
+        <form id="cakeOrderForm">
+            <div class="form-group">
+                <label for="idioma">Idioma Preferido:</label>
+                <input type="text" id="idioma" name="idioma" placeholder="Ej: Español">
+            </div>
 
-  <h2> 🎂Formulario de Pedido Prueba 1.0 - Panadería Manolos🎂 </h2>
+            <div class="form-group">
+                <label for="modelo">Modelo de Pastel:</label>
+                <input type="text" id="modelo" name="modelo" placeholder="Ej: Cumpleaños Infantil, Boda Clásica">
+            </div>
 
-  <form id="cakeForm">
+            <div class="form-group">
+                <label for="tamanoVitrina">Tamaño de Vitrina (si aplica):</label>
+                <input type="text" id="tamanoVitrina" name="tamanoVitrina" placeholder="Ej: Mediana, Grande">
+            </div>
 
-    <!-- Idioma -->
-    <div class="section">
-      <label for="idioma">🌐 Idioma:</label>
-      <select id="idioma" name="idioma" required>
-        <option value="es">Español</option>
-        <option value="en">English</option>
-        <option value="it">Italiano</option>
-        <option value="otro">Otro</option>
-      </select>
+            <div class="form-group">
+                <label for="fecha">Fecha de Entrega Deseada:</label>
+                <input type="date" id="fecha" name="fecha" required>
+            </div>
+
+            <div class="form-group">
+                <label for="hora">Hora de Entrega Deseada:</label>
+                <input type="time" id="hora" name="hora" required>
+            </div>
+
+            <div class="form-group">
+                <label for="entrega">Tipo de Entrega:</label>
+                <input type="text" id="entrega" name="entrega" placeholder="Ej: Retiro en Tienda, Domicilio">
+            </div>
+
+            <div class="form-group">
+                <label for="forma">Forma del Pastel:</label>
+                <input type="text" id="forma" name="forma" placeholder="Ej: Redondo, Cuadrado, Corazón">
+            </div>
+
+            <div class="form-group">
+                <label for="tipoMasa">Tipo de Masa:</label>
+                <input type="text" id="tipoMasa" name="tipoMasa" placeholder="Ej: Vainilla, Chocolate, Red Velvet">
+            </div>
+
+            <div class="form-group">
+                <label for="capas">Número de Capas:</label>
+                <input type="number" id="capas" name="capas" min="1" value="2">
+            </div>
+
+            <div class="form-group">
+                <label>Rellenos (selecciona uno o más):</label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" name="rellenos" value="Chocolate"> Chocolate</label>
+                    <label><input type="checkbox" name="rellenos" value="Vainilla"> Vainilla</label>
+                    <label><input type="checkbox" name="rellenos" value="Fresa"> Fresa</label>
+                    <label><input type="checkbox" name="rellenos" value="Crema Pastelera"> Crema Pastelera</label>
+                    <label><input type="checkbox" name="rellenos" value="Manjar"> Manjar</label>
+                    <label><input type="checkbox" name="rellenos" value="Moka"> Moka</label>
+                    <label><input type="checkbox" name="rellenos" value="Frutos Rojos"> Frutos Rojos</label>
+                    </div>
+            </div>
+
+            <div class="form-group">
+                <label for="mezcla">Mezcla (si aplica):</label>
+                <input type="text" id="mezcla" name="mezcla" placeholder="Ej: Frutos secos, Chips de chocolate">
+            </div>
+
+            <div class="form-group">
+                <label for="decoracion">Detalles de la Decoración:</label>
+                <textarea id="decoracion" name="decoracion" rows="4" placeholder="Describe aquí la decoración deseada (colores, figuras, tema)"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="mensajePastel">Mensaje en el Pastel:</label>
+                <input type="text" id="mensajePastel" name="mensajePastel" placeholder="Ej: ¡Feliz Cumpleaños, Juanita!">
+            </div>
+
+            <div class="form-group">
+                <label for="color">Color Principal del Pastel:</label>
+                <input type="text" id="color" name="color" placeholder="Ej: Rosado, Azul Cielo">
+            </div>
+
+            <h3>Datos de Contacto</h3>
+            <div class="form-group">
+                <label for="nombre">Nombre Completo:</label>
+                <input type="text" id="nombre" name="nombre" required placeholder="Tu nombre completo">
+            </div>
+
+            <div class="form-group">
+                <label for="telefono">Teléfono:</label>
+                <input type="tel" id="telefono" name="telefono" required placeholder="Ej: +58 412 1234567">
+            </div>
+
+            <div class="form-group">
+                <label for="correo">Correo Electrónico:</label>
+                <input type="email" id="correo" name="correo" placeholder="ejemplo@correo.com">
+            </div>
+
+            <div class="form-group">
+                <label for="direccion">Dirección de Entrega:</label>
+                <textarea id="direccion" name="direccion" rows="3" placeholder="Calle, número, colonia, ciudad, código postal"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="observaciones">Observaciones Adicionales:</label>
+                <textarea id="observaciones" name="observaciones" rows="4" placeholder="Cualquier nota especial, alergias, instrucciones adicionales, etc."></textarea>
+            </div>
+
+            <button type="submit">Enviar Pedido</button>
+            <div id="responseMessage" class="message" style="display:none;"></div>
+        </form>
     </div>
 
-    <!-- Modelo vitrina -->
-    <div class="section">
-      <label for="modelo">🍰 Modelo (vitrina):</label>
-      <select id="modelo" name="modelo">
-        <option value="Durazno">Durazno</option>
-        <option value="Chocolate">Chocolate</option>
-        <option value="Mocha">Mocha</option>
-        <option value="Caramelo">Caramelo</option>
-        <option value="Churros">Churros</option>
-      </select>
+    <script>
+        const form = document.getElementById('cakeOrderForm');
+        const responseMessage = document.getElementById('responseMessage');
+        const submitButton = form.querySelector('button[type="submit"]');
+        const webAppUrl = 'https://script.google.com/macros/s/AKfycbyndzyUBL_cr9e7PuD42Piec4Fz2N3MsDSmOEu4WgfAa6FQp0BiIYf9DjTFUyXTB9JV/exec';
 
-      <label for="tamanoVitrina">Tamaño:</label>
-      <select id="tamanoVitrina" name="tamanoVitrina">
-        <option value="6\"">6"</option>
-        <option value="8\"">8"</option>
-        <option value="10\"">10"</option>
-      </select>
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault(); // Evita el envío tradicional del formulario
 
-      <label for="fecha">🗓 Fecha de recogida:</label>
-      <input type="date" name="fecha" id="fecha">
+            responseMessage.style.display = 'none'; // Oculta mensajes previos
+            responseMessage.className = 'message'; // Resetea clases CSS
+            submitButton.disabled = true; // Deshabilita el botón mientras se envía
+            submitButton.textContent = 'Enviando...';
+            form.classList.add('loading'); // Añade clase de carga visual al formulario
 
-      <label for="hora">⏰ Hora:</label>
-      <input type="time" name="hora" id="hora">
+            const formData = new FormData(form);
+            const data = {};
 
-      <label for="entrega">🚚 ¿Cómo deseas recibirlo?</label>
-      <select id="entrega" name="entrega" required>
-        <option value="">Seleccione</option>
-        <option value="Recoger en la pastelería">Recoger en la pastelería</option>
-        <option value="Domicilio">Domicilio</option>
-      </select>
-    </div>
+            // Recopilar datos del formulario en un objeto JSON
+            // Excluimos 'orden' porque se genera automáticamente en el script del lado del servidor
+            for (let [key, value] of formData.entries()) {
+                // Manejar los rellenos como un array si hay múltiples seleccionados (checkboxes)
+                if (key === 'rellenos') {
+                    if (!data[key]) {
+                        data[key] = [];
+                    }
+                    data[key].push(value);
+                } else {
+                    data[key] = value;
+                }
+            }
 
-    <!-- Personalización pastel -->
-    <div class="section">
-      <h3>🍰 Pastel Personalizado</h3>
-      <label for="forma">Forma y Tamaño:</label>
-      <select id="forma" name="forma">
-        <option value="Circular 6\"">Circular 6"</option>
-        <option value="Circular 8\"">Circular 8"</option>
-        <option value="Circular 10\"">Circular 10"</option>
-        <option value="Cuadrado 1/4 Sheet">Cuadrado 1/4 Sheet</option>
-        <option value="Rectangular 1/2 Sheet">Rectangular 1/2 Sheet</option>
-      </select>
+            console.log('Datos a enviar (sin orden, con observaciones):', data); // Para depuración en la consola
 
-      <label for="tipoMasa">Tipo de Pastel:</label>
-      <select id="tipoMasa" name="tipoMasa">
-        <option value="Tres Leches Vainilla">Tres Leches / Vainilla</option>
-        <option value="Tres Leches Chocolate">Tres Leches / Chocolate</option>
-        <option value="Vainilla seco">Vainilla seco</option>
-        <option value="Chocolate seco">Chocolate seco</option>
-        <option value="Marmolado">Marmolado</option>
-        <option value="Mocca">Mocca</option>
-        <option value="Maracuya">Maracuyá</option>
-        <option value="Otro">Otro</option>
-      </select>
+            try {
+                // Realiza la solicitud POST al Google Apps Script
+                const response = await fetch(webAppUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json', // Indispensable para que el script lea el JSON
+                    },
+                    body: JSON.stringify(data), // Envía el objeto de datos como una cadena JSON
+                });
 
-      <label for="capas">Capas:</label>
-      <input type="number" name="capas" min="1" max="5" placeholder="Ej: 2">
+                // Verifica si la respuesta HTTP fue exitosa (códigos 2xx)
+                if (!response.ok) {
+                    throw new Error(`Error de red o servidor: ${response.status} ${response.statusText}`);
+                }
 
-      <label for="rellenos">Rellenos (selección múltiple):</label>
-      <select id="rellenos" name="rellenos" multiple size="6">
-        <option value="Durazno">Durazno</option>
-        <option value="Nuez">Nuez</option>
-        <option value="Chocolate Chips">Chocolate Chips</option>
-        <option value="Mocca">Mocca</option>
-        <option value="Cereza">Cereza</option>
-        <option value="Fresa Natural">Fresa Natural</option>
-        <option value="Fresa Mermelada">Fresa Mermelada</option>
-        <option value="Chocolate Seco">Chocolate Seco</option>
-        <option value="Piña Mermelada">Piña Mermelada</option>
-        <option value="Caramelo">Caramelo</option>
-      </select>
+                const result = await response.json(); // Parsea la respuesta JSON del script
 
-      <label for="mezcla">¿Cómo deseas los rellenos?</label>
-      <select id="mezcla" name="mezcla">
-        <option value="Mixeado">Mixeado</option>
-        <option value="Mitad y Mitad">Mitad y Mitad</option>
-      </select>
-    </div>
-
-    <!-- Decoración -->
-    <div class="section">
-      <label for="decoracion">🎨 Detalles de Decoración:</label>
-      <textarea id="decoracion" name="decoracion" placeholder="Describe decoraciones, temática o instrucciones específicas"></textarea>
-
-      <label for="mensajePastel">📝 Mensaje en el pastel:</label>
-      <input type="text" id="mensajePastel" name="mensajePastel">
-
-      <label for="color">🎨 Colores predominantes:</label>
-      <input type="text" id="color" name="color">
-
-      <label for="imagen">📷 Imagen de referencia:</label>
-      <input type="file" id="imagen" name="imagen" accept="image/*">
-      <img class="preview" id="previewImg" style="display: none;" />
-    </div>
-
-    <!-- ... tu código HTML arriba sin cambios ... -->
-
-<!-- Datos del Cliente -->
-<div class="section">
-  <label for="nombre">👤 Nombre completo:</label>
-  <input type="text" id="nombre" name="nombre" required>
-
-<label for="telefono">📞 Teléfono:</label>
-<input type="tel" id="telefono" name="telefono" placeholder="+57 3001234567" pattern="^\+\d{10,15}$" required>
-<small>Incluye el indicativo del país. Ejemplo: +57 3001234567</small>
-
-  <label for="correo">📧 Correo electrónico:</label>
-  <input type="email" id="correo" name="correo" required>
-
-  <div id="direccionSection" style="display:none;">
-    <label for="direccion">📍 Dirección:</label>
-    <textarea id="direccion" name="direccion" placeholder="Ingresa tu dirección completa para el domicilio"></textarea>
-  </div>
-</div>
-
-<!-- Envío -->
-<div class="section">
-  <p>🍾 Al hacer clic en enviar, se generará tu número de orden y se confirmará el pedido a través WhatsApp.</p>
-  <button type="submit">✅ Enviar Pedido</button>
-</div>
-
-<!-- Botón flotante de WhatsApp -->
-<a class="whatsapp-button" href="https://wa.me/573027697351?text=Hola%2C%20necesito%20ayuda%20con%20mi%20pedido%20de%20pastel" target="_blank">
-  <img src="https://cdn-icons-png.flaticon.com/512/220/220236.png" alt="WhatsApp"> ¿Necesitas ayuda?
-</a>
-
-<script>
-
-  const form = document.getElementById('cakeForm');
-  const preview = document.getElementById('previewImg');
-  const entregaSelect = document.getElementById('entrega');
-  const direccionSection = document.getElementById('direccionSection');
-
-  // Mostrar/Ocultar dirección según entrega
-  entregaSelect.addEventListener('change', function () {
-    if (this.value === 'Domicilio') {
-      direccionSection.style.display = 'block';
-    } else {
-      direccionSection.style.display = 'none';
-    }
-  });
-
-  document.getElementById('imagen').addEventListener('change', function (e) {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        preview.src = e.target.result;
-        preview.style.display = 'block';
-      };
-      reader.readAsDataURL(file);
-    }
-  });
-
-  form.addEventListener('submit', function(e) {
-  e.preventDefault();
-
-  const formData = new FormData(form);
-  const pedido = {};
-
-  formData.forEach((value, key) => {
-    // Si es selección múltiple, lo convertimos en array
-    if (pedido[key]) {
-      if (!Array.isArray(pedido[key])) pedido[key] = [pedido[key]];
-      pedido[key].push(value);
-    } else {
-      pedido[key] = value;
-    }
-  });
-
-  // Generar número de orden
-  const ordenID = 'ORD-' + Date.now();
-  pedido.orden = ordenID;
-
-  console.log('Pedido generado:', pedido);
-const scriptURL = 'https://script.google.com/macros/s/AKfycbyNEMpUHVh3s94E6dPDJVjZFv2swKUE5oT4D_z9FSpS0OKK9ZnD6hOyReFCNMQKtoC2/exec';
-  fetch(scriptURL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(pedido)
-  })
-  .then(response => response.json())
-  .then(data => {
-    if(data.status === 'success') {
-      alert(`🎉 Pedido enviado con éxito. Tu número de orden es: ${ordenID}`);
-      form.reset();
-      preview.style.display = 'none';
-      direccionSection.style.display = 'none';
-    } else {
-      alert('Error en el servidor: ' + (data.message || 'Intenta de nuevo'));
-    }
-  })
-  .catch(error => {
-    alert('🚫 Error al enviar tu pedido. Por favor, escríbenos a través del botón ¿Necesitas ayuda? y con gusto te asistiremos..');
-    console.error('Error:', error);
-  });
-});
-
-
-</script>
+                if (result.status === 'success') {
+                    // Muestra el mensaje de éxito y el número de orden generado por el script
+                    responseMessage.textContent = `¡Pedido enviado con éxito! Tu número de orden es: ${result.orderNumber}. Recibirás confirmación pronto.`;
+                    responseMessage.classList.add('success');
+                    form.reset(); // Limpia el formulario solo si el envío fue exitoso
+                } else {
+                    // Muestra el mensaje de error del script
+                    responseMessage.textContent = 'Error al enviar el pedido: ' + (result.message || 'Error desconocido.');
+                    responseMessage.classList.add('error');
+                    console.error('Error del script (respuesta):', result.message);
+                }
+            } catch (error) {
+                // Captura errores de red o de ejecución de fetch
+                responseMessage.textContent = 'Ocurrió un error de conexión o inesperado: ' + error.message;
+                responseMessage.classList.add('error');
+                console.error('Error de fetch o catch general:', error);
+            } finally {
+                // Siempre muestra el mensaje y re-habilita el botón, independientemente del resultado
+                responseMessage.style.display = 'block';
+                submitButton.disabled = false;
+                submitButton.textContent = 'Enviar Pedido';
+                form.classList.remove('loading');
+            }
+        });
+    </script>
 </body>
 </html>
