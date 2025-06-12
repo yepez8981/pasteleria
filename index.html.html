@@ -10,9 +10,10 @@
     .section { background: #fff; padding: 20px; margin-bottom: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
     label { display: block; margin: 10px 0 5px; }
     input, select, textarea { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 5px; }
-    button { background: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; }
+    button { background: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; transition: background 0.3s ease; }
     button:hover { background: #218838; }
-    img.preview { max-width: 200px; margin-top: 10px; }
+    button:disabled { background: #cccccc; cursor: not-allowed; } /* Estilo para botón deshabilitado */
+    img.preview { max-width: 200px; margin-top: 10px; border-radius: 5px; }
     .whatsapp-button {
       position: fixed;
       bottom: 20px;
@@ -35,6 +36,22 @@
       width: 24px;
       height: 24px;
       margin-right: 8px;
+    }
+    .message {
+        padding: 10px;
+        margin-top: 10px;
+        border-radius: 5px;
+        display: none; /* Oculto por defecto */
+    }
+    .message.success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+    .message.error {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
     }
 
     /* === Estilos responsivos === */
@@ -74,7 +91,6 @@
 
   <form id="cakeForm">
 
-    <!-- Idioma -->
     <div class="section">
       <label for="idioma">🌐 Idioma:</label>
       <select id="idioma" name="idioma" required>
@@ -85,7 +101,6 @@
       </select>
     </div>
 
-    <!-- Modelo vitrina -->
     <div class="section">
       <label for="modelo">🍰 Modelo (vitrina):</label>
       <select id="modelo" name="modelo">
@@ -117,7 +132,6 @@
       </select>
     </div>
 
-    <!-- Personalización pastel -->
     <div class="section">
       <h3>🍰 Pastel Personalizado</h3>
       <label for="forma">Forma y Tamaño:</label>
@@ -165,7 +179,6 @@
       </select>
     </div>
 
-    <!-- Decoración -->
     <div class="section">
       <label for="decoracion">🎨 Detalles de Decoración:</label>
       <textarea id="decoracion" name="decoracion" placeholder="Describe decoraciones, temática o instrucciones específicas"></textarea>
@@ -181,9 +194,6 @@
       <img class="preview" id="previewImg" style="display: none;" />
     </div>
 
-    <!-- ... tu código HTML arriba sin cambios ... -->
-
-<!-- Datos del Cliente -->
 <div class="section">
   <label for="nombre">👤 Nombre completo:</label>
   <input type="text" id="nombre" name="nombre" required>
@@ -201,33 +211,49 @@
   </div>
 </div>
 
-<!-- Envío -->
 <div class="section">
   <p>🍾 Al hacer clic en enviar, se generará tu número de orden y se confirmará el pedido a través WhatsApp.</p>
-  <button type="submit">✅ Enviar Pedido</button>
-</div>
+  <button type="submit" id="submitButton">✅ Enviar Pedido</button>
+  <div id="formMessage" class="message"></div> </div>
 
-<!-- Botón flotante de WhatsApp -->
 <a class="whatsapp-button" href="https://wa.me/573027697351?text=Hola%2C%20necesito%20ayuda%20con%20mi%20pedido%20de%20pastel" target="_blank">
   <img src="https://cdn-icons-png.flaticon.com/512/220/220236.png" alt="WhatsApp"> ¿Necesitas ayuda?
 </a>
 
 <script>
-
   const form = document.getElementById('cakeForm');
   const preview = document.getElementById('previewImg');
   const entregaSelect = document.getElementById('entrega');
   const direccionSection = document.getElementById('direccionSection');
+  const submitButton = document.getElementById('submitButton');
+  const formMessage = document.getElementById('formMessage');
+
+  // Función para mostrar mensajes al usuario
+  function showMessage(message, type) {
+    formMessage.textContent = message;
+    formMessage.className = message ${type};
+    formMessage.style.display = 'block';
+  }
+
+  // Ocultar mensaje al interactuar con el formulario
+  form.addEventListener('input', () => {
+    formMessage.style.display = 'none';
+  });
 
   // Mostrar/Ocultar dirección según entrega
   entregaSelect.addEventListener('change', function () {
     if (this.value === 'Domicilio') {
       direccionSection.style.display = 'block';
+      // Hacer el campo de dirección requerido si es domicilio
+      document.getElementById('direccion').setAttribute('required', 'required');
     } else {
       direccionSection.style.display = 'none';
+      // Quitar el requisito si no es domicilio
+      document.getElementById('direccion').removeAttribute('required');
     }
   });
 
+  // Vista previa de imagen
   document.getElementById('imagen').addEventListener('change', function (e) {
     const file = e.target.files[0];
     if (file) {
@@ -237,54 +263,91 @@
         preview.style.display = 'block';
       };
       reader.readAsDataURL(file);
-    }
-  });
-
-  form.addEventListener('submit', function(e) {
-  e.preventDefault();
-
-  const formData = new FormData(form);
-  const pedido = {};
-
-  formData.forEach((value, key) => {
-    // Si es selección múltiple, lo convertimos en array
-    if (pedido[key]) {
-      if (!Array.isArray(pedido[key])) pedido[key] = [pedido[key]];
-      pedido[key].push(value);
     } else {
-      pedido[key] = value;
+      preview.style.display = 'none'; // Ocultar si no hay archivo
+      preview.src = ''; // Limpiar la imagen
     }
   });
 
-  // Generar número de orden
-  const ordenID = 'ORD-' + Date.now();
-  pedido.orden = ordenID;
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault(); // Previene el envío tradicional del formulario
 
-  console.log('Pedido generado:', pedido);
-const scriptURL = 'https://script.google.com/macros/s/AKfycbw7Bj5sJb_cRUnP9Y4RSxgqqGBsi1-H1q8-vEtpr5zCNnrbHcb6H-rznfKLAFZ22hGW/exec';
-  fetch(scriptURL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(pedido)
-  })
-  .then(response => response.json())
-  .then(data => {
-    if(data.status === 'success') {
-      alert(`🎉 Pedido enviado con éxito. Tu número de orden es: ${ordenID}`);
-      form.reset();
-      preview.style.display = 'none';
-      direccionSection.style.display = 'none';
-    } else {
-      alert('Error en el servidor: ' + (data.message || 'Intenta de nuevo'));
+    // Validación básica antes de enviar
+    if (!form.checkValidity()) {
+        showMessage('Por favor, completa todos los campos requeridos.', 'error');
+        return; // Detiene el envío si la validación falla
     }
-  })
-  .catch(error => {
-    alert('🚫 Error al enviar tu pedido. Por favor, escríbenos a través del botón ¿Necesitas ayuda? y con gusto te asistiremos..');
-    console.error('Error:', error);
+
+    submitButton.disabled = true; // Deshabilita el botón para evitar múltiples envíos
+    submitButton.textContent = 'Enviando...'; // Cambia el texto del botón
+    formMessage.style.display = 'none'; // Oculta mensajes anteriores
+
+    const formData = new FormData(form);
+    const pedido = {};
+
+    // Construye el objeto de pedido, manejando selecciones múltiples
+    formData.forEach((value, key) => {
+      // Si es selección múltiple, lo convertimos en array
+      if (key === 'rellenos') {
+        if (!pedido[key]) {
+          pedido[key] = [];
+        }
+        pedido[key].push(value);
+      } else {
+        pedido[key] = value;
+      }
+    });
+
+    // Generar número de orden
+    const ordenID = 'ORD-' + Date.now();
+    pedido.orden = ordenID;
+
+    // URL de tu Google Apps Script
+    // ¡IMPORTANTE! Asegúrate de que esta URL sea la correcta y que tu Script esté publicado como "aplicación web"
+    // con acceso "Cualquier persona" o "Cualquier persona, incluso anónimo" para que funcione.
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwsVHAYWM9vnWwy1qXNuu_gj7jq6HQViRHei96ORXth9h4lfcCVI8qWuhW817pBIQE2/exec'; // ¡VERIFICA ESTA URL!
+
+    try {
+      const response = await fetch(scriptURL, {
+        method: 'POST',
+        // Si tu Google Script espera un JSON puro (e.g., con JSON.parse(e.postData.contents)),
+        // entonces Content-Type debe ser 'application/json' y el body JSON.stringify(pedido)
+        headers: {
+          'Content-Type': 'text/plain;charset=utf-8', // Este Content-Type es común para scripts simples de Apps Script
+          // 'Content-Type': 'application/json', // Si tu script parsea JSON directamente
+        },
+        // Cuando usas 'text/plain', el script recibe los datos como una cadena en e.postData.contents
+        // y necesitarás parsear JSON.stringify(pedido) en el script.
+        body: JSON.stringify(pedido)
+        // Si tu script espera FormData (para archivos por ejemplo, aunque no estamos enviando el archivo de imagen directamente aquí),
+        // no incluyas Content-Type y envía el FormData directamente: body: formData
+      });
+
+      if (!response.ok) { // Si la respuesta no es 2xx (ej. 404, 500)
+        throw new Error(Error de red o del servidor: ${response.status} - ${response.statusText});
+      }
+
+      const data = await response.json(); // Intenta parsear la respuesta como JSON
+
+      if (data.status === 'success') {
+        showMessage(🎉 Pedido enviado con éxito. Tu número de orden es: ${ordenID}, 'success');
+        form.reset(); // Limpia el formulario
+        preview.style.display = 'none'; // Oculta la vista previa de la imagen
+        direccionSection.style.display = 'none'; // Oculta la sección de dirección
+        document.getElementById('direccion').removeAttribute('required'); // Asegura que no sea requerido si se resetea
+      } else {
+        // Si la respuesta JSON indica un error
+        showMessage('Error en el servidor: ' + (data.message || 'Intenta de nuevo. Contacta al soporte si persiste.'), 'error');
+      }
+    } catch (error) {
+      // Captura errores de red, JSON parsing, o errores lanzados
+      console.error('Error al enviar el formulario:', error);
+      showMessage('Ocurrió un error al enviar el pedido. Por favor, revisa tu conexión e inténtalo de nuevo. Si el problema persiste, contáctanos.', 'error');
+    } finally {
+      submitButton.disabled = false; // Habilita el botón de nuevo
+      submitButton.textContent = '✅ Enviar Pedido'; // Restaura el texto del botón
+    }
   });
-});
-
-
 </script>
 </body>
 </html>
