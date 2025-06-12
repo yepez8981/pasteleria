@@ -261,9 +261,7 @@
   pedido.orden = ordenID;
 
   console.log('Pedido generado:', pedido);
-
-  const scriptURL = 'https://script.google.com/macros/s/AKfycbzoKA4dVJiq8M8wyR9p2FLkmGWGB__YOAiHefBK76fFWLI9hEN7tS4r4fWSD0K7njXr/exec';
-
+const scriptURL = 'https://script.google.com/macros/s/AKfycbw7Bj5sJb_cRUnP9Y4RSxgqqGBsi1-H1q8-vEtpr5zCNnrbHcb6H-rznfKLAFZ22hGW/exec';
   fetch(scriptURL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
