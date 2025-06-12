@@ -240,40 +240,52 @@
     }
   });
 
-  form.addEventListener('submit', function (e) {
-    e.preventDefault();
-    const formData = new FormData(form);
-    const pedido = {};
-    formData.forEach((value, key) => {
-      if (pedido[key]) {
-        if (!Array.isArray(pedido[key])) pedido[key] = [pedido[key]];
-        pedido[key].push(value);
-      } else {
-        pedido[key] = value;
-      }
-    });
+  form.addEventListener('submit', function(e) {
+  e.preventDefault();
 
-    const ordenID = 'ORD-' + Date.now();
-    pedido.orden = ordenID;
+  const formData = new FormData(form);
+  const pedido = {};
 
-    console.log('Pedido generado:', pedido);
+  formData.forEach((value, key) => {
+    // Si es selección múltiple, lo convertimos en array
+    if (pedido[key]) {
+      if (!Array.isArray(pedido[key])) pedido[key] = [pedido[key]];
+      pedido[key].push(value);
+    } else {
+      pedido[key] = value;
+    }
+  });
 
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbxfywNHFtn9MvLmvQjLL6RQIFY90-XFOwTUqAzqnDCZOORvDgxCxcy_r5NK8xZnqiZj/exec';
+  // Generar número de orden
+  const ordenID = 'ORD-' + Date.now();
+  pedido.orden = ordenID;
 
-    fetch(scriptURL, {
-      method: 'POST',
-      body: new URLSearchParams(pedido),
-      mode: 'no-cors'
-    }).then(() => {
-      alert(🎉 Pedido enviado con éxito. Tu número de orden es: ${ordenID});
+  console.log('Pedido generado:', pedido);
+
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbwsVHAYWM9vnWwy1qXNuu_gj7jq6HQViRHei96ORXth9h4lfcCVI8qWuhW817pBIQE2/exec';
+
+  fetch(scriptURL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(pedido)
+  })
+  .then(response => response.json())
+  .then(data => {
+    if(data.status === 'success') {
+      alert(`🎉 Pedido enviado con éxito. Tu número de orden es: ${ordenID}`);
       form.reset();
       preview.style.display = 'none';
       direccionSection.style.display = 'none';
-    }).catch(err => {
-      alert('Error al enviar el formulario.');
-      console.error('Error:', err);
-    });
+    } else {
+      alert('Error en el servidor: ' + (data.message || 'Intenta de nuevo'));
+    }
+  })
+  .catch(error => {
+    alert('Error al enviar el formulario.');
+    console.error('Error:', error);
   });
+});
+
 
 </script>
 </body>
