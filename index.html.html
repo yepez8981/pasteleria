@@ -2,7 +2,6 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Panadería Manolos</title>
   <style>
     body { font-family: Arial, sans-serif; padding: 20px; background: #f8f8f8; }
@@ -35,36 +34,6 @@
       width: 24px;
       height: 24px;
       margin-right: 8px;
-    }
-
-    /* === Estilos responsivos === */
-    @media (max-width: 600px) {
-      body {
-        padding: 10px;
-      }
-      .section {
-        padding: 15px;
-      }
-      input, select, textarea, button {
-        font-size: 16px;
-      }
-      button {
-        width: 100%;
-      }
-      .whatsapp-button {
-        padding: 10px 14px;
-        font-size: 14px;
-        bottom: 15px;
-        right: 15px;
-      }
-      .whatsapp-button img {
-        width: 20px;
-        height: 20px;
-      }
-      img.preview {
-        max-width: 100%;
-        height: auto;
-      }
     }
   </style>
 </head>
@@ -258,22 +227,24 @@
 
     console.log('Pedido generado:', pedido);
 
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbxfywNHFtn9MvLmvQjLL6RQIFY90-XFOwTUqAzqnDCZOORvDgxCxcy_r5NK8xZnqiZj/exec';
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbzjDkgBd1gvUx5aTkuXLosvFTmdGVh61qj5-h70wbyn1pUyH1mhCQ8i2l4eeQxNRTYG/exec';
 
-    fetch(scriptURL, {
-      method: 'POST',
-      body: new URLSearchParams(pedido),
-      mode: 'no-cors'
-    }).then(() => {
-      alert(`🎉 Pedido enviado con éxito. Tu número de orden es: ${ordenID}`);
-      form.reset();
-      preview.style.display = 'none';
-      direccionSection.style.display = 'none';
-    }).catch(err => {
-      alert('Error al enviar el formulario.');
-      console.error('Error:', err);
-    });
-  });
+fetch(scriptURL, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(pedido)
+})
+.then(() => {
+  alert(`🎉 Pedido enviado con éxito. Tu número de orden es: ${pedido.orden}`);
+  form.reset();
+  preview.style.display = 'none';
+  direccionSection.style.display = 'none';
+})
+.catch(err => {
+  alert('Error al enviar el formulario.');
+  console.error('Error:', err);
+});
+
 
 </script>
 </body>
