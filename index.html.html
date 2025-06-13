@@ -241,6 +241,47 @@
 
   form.addEventListener('submit', function(e) {
     e.preventDefault();
+        const ordenId = generarOrden();
+
+    const formData = new FormData(form);
+    formData.append("ordenId", ordenId);
+    
+    const data = {};
+    formData.forEach((value, key) => {
+      if (data[key]) {
+        // Si ya existe (por ejemplo rellenos múltiples), convierte a array
+        if (!Array.isArray(data[key])) {
+          data[key] = [data[key]];
+        }
+        data[key].push(value);
+      } else {
+        data[key] = value;
+      }
+    });
+
+    fetch('https://script.google.com/macros/s/AKfycby8tasOS76Sa0eYpsoK4oPOgovZr7EWc4D_9YLVNh5OvFj8z8aFQXjx8-R-uRzcpSwRfQ/exec', {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: { 'Content-Type': 'application/json' }
+    })
+    .then(response => response.json())
+    .then(result => {
+      if (result.success) {
+        alert(`✅ Tu pedido fue recibido con éxito. Tu número de orden es ${ordenId}`);
+        // Opcional: abrir WhatsApp con resumen
+        const mensajeWhatsApp = `Hola, hice un pedido con el número de orden ${ordenId}. ¿Podrían confirmarlo?`;
+        window.open(`https://wa.me/573027697351?text=${encodeURIComponent(mensajeWhatsApp)}`, '_blank');
+        form.reset();
+        preview.style.display = 'none';
+        direccionSection.style.display = 'none';
+      } else {
+        alert("❌ Hubo un problema al enviar el pedido. Intenta de nuevo.");
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert("❌ Error en el envío. Verifica tu conexión e intenta nuevamente.");
+    });
 
     const ordenID = generarOrden();
     const formData = new FormData(form);
