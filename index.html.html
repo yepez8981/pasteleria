@@ -240,6 +240,17 @@
     return `ORD-${letra}${numeros}`;
   }
 
+  
+form.addEventListener('submit', e => {
+  e.preventDefault();
+  const data = new FormData(form);
+    const orden = generarOrden();
+  data.append("orden", orden);
+
+  const rellenos = Array.from(document.getElementById('rellenos').selectedOptions).map(opt => opt.value).join(', ');
+  data.set('rellenos', rellenos);
+
+  
   form.addEventListener('submit', function(e) {
     e.preventDefault();
 
