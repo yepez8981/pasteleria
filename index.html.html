@@ -181,16 +181,14 @@
       <img class="preview" id="previewImg" style="display: none;" />
     </div>
 
-    <!-- ... tu código HTML arriba sin cambios ... -->
-
 <!-- Datos del Cliente -->
 <div class="section">
   <label for="nombre">👤 Nombre completo:</label>
   <input type="text" id="nombre" name="nombre" required>
 
 <label for="telefono">📞 Teléfono:</label>
-<input type="tel" id="telefono" name="telefono" placeholder="+57 3001234567" pattern="^\+\d{10,15}$" required>
-<small>Incluye el indicativo del país. Ejemplo: +57 3001234567</small>
+<input type="tel" id="telefono" name="telefono" placeholder="+573001234567" pattern="^\+\d{10,15}$" required>
+<small>Incluye el indicativo del país. Ejemplo: +573001234567</small>
 
   <label for="correo">📧 Correo electrónico:</label>
   <input type="email" id="correo" name="correo" required>
@@ -213,19 +211,13 @@
 </a>
 
 <script>
-
   const form = document.getElementById('cakeForm');
   const preview = document.getElementById('previewImg');
   const entregaSelect = document.getElementById('entrega');
   const direccionSection = document.getElementById('direccionSection');
 
-  // Mostrar/Ocultar dirección según entrega
   entregaSelect.addEventListener('change', function () {
-    if (this.value === 'Domicilio') {
-      direccionSection.style.display = 'block';
-    } else {
-      direccionSection.style.display = 'none';
-    }
+    direccionSection.style.display = this.value === 'Domicilio' ? 'block' : 'none';
   });
 
   document.getElementById('imagen').addEventListener('change', function (e) {
@@ -240,49 +232,76 @@
     }
   });
 
+  function generarOrden() {
+    const letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const numeros = Math.floor(1000 + Math.random() * 9000);
+    const letra = letras.charAt(Math.floor(Math.random() * letras.length));
+    return `ORD-${letra}${numeros}`;
+  }
+
   form.addEventListener('submit', function(e) {
-  e.preventDefault();
+    e.preventDefault();
 
-  const formData = new FormData(form);
-  const pedido = {};
+    const formData = new FormData(form);
+    const pedido = {};
+    formData.forEach((value, key) => {
+      if (pedido[key]) {
+        if (Array.isArray(pedido[key])) {
+          pedido[key].push(value);
+        } else {
+          pedido[key] = [pedido[key], value];
+        }
+      } else {
+        pedido[key] = value;
+      }
+    });
 
-  formData.forEach((value, key) => {
-    // Si es selección múltiple, lo convertimos en array
-    if (pedido[key]) {
-      if (!Array.isArray(pedido[key])) pedido[key] = [pedido[key]];
-      pedido[key].push(value);
-    } else {
-      pedido[key] = value;
-    }
-  });
+    const numeroOrden = generarOrden();
 
-  // Generar número de orden
-  const ordenID = 'ORD-' + Date.now();
-  pedido.orden = ordenID;
+    const resumen = `
+🍰 Tipo: ${pedido.modelo || pedido.forma}  
+📅 Fecha: ${pedido.fecha} a las ${pedido.hora}  
+🚚 Entrega: ${pedido.entrega}${pedido.entrega === 'Domicilio' && pedido.direccion ? ` a ${pedido.direccion}` : ''}  
+🎨 Decoración: ${pedido.decoracion || 'Sin detalles'}  
+📝 Mensaje: ${pedido.mensajePastel || 'Ninguno'}  
+📞 Cliente: ${pedido.nombre} (${pedido.telefono})
+`;
 
-  console.log('Pedido generado:', pedido);
-const scriptURL = 'https://script.google.com/macros/s/AKfycbw7Bj5sJb_cRUnP9Y4RSxgqqGBsi1-H1q8-vEtpr5zCNnrbHcb6H-rznfKLAFZ22hGW/exec';
-  fetch(scriptURL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(pedido)
-  })
-  .then(response => response.json())
-  .then(data => {
-    if(data.status === 'success') {
-      alert(🎉 Pedido enviado con éxito. Tu número de orden es: ${ordenID});
+    // Enviar a Google Sheets
+    const data = {
+      orden: numeroOrden,
+      nombre: pedido.nombre,
+      telefono: pedido.telefono,
+      modelo: pedido.modelo || pedido.forma,
+      fecha: pedido.fecha,
+      hora: pedido.hora,
+      entrega: pedido.entrega,
+      direccion: pedido.direccion || '',
+      mensaje: pedido.mensajePastel || '',
+      decoracion: pedido.decoracion || '',
+    };
+
+    fetch('https://script.google.com/macros/s/AKfycbxLvNiTCuLy-2PbzfrmI-yrByGiYNTJvet2xBQuLkh7eKwZjY646J5KkOdTJgEL9v3AtA/exec', {
+      method: 'POST',
+      body: new URLSearchParams(data)
+    })
+    .then(response => response.text())
+    .then(result => {
+      alert(`🎂 Tu pedido ha sido registrado con éxito.\n🧾 Número de orden: ${numeroOrden}\n📦 Tu pedido es:\n${resumen}\n✅ Te confirmaremos por WhatsApp en breve.`);
+
+      const mensaje = `Hola, hice un pedido en la web.%0AMi número de orden es: *${numeroOrden}*%0AMi pedido es:%0A${resumen.replace(/\n/g, '%0A')}%0APor favor confirmen. 🎂`;
+      const telefonoWhatsApp = '573027697351'; // 
+      window.open(`https://wa.me/${telefonoWhatsApp}?text=${mensaje}`, '_blank');
+
       form.reset();
       preview.style.display = 'none';
       direccionSection.style.display = 'none';
-    } else {
-      alert('Error en el servidor: ' + (data.message || 'Intenta de nuevo'));
-    }
-  })
-  .catch(error => {
-    alert('🚫 Error al enviar tu pedido. Por favor, escríbenos a través del botón ¿Necesitas ayuda? y con gusto te asistiremos..');
-    console.error('Error:', error);
+    })
+    .catch(error => {
+      alert('❌ Hubo un error al registrar tu pedido. Intenta nuevamente.');
+      console.error(error);
+    });
   });
-});
 </script>
 </body>
 </html>
