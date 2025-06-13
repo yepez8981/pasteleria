@@ -103,6 +103,10 @@
         <option value="10\"">10"</option>
       </select>
 
+
+      <label for="fecha">🗓 Fecha de pedido:</label>
+      <input type="date" name="fechapedido" id="fechapedido">
+
       <label for="fecha">🗓 Fecha de recogida:</label>
       <input type="date" name="fecha" id="fecha">
 
@@ -210,6 +214,10 @@
   <img src="https://cdn-icons-png.flaticon.com/512/220/220236.png" alt="WhatsApp"> ¿Necesitas ayuda?
 </a>
 
+
+
+
+
 <script>
   const form = document.getElementById('cakeForm');
   const preview = document.getElementById('previewImg');
@@ -291,9 +299,10 @@
       Telefono: pedido.telefono || '',
       Correo: pedido.correo || '',
       Direccion: pedido.direccion || ''
+      Fechapedido: pedido.fecha || '',
     };
 
-    fetch('https://script.google.com/macros/s/AKfycbweFSEQA63c42UPnYyZ5tEUw0fKiWUErUhq7of_2J-hxvHL6t6eA4a7BSODoWCIrCRHmA/exec', {
+    fetch('https://script.google.com/macros/s/AKfycbxUV4cvxDLIX1q-XRWrnkliojEau1zIuiwkUId3mfPNJktqeJBj1wIQGJA_1aIPUz9V/exec', {
       method: 'POST',
       body: new URLSearchParams(data)
     })
