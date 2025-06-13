@@ -104,8 +104,8 @@
       </select>
 
 
-      <label for="fecha">🗓 Fecha de pedido:</label>
-      <input type="date" name="fechapedido" id="fechapedido">
+      <label for="fecha">🗓 Fecha Pedido:</label>
+      <input type="date" name="fecha" id="fecha">
 
       <label for="fecha">🗓 Fecha de recogida:</label>
       <input type="date" name="fecha" id="fecha">
@@ -299,10 +299,10 @@
       Telefono: pedido.telefono || '',
       Correo: pedido.correo || '',
       Direccion: pedido.direccion || '',
-      Fechapedido: pedido.pedido || ''
+      FechaPedido: pedido.fecha || ''
     };
 
-    fetch('https://script.google.com/macros/s/AKfycbxKgqDxOW7ow-MZfUcQCvK75MTG0MhPzese58wbnTzErxUjBWF3KT5FVy8cJaR_kFQejg/exec', {
+    fetch('https://script.google.com/macros/s/AKfycbz9bgU74HqJXf9LsovIFVmuEvL8cJY1i-36GVxlONbxU0kwk8ayV6cHmusam_6IwVPrcg/exec', {
       method: 'POST',
       body: new URLSearchParams(data)
     })
