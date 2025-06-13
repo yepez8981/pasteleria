@@ -209,12 +209,13 @@
 <a class="whatsapp-button" href="https://wa.me/573027697351?text=Hola%2C%20necesito%20ayuda%20con%20mi%20pedido%20de%20pastel" target="_blank">
   <img src="https://cdn-icons-png.flaticon.com/512/220/220236.png" alt="WhatsApp"> ¿Necesitas ayuda?
 </a>
-
 <script>
   const form = document.getElementById('cakeForm');
   const preview = document.getElementById('previewImg');
   const entregaSelect = document.getElementById('entrega');
   const direccionSection = document.getElementById('direccionSection');
+
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbxxxxx/exec'; // Reemplaza por tu URL real
 
   entregaSelect.addEventListener('change', function () {
     direccionSection.style.display = this.value === 'Domicilio' ? 'block' : 'none';
@@ -241,69 +242,24 @@
 
   form.addEventListener('submit', function(e) {
     e.preventDefault();
-          const formData = new FormData(form);
-  const data = {};
-  formData.forEach((value, key) => {
-    if (data[key]) {
-      // Si ya existe, convierte en array para campos múltiples
-      if (!Array.isArray(data[key])) {
-        data[key] = [data[key]];
-      }
-      data[key].push(value);
-    } else {
-      data[key] = value;
-    }
-  });
 
-  data.numeroOrden = generarOrden();
-  const webhook = "https://script.google.com/macros/s/AKfycbxfywNHFtn9MvLmvQjLL6RQIFY90-XFOwTUqAzqnDCZOORvDgxCxcy_r5NK8xZnqiZj/exec";
-
-  fetch(webhook, {
-    method: "POST",
-    body: JSON.stringify(data),
-    headers: {
-      "Content-Type": "application/json"
-    }
-  })
-  .then(res => res.json())
-  .then(response => {
-    alert("🎉 Pedido enviado con éxito. Tu número de orden es: " + data.numeroOrden);
-    // Redirigir a WhatsApp con resumen
-    const mensaje = `Hola, he hecho un pedido con número de orden *${data.numeroOrden}*. ¿Me puedes confirmar el estado?`;
-    const telefono = "573027697351";
-    window.location.href = `https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`;
-    form.reset();
-    preview.style.display = 'none';
-    direccionSection.style.display = 'none';
-  })
-  .catch(err => {
-    console.error(err);
-    alert("❌ Ocurrió un error al enviar el pedido. Inténtalo de nuevo.");
-  });
-
-    const ordenID = generarOrden();
     const formData = new FormData(form);
-    const data = Object.fromEntries(formData.entries());
+    formData.append("ordenID", generarOrden());
 
-    // Obtener rellenos seleccionados
-    const rellenosSelect = document.getElementById('rellenos');
-    const rellenosSeleccionados = Array.from(rellenosSelect.selectedOptions).map(opt => opt.value);
-    data.rellenos = rellenosSeleccionados;
-
-    // Adjuntar número de orden
-    data.ordenID = ordenID;
-    data.fechaEnvio = new Date().toLocaleString();
-
-    // Mostrar resumen y confirmación
-    alert(`¡Pedido enviado con éxito!\n\nNúmero de Orden: ${ordenID}\n\nNos comunicaremos contigo vía WhatsApp para confirmar los detalles.`);
-
-    // (Opcional) Redirigir a WhatsApp con mensaje
-    const numero = "573027697351"; // Cambiar por el número oficial
-    const mensaje = encodeURIComponent(`Hola, acabo de hacer un pedido. Mi número de orden es ${ordenID}. ¿Puedes confirmarlo?`);
-    window.open(`https://wa.me/${numero}?text=${mensaje}`, "_blank");
-    form.reset();
-    preview.style.display = "none";
-    direccionSection.style.display = "none";
+    fetch(scriptURL, {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => {
+      alert("🎉 Pedido enviado con éxito. Pronto te contactaremos por WhatsApp.");
+      form.reset();
+      preview.style.display = 'none';
+      direccionSection.style.display = 'none';
+    })
+    .catch(error => {
+      alert("❌ Error al enviar el pedido. Inténtalo nuevamente.");
+      console.error('Error:', error);
+    });
   });
 </script>
 </body>
