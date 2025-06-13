@@ -210,14 +210,11 @@
   <img src="https://cdn-icons-png.flaticon.com/512/220/220236.png" alt="WhatsApp"> ¿Necesitas ayuda?
 </a>
 
-
-    <script>
+<script>
   const form = document.getElementById('cakeForm');
   const preview = document.getElementById('previewImg');
   const entregaSelect = document.getElementById('entrega');
   const direccionSection = document.getElementById('direccionSection');
-
-  const scriptURL = 'https://script.google.com/macros/s/AKfycbxtrlMs9GPrfTlvPdL0HQLoD2rmN6rsBY25riZHoo8SvHVJXGyON2fIg352OiK_QgmTOg/exec';
 
   entregaSelect.addEventListener('change', function () {
     direccionSection.style.display = this.value === 'Domicilio' ? 'block' : 'none';
@@ -237,42 +234,86 @@
 
   function generarOrden() {
     const letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    const fecha = new Date();
-    const cod = letras.charAt(Math.floor(Math.random() * letras.length));
-    const timestamp = fecha.getFullYear().toString().slice(-2) + (fecha.getMonth()+1).toString().padStart(2,'0') + fecha.getDate().toString().padStart(2,'0') + fecha.getHours().toString().padStart(2,'0') + fecha.getMinutes().toString().padStart(2,'0');
-    return cod + '-' + timestamp;
+    const numeros = Math.floor(1000 + Math.random() * 9000);
+    const letra = letras.charAt(Math.floor(Math.random() * letras.length));
+    return `ORD-${letra}${numeros}`;
   }
 
-  form.addEventListener('submit', function (e) {
+  form.addEventListener('submit', function(e) {
     e.preventDefault();
-    const ordenID = generarOrden();
 
     const formData = new FormData(form);
-    formData.append('ordenID', ordenID);
+    const pedido = {};
+    formData.forEach((value, key) => {
+      if (pedido[key]) {
+        if (Array.isArray(pedido[key])) {
+          pedido[key].push(value);
+        } else {
+          pedido[key] = [pedido[key], value];
+        }
+      } else {
+        pedido[key] = value;
+      }
+    });
 
-    fetch(scriptURL, {
+    const numeroOrden = generarOrden();
+
+    const resumen = `
+🍰 Tipo: ${pedido.modelo || pedido.forma}  
+📅 Fecha: ${pedido.fecha} a las ${pedido.hora}  
+🚚 Entrega: ${pedido.entrega}${pedido.entrega === 'Domicilio' && pedido.direccion ? ` a ${pedido.direccion}` : ''}  
+🎨 Decoración: ${pedido.decoracion || 'Sin detalles'}  
+📝 Mensaje: ${pedido.mensajePastel || 'Ninguno'}  
+📞 Cliente: ${pedido.nombre} (${pedido.telefono})
+`;
+
+    // Correcciones por si hay campos con nombres diferentes
+    if (pedido.tipoMasa && !pedido.tipoPastel) pedido.tipoPastel = pedido.tipoMasa;
+    if (pedido.color && !pedido.colores) pedido.colores = pedido.color;
+
+    const data = {
+      Idioma: pedido.idioma || '',
+      ModeloVitrina: pedido.modelo || '',
+      TamanoVitrina: pedido.tamano || '',
+      FechaRecogida: pedido.fecha || '',
+      Hora: pedido.hora || '',
+      MetodoEntrega: pedido.entrega || '',
+      FormaPastel: pedido.forma || '',
+      TipoPastel: pedido.tipoPastel || '',
+      Capas: pedido.capas || '',
+      Rellenos: Array.isArray(pedido.rellenos) ? pedido.rellenos.join(', ') : (pedido.rellenos || ''),
+      MezclaRellenos: pedido.mezcla || '',
+      Decoracion: pedido.decoracion || '',
+      MensajePastel: pedido.mensajePastel || '',
+      ColoresPredominantes: pedido.colores || '',
+      ImagenReferencia: preview?.src || '',
+      NombreCompleto: pedido.nombre || '',
+      Telefono: pedido.telefono || '',
+      Correo: pedido.correo || '',
+      Direccion: pedido.direccion || ''
+    };
+
+    fetch('https://script.google.com/macros/s/AKfycbweFSEQA63c42UPnYyZ5tEUw0fKiWUErUhq7of_2J-hxvHL6t6eA4a7BSODoWCIrCRHmA/exec', {
       method: 'POST',
-      body: formData
+      body: new URLSearchParams(data)
     })
-    .then(response => {
-      alert('✅ Pedido enviado con éxito. Tu número de orden es: ' + ordenID);
+    .then(response => response.text())
+    .then(result => {
+      alert(`🎂 Tu pedido ha sido registrado con éxito.\n🧾 Número de orden: ${numeroOrden}\n📦 Tu pedido es:\n${resumen}\n✅ Te confirmaremos por WhatsApp en breve.`);
 
-      const nombre = formData.get('nombre');
-      const modelo = formData.get('modelo') || 'Personalizado';
-      const fecha = formData.get('fecha');
-      const hora = formData.get('hora');
-      const telefono = formData.get('telefono');
+      const mensaje = `Hola, hice un pedido en la web.%0AMi número de orden es: *${numeroOrden}*%0AMi pedido es:%0A${resumen.replace(/\n/g, '%0A')}%0APor favor confirmen. 🎂`;
+      const telefonoWhatsApp = '573027697351';
+      window.open(`https://wa.me/${telefonoWhatsApp}?text=${mensaje}`, '_blank');
 
-      const resumen = `Hola, mi nombre es *${nombre}* y acabo de hacer un pedido.\n\n🧾 Número de orden: *${ordenID}*\n🎂 Modelo: ${modelo}\n📅 Fecha: ${fecha}\n⏰ Hora: ${hora}\n📞 Teléfono: ${telefono}\n\n¿Podrían confirmarme, por favor?`;
-
-      const encodedMsg = encodeURIComponent(resumen);
-      window.location.href = `https://wa.me/573027697351?text=${encodedMsg}`;
+      form.reset();
+      preview.style.display = 'none';
+      direccionSection.style.display = 'none';
     })
     .catch(error => {
-      alert('❌ Hubo un error al enviar el pedido. Intenta nuevamente.');
-      console.error('Error!', error.message);
+      alert('❌ Hubo un error al registrar tu pedido. Intenta nuevamente.');
+      console.error(error);
     });
   });
 </script>
-    </body>
+</body>
 </html>
