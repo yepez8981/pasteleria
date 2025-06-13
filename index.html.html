@@ -242,65 +242,29 @@
   form.addEventListener('submit', function(e) {
     e.preventDefault();
 
+    const ordenID = generarOrden();
     const formData = new FormData(form);
-    const pedido = {};
-    formData.forEach((value, key) => {
-      if (pedido[key]) {
-        if (Array.isArray(pedido[key])) {
-          pedido[key].push(value);
-        } else {
-          pedido[key] = [pedido[key], value];
-        }
-      } else {
-        pedido[key] = value;
-      }
-    });
+    const data = Object.fromEntries(formData.entries());
 
-    const numeroOrden = generarOrden();
+    // Obtener rellenos seleccionados
+    const rellenosSelect = document.getElementById('rellenos');
+    const rellenosSeleccionados = Array.from(rellenosSelect.selectedOptions).map(opt => opt.value);
+    data.rellenos = rellenosSeleccionados;
 
-    const resumen = `
-🍰 Tipo: ${pedido.modelo || pedido.forma}  
-📅 Fecha: ${pedido.fecha} a las ${pedido.hora}  
-🚚 Entrega: ${pedido.entrega}${pedido.entrega === 'Domicilio' && pedido.direccion ? ` a ${pedido.direccion}` : ''}  
-🎨 Decoración: ${pedido.decoracion || 'Sin detalles'}  
-📝 Mensaje: ${pedido.mensajePastel || 'Ninguno'}  
-📞 Cliente: ${pedido.nombre} (${pedido.telefono})
-`;
+    // Adjuntar número de orden
+    data.ordenID = ordenID;
+    data.fechaEnvio = new Date().toLocaleString();
 
-    // Enviar a Google Sheets
-    const data = {
-      orden: numeroOrden,
-      nombre: pedido.nombre,
-      telefono: pedido.telefono,
-      modelo: pedido.modelo || pedido.forma,
-      fecha: pedido.fecha,
-      hora: pedido.hora,
-      entrega: pedido.entrega,
-      direccion: pedido.direccion || '',
-      mensaje: pedido.mensajePastel || '',
-      decoracion: pedido.decoracion || '',
-    };
+    // Mostrar resumen y confirmación
+    alert(`¡Pedido enviado con éxito!\n\nNúmero de Orden: ${ordenID}\n\nNos comunicaremos contigo vía WhatsApp para confirmar los detalles.`);
 
-    fetch('https://script.google.com/macros/s/AKfycbySNxNbLh4kQv370STTttoAaAXQba43Mp-40g2NSFy5hgMjfT-p5E6KzMhnR1igkJksyQ/exec', {
-      method: 'POST',
-      body: new URLSearchParams(data)
-    })
-    .then(response => response.text())
-    .then(result => {
-      alert(`🎂 Tu pedido ha sido registrado con éxito.\n🧾 Número de orden: ${numeroOrden}\n📦 Tu pedido es:\n${resumen}\n✅ Te confirmaremos por WhatsApp en breve.`);
-
-      const mensaje = `Hola, hice un pedido en la web.%0AMi número de orden es: *${numeroOrden}*%0AMi pedido es:%0A${resumen.replace(/\n/g, '%0A')}%0APor favor confirmen. 🎂`;
-      const telefonoWhatsApp = '573027697351'; // 
-      window.open(`https://wa.me/${telefonoWhatsApp}?text=${mensaje}`, '_blank');
-
-      form.reset();
-      preview.style.display = 'none';
-      direccionSection.style.display = 'none';
-    })
-    .catch(error => {
-      alert('❌ Hubo un error al registrar tu pedido. Intenta nuevamente.');
-      console.error(error);
-    });
+    // (Opcional) Redirigir a WhatsApp con mensaje
+    const numero = "573027697351"; // Cambiar por el número oficial
+    const mensaje = encodeURIComponent(`Hola, acabo de hacer un pedido. Mi número de orden es ${ordenID}. ¿Puedes confirmarlo?`);
+    window.open(`https://wa.me/${numero}?text=${mensaje}`, "_blank");
+    form.reset();
+    preview.style.display = "none";
+    direccionSection.style.display = "none";
   });
 </script>
 </body>
