@@ -209,13 +209,15 @@
 <a class="whatsapp-button" href="https://wa.me/573027697351?text=Hola%2C%20necesito%20ayuda%20con%20mi%20pedido%20de%20pastel" target="_blank">
   <img src="https://cdn-icons-png.flaticon.com/512/220/220236.png" alt="WhatsApp"> ¿Necesitas ayuda?
 </a>
-<script>
+
+
+    <script>
   const form = document.getElementById('cakeForm');
   const preview = document.getElementById('previewImg');
   const entregaSelect = document.getElementById('entrega');
   const direccionSection = document.getElementById('direccionSection');
 
-  const scriptURL = 'https://script.google.com/macros/s/AKfycbzAe0OwJyVN4CSeTGilXnzVALabS7ojWIMFWSn47SDImSvpKX4ly6Ie5k72Dtm8lqjJlA/exec'; 
+  const scriptURL = 'https://script.google.com/macros/s/AKfycbzAe0OwJyVN4CSeTGilXnzVALabS7ojWIMFWSn47SDImSvpKX4ly6Ie5k72Dtm8lqjJlA/exec';
 
   entregaSelect.addEventListener('change', function () {
     direccionSection.style.display = this.value === 'Domicilio' ? 'block' : 'none';
@@ -235,43 +237,42 @@
 
   function generarOrden() {
     const letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    const numeros = Math.floor(1000 + Math.random() * 9000);
-    const letra = letras.charAt(Math.floor(Math.random() * letras.length));
-    return `ORD-${letra}${numeros}`;
+    const fecha = new Date();
+    const cod = letras.charAt(Math.floor(Math.random() * letras.length));
+    const timestamp = fecha.getFullYear().toString().slice(-2) + (fecha.getMonth()+1).toString().padStart(2,'0') + fecha.getDate().toString().padStart(2,'0') + fecha.getHours().toString().padStart(2,'0') + fecha.getMinutes().toString().padStart(2,'0');
+    return cod + '-' + timestamp;
   }
 
-  
-form.addEventListener('submit', e => {
-  e.preventDefault();
-  const data = new FormData(form);
-    const orden = generarOrden();
-  data.append("orden", orden);
-
-  const rellenos = Array.from(document.getElementById('rellenos').selectedOptions).map(opt => opt.value).join(', ');
-  data.set('rellenos', rellenos);
-
-  
-  form.addEventListener('submit', function(e) {
+  form.addEventListener('submit', function (e) {
     e.preventDefault();
+    const ordenID = generarOrden();
 
     const formData = new FormData(form);
-    formData.append("ordenID", generarOrden());
+    formData.append('ordenID', ordenID);
 
     fetch(scriptURL, {
       method: 'POST',
       body: formData
     })
     .then(response => {
-      alert("🎉 Pedido enviado con éxito. Pronto te contactaremos por WhatsApp.");
-      form.reset();
-      preview.style.display = 'none';
-      direccionSection.style.display = 'none';
+      alert('✅ Pedido enviado con éxito. Tu número de orden es: ' + ordenID);
+
+      const nombre = formData.get('nombre');
+      const modelo = formData.get('modelo') || 'Personalizado';
+      const fecha = formData.get('fecha');
+      const hora = formData.get('hora');
+      const telefono = formData.get('telefono');
+
+      const resumen = `Hola, mi nombre es *${nombre}* y acabo de hacer un pedido.\n\n🧾 Número de orden: *${ordenID}*\n🎂 Modelo: ${modelo}\n📅 Fecha: ${fecha}\n⏰ Hora: ${hora}\n📞 Teléfono: ${telefono}\n\n¿Podrían confirmarme, por favor?`;
+
+      const encodedMsg = encodeURIComponent(resumen);
+      window.location.href = `https://wa.me/573027697351?text=${encodedMsg}`;
     })
     .catch(error => {
-      alert("❌ Error al enviar el pedido. Inténtalo nuevamente.");
-      console.error('Error:', error);
+      alert('❌ Hubo un error al enviar el pedido. Intenta nuevamente.');
+      console.error('Error!', error.message);
     });
   });
 </script>
-</body>
+    </body>
 </html>
