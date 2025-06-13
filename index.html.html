@@ -298,11 +298,11 @@
       NombreCompleto: pedido.nombre || '',
       Telefono: pedido.telefono || '',
       Correo: pedido.correo || '',
-      Direccion: pedido.direccion || ''
-      Fechapedido: pedido.fecha || '',
+      Direccion: pedido.direccion || '',
+      Fechapedido: pedido.pedido || ''
     };
 
-    fetch('https://script.google.com/macros/s/AKfycbxUV4cvxDLIX1q-XRWrnkliojEau1zIuiwkUId3mfPNJktqeJBj1wIQGJA_1aIPUz9V/exec', {
+    fetch('https://script.google.com/macros/s/AKfycbxKgqDxOW7ow-MZfUcQCvK75MTG0MhPzese58wbnTzErxUjBWF3KT5FVy8cJaR_kFQejg/exec', {
       method: 'POST',
       body: new URLSearchParams(data)
     })
