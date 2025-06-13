@@ -299,10 +299,10 @@
       Telefono: pedido.telefono || '',
       Correo: pedido.correo || '',
       Direccion: pedido.direccion || '',
-      FechaPedido: pedido.fecha || ''
+      FechaPedido: pedido.FechaPedido || ''
     };
 
-    fetch('https://script.google.com/macros/s/AKfycbz9bgU74HqJXf9LsovIFVmuEvL8cJY1i-36GVxlONbxU0kwk8ayV6cHmusam_6IwVPrcg/exec', {
+    fetch('https://script.google.com/macros/s/AKfycbwwCypTfI9p_4TqgBKeLNuaNqsXiXrCev0rIiGjUTTzw-gcne8AqIxPuD09n9gQFMdPCw/exec', {
       method: 'POST',
       body: new URLSearchParams(data)
     })
