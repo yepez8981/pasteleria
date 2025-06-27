@@ -235,6 +235,8 @@
 </a>
 
 <script>
+  console.log("INICIO DEL SCRIPT TAG EJECUTADO"); 
+
   const translations = {
   es: {
     pageTitle: "Panadería Manolos",
@@ -628,8 +630,9 @@
   const seccionPastelPersonalizado = document.getElementById('seccionPastelPersonalizado');
   const seccionDecoracion = document.getElementById('seccionDecoracion');
   const imagenInput = document.getElementById('imagen');
-  const formaSelect = document.getElementById('forma'); // Para el mensaje de tamaño
-  const infoTamanoPastelDiv = document.getElementById('infoTamanoPastel'); // Div para el mensaje
+  // Estas se inicializarán dentro de DOMContentLoaded para asegurar que el DOM está listo.
+  let formaSelect; 
+  let infoTamanoPastelDiv; 
 
   if (entregaSelect) {
     entregaSelect.addEventListener('change', function () {
@@ -637,20 +640,8 @@
     });
   }
 
-  if (formaSelect && infoTamanoPastelDiv) {
-    formaSelect.addEventListener('change', function() {
-      const currentLang = idiomaSelect ? (idiomaSelect.value || 'es') : 'es';
-      const T = translations[currentLang] || translations.es;
-
-      if (this.value === 'Circular 8"') {
-        infoTamanoPastelDiv.innerHTML = T.infoCircular8 || "Mensaje no disponible.";
-        infoTamanoPastelDiv.style.display = 'block';
-      } else {
-        infoTamanoPastelDiv.style.display = 'none';
-        infoTamanoPastelDiv.innerHTML = '';
-      }
-    });
-  }
+  // Movido dentro de DOMContentLoaded para asegurar que formaSelect e infoTamanoPastelDiv están definidos
+  // if (formaSelect && infoTamanoPastelDiv) { ... }
 
   function resetearCamposOpcionales() {
     if (seccionPastelPersonalizado) {
@@ -768,10 +759,9 @@
           return; // Detener el envío
         }
       } else if (!fechaRecogidaVal || !horaRecogidaVal) {
-        // Opcional: si se desea un error específico si los campos están vacíos y no son 'required'
-        // Por ahora, se asume que si llegan aquí sin valor, otra validación (HTML5 required) fallará
-        // o si no son required, y el usuario no los llena, esta validación de 12h no se activa.
-        // Si son cruciales, deberían ser 'required' en el HTML.
+        // Aquí podrías añadir un alert si quieres forzar que estos campos estén llenos ANTES de la validación de 12h
+        // alert(T.errorRequired); // Asumiendo que tienes una clave para "campo requerido"
+        // return;
       }
       // --- Fin de la Validación ---
 
@@ -801,8 +791,7 @@
       resumen += `\n${T.resumenDecoracion} ${pedido.decoracion || T.resumenDecoracionDefault}\n`;
       resumen += `${T.resumenMensaje} ${pedido.mensajePastel || T.resumenMensajeDefault}\n`;
       resumen += `${T.resumenCliente} ${pedido.nombre} (${pedido.telefono})\n`;
-      // Añadir método de contacto al resumen
-      const metodoContactoTexto = pedido.metodoContacto === 'whatsapp' ? T.optionContactoWhatsapp : T.optionContactoCorreo;
+      const metodoContactoTexto = pedido.metodoContacto === 'whatsapp' ? (T.optionContactoWhatsapp || 'WhatsApp') : (T.optionContactoCorreo || 'Correo Electrónico');
       resumen += `${T.resumenMetodoContacto} ${metodoContactoTexto}`;
 
 
@@ -812,36 +801,37 @@
       const data = {
         Idioma: pedido.idioma || '',
         ModeloVitrina: pedido.modelo || '',
-        TamanoVitrina: pedido.tamanoVitrina || '', // Corregido para tomar el tamanoVitrina
-        FechaRecogida: pedido.fechaRecogida || '', // Corregido para tomar fechaRecogida
+        TamanoVitrina: pedido.tamanoVitrina || '',
+        FechaRecogida: pedido.fechaRecogida || '',
         Hora: pedido.hora || '',
         MetodoEntrega: pedido.entrega || '',
         FormaPastel: pedido.forma || '',
-        TipoPastel: pedido.tipoMasa || '', // Corregido para tomar tipoMasa
+        TipoPastel: pedido.tipoMasa || '',
         Capas: pedido.capas || '',
         Rellenos: Array.isArray(pedido.rellenos) ? pedido.rellenos.join(', ') : (pedido.rellenos || ''),
         MezclaRellenos: pedido.mezcla || '',
         Decoracion: pedido.decoracion || '',
         MensajePastel: pedido.mensajePastel || '',
-        ColoresPredominantes: pedido.color || '', // Corregido para tomar color
+        ColoresPredominantes: pedido.color || '',
         ImagenReferencia: preview?.src || '',
         NombreCompleto: pedido.nombre || '',
         Telefono: pedido.telefono || '',
         Correo: pedido.correo || '',
         Direccion: pedido.direccion || '',
-        FechaPedido: pedido.fecha || '', // Usar el campo fecha para FechaPedido
-        MetodoContacto: pedido.metodoContacto || '' // Añadido el método de contacto
+        FechaPedido: pedido.fecha || '',
+        MetodoContacto: pedido.metodoContacto || '',
+        NumeroOrden: numeroOrden // Aseguramos que el NumeroOrden se envía
       };
 
-      fetch('https://script.google.com/macros/s/AKfycbwwCypTfI9p_4TqgBKeLNuaNqsXiXrCev0rIiGjUTTzw-gcne8AqIxPuD09n9gQFMdPCw/exec', {
+      fetch('https://script.google.com/macros/s/AKfycbzr5fhNVKXISCftIKMGakJAIQxyKDk2vBrR2LtNroiGDrn73uiAfErA57hlhSRlhrt6/exec', {
         method: 'POST',
         body: new URLSearchParams(data)
       })
       .then(response => response.text())
       .then(result => {
-      let mensajeConfirmacionEspecifico = T.alertConfirmacionWhatsApp; // Por defecto WhatsApp
+      let mensajeConfirmacionEspecifico = T.alertConfirmacionWhatsApp; 
       if (pedido.metodoContacto === 'correo') {
-        mensajeConfirmacionEspecifico = T.alertConfirmacionCorreo || "✅ Te confirmaremos por correo electrónico en breve."; // Fallback por si falta la traducción
+        mensajeConfirmacionEspecifico = T.alertConfirmacionCorreo || "✅ Te confirmaremos por correo electrónico en breve.";
       }
       alert(`${T.alertPedidoExito}\n${T.alertNumeroOrden}${numeroOrden}\n${T.alertTuPedidoEs}\n${resumen}\n${mensajeConfirmacionEspecifico}`);
 
@@ -855,9 +845,7 @@
             preview.style.display = 'none';
         }
         if (direccionSection) direccionSection.style.display = 'none';
-        // Asegurar que las secciones opcionales se muestren/oculten según el modelo y se reseteen
         if (modeloSelect) modeloSelect.dispatchEvent(new Event('change')); 
-        // Actualizar la UI de rellenos seleccionados
         if (rellenosSelect) rellenosSelect.dispatchEvent(new Event('change'));
 
       })
@@ -868,32 +856,58 @@
     });
   }
 
-  // Establecer idioma inicial al cargar la página y luego actualizar UI dependiente
   document.addEventListener('DOMContentLoaded', function() {
-    // --- Establecer Fecha de Pedido Automática y Solo Lectura ---
+    console.log("DOM completamente cargado y procesado."); 
+
     const campoFechaPedido = document.getElementById('fecha');
     if (campoFechaPedido) {
       const hoy = new Date();
       const anio = hoy.getFullYear();
-      const mes = String(hoy.getMonth() + 1).padStart(2, '0'); // Los meses son 0-indexados
+      const mes = String(hoy.getMonth() + 1).padStart(2, '0'); 
       const dia = String(hoy.getDate()).padStart(2, '0');
       const fechaFormateada = `${anio}-${mes}-${dia}`;
       campoFechaPedido.value = fechaFormateada;
       campoFechaPedido.readOnly = true;
     }
-    // --- Fin Fecha de Pedido Automática ---
 
     if (idiomaSelect) {
       cambiarIdioma(idiomaSelect.value || 'es');
     }
-    // Inicializar otros estados que dependen de los textos traducidos o de la UI
+    
+    formaSelect = document.getElementById('forma'); // Definir aquí después que el DOM esté listo
+    infoTamanoPastelDiv = document.getElementById('infoTamanoPastel'); // Definir aquí
+
+    console.log("formaSelect encontrado (DOMContentLoaded):", formaSelect); 
+    console.log("infoTamanoPastelDiv encontrado (DOMContentLoaded):", infoTamanoPastelDiv); 
+    
+    if (formaSelect && infoTamanoPastelDiv) { // Ahora el listener se añade aquí
+      console.log("Adjuntando listener a formaSelect (DOMContentLoaded)."); 
+      formaSelect.addEventListener('change', function() {
+        console.log("Forma select cambió. Valor:", this.value); 
+        const currentLang = idiomaSelect ? (idiomaSelect.value || 'es') : 'es';
+        const T = translations[currentLang] || translations.es;
+        console.log("Idioma actual:", currentLang, "Traducción para infoCircular8:", T.infoCircular8); 
+
+        if (this.value === 'Circular 8"') {
+          console.log("Condición Circular 8\" CUMPLIDA"); 
+          infoTamanoPastelDiv.innerHTML = T.infoCircular8 || "Mensaje no disponible (fallback).";
+          infoTamanoPastelDiv.style.display = 'block';
+          console.log("Mensaje DIV display:", infoTamanoPastelDiv.style.display, "HTML:", infoTamanoPastelDiv.innerHTML); 
+        } else {
+          console.log("Condición Circular 8\" NO CUMPLIDA, ocultando mensaje."); 
+          infoTamanoPastelDiv.style.display = 'none';
+          infoTamanoPastelDiv.innerHTML = '';
+        }
+      });
+      formaSelect.dispatchEvent(new Event('change')); 
+    } else {
+      console.error("Error: No se pudo encontrar formaSelect o infoTamanoPastelDiv en DOMContentLoaded.");
+    }
+
     if (modeloSelect) modeloSelect.dispatchEvent(new Event('change'));
     if (rellenosSelect) rellenosSelect.dispatchEvent(new Event('change'));
     if (entregaSelect) entregaSelect.dispatchEvent(new Event('change'));
-    if (formaSelect) formaSelect.dispatchEvent(new Event('change')); // Para inicializar mensaje de tamaño si aplica
     
-    // Corregir IDs duplicados para fecha de pedido y recogida si aún existen en el HTML
-    // Asumiendo que ya se corrigió a fecha y fechaRecogida
   });
 
 </script>
