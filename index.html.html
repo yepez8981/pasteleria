@@ -630,6 +630,7 @@
   const seccionPastelPersonalizado = document.getElementById('seccionPastelPersonalizado');
   const seccionDecoracion = document.getElementById('seccionDecoracion');
   const imagenInput = document.getElementById('imagen');
+  const mezclaSelect = document.getElementById('mezcla'); // Añadido para resetearlo
   // Estas se inicializarán dentro de DOMContentLoaded para asegurar que el DOM está listo.
   let formaSelect; 
   let infoTamanoPastelDiv; 
@@ -704,7 +705,14 @@
       }
 
       if (seccionMezclaRellenos) {
-        seccionMezclaRellenos.style.display = seleccionados.length > 1 ? 'block' : 'none';
+        if (seleccionados.length > 1) {
+          seccionMezclaRellenos.style.display = 'block';
+        } else {
+          seccionMezclaRellenos.style.display = 'none';
+          if (mezclaSelect) { // Si el select de mezcla existe
+            mezclaSelect.selectedIndex = 0; // Resetearlo a la primera opción
+          }
+        }
       }
     });
   }
