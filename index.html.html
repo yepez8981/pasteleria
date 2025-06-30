@@ -793,7 +793,7 @@
       const metodoContactoTexto = pedidoParaResumenLocal.metodoContacto === 'whatsapp' ? (T.optionContactoWhatsapp || 'WhatsApp') : (T.optionContactoCorreo || 'Correo Electrónico');
       resumen += `${T.resumenMetodoContacto} ${metodoContactoTexto}`;
       
-      fetch('https://script.google.com/macros/s/AKfycbxUPM-dR92aXdyblYsOuMXTOLE0uNw8KhLTczEqLffOmFp3sJuLQSIOAOZmptsn_DQoXg/exec', {
+      fetch('https://script.google.com/macros/s/AKfycbypQoPfFdUDhdm6eXUbfp9iQ5OGapM4YWUF9naT9vemN9YBJg8FmssnFmg4evWylYtMlA/exec', {
         method: 'POST',
         body: formDataToSubmit
       })
