@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title data-translate-key="pageTitle">Panadería Manolos</title>
+  <title data-translate-key="pageTitle">Manolo’s Bakery</title>
   <style>
     body { font-family: Arial, sans-serif; padding: 20px; background: #f8f8f8; }
     h2 { color: #444; }
@@ -50,7 +50,7 @@
 </head>
 <body>
 
-  <h2 data-translate-key="formHeading"> 🎂Formulario de Pedido Prueba 1.0 - Panadería Manolos🎂 </h2>
+  <h2 data-translate-key="formHeading"> 🎂Manolo’s Bakery🎂 </h2>
 
   <form id="cakeForm">
 
@@ -201,21 +201,37 @@
 </div>
 
 <div class="section">
-  <p data-translate-key="textEnvioConfirmacion">🍾 Al hacer clic en enviar, se generará tu número de orden y se confirmará el pedido a través WhatsApp.</p>
-  <button type="submit" data-translate-key="buttonEnviarPedido">✅ Enviar Pedido</button>
+  <p id="textoEnvioConfirmacion" data-translate-key="textEnvioConfirmacion">
+    🍾 Al hacer clic en enviar, se generará tu número de orden y se confirmará el pedido a través <strong>WhatsApp</strong>.</p>
+<button type="submit" data-translate-key="buttonEnviarPedido">✅ Enviar Pedido</button>
 </div>
 
 <a class="whatsapp-button" href="https://wa.me/573027697351?text=Hola%2C%20necesito%20ayuda%20con%20mi%20pedido%20de%20pastel" target="_blank">
   <img src="https://cdn-icons-png.flaticon.com/512/220/220236.png" alt="WhatsApp"> <span data-translate-key="textNecesitasAyuda">¿Necesitas ayuda?</span>
 </a>
+<script>
+  const radiosMetodo = document.querySelectorAll('input[name="metodoContacto"]');
+  const textoEnvio = document.getElementById('textoEnvioConfirmacion');
+
+  radiosMetodo.forEach(radio => {
+    radio.addEventListener('change', () => {
+      const metodo = document.querySelector('input[name="metodoContacto"]:checked').value;
+      if (metodo === 'whatsapp') {
+        textoEnvio.innerHTML = '🍾 Al hacer clic en enviar, se generará tu número de orden y se confirmará el pedido a través <strong>WhatsApp</strong>.';
+      } else {
+        textoEnvio.innerHTML = '🍾 Al hacer clic en enviar, se generará tu número de orden y se confirmará el pedido a través de <strong>Correo Electrónico</strong>.';
+      }
+    });
+  });
+</script>
 
 <script>
   console.log("INICIO DEL SCRIPT TAG EJECUTADO"); 
 
   const translations = {
   es: {
-    pageTitle: "Panadería Manolos",
-    formHeading: "🎂Formulario de Pedido Prueba 1.0 - Panadería Manolos🎂",
+    pageTitle: "Manolo’s Bakery",
+    formHeading: "🎂Manolo’s Bakery🎂",
     labelIdioma: "🌐 Idioma:",
     optionEspañol: "Español",
     optionEnglish: "Inglés",
