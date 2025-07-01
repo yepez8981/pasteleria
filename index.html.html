@@ -165,7 +165,7 @@
       <small style="display: block; margin-top: 4px; font-size: 0.85em; color: #666;" data-translate-key="hintColoresPredominantes">Ej: Azul primario, tonos pastel claros, rojo oscuro.</small>
 
       <label for="imagen" data-translate-key="labelImagenReferencia">📷 Imagen de referencia:</label>
-      <input type="file" id="imagen" name="imagen" accept="image/*">
+      <input type="file" id="imagen" name="imagenReferencia" accept="image/*">
       <img class="preview" id="previewImg" style="display: none;" />
     </div>
 
@@ -793,7 +793,7 @@
       const metodoContactoTexto = pedidoParaResumenLocal.metodoContacto === 'whatsapp' ? (T.optionContactoWhatsapp || 'WhatsApp') : (T.optionContactoCorreo || 'Correo Electrónico');
       resumen += `${T.resumenMetodoContacto} ${metodoContactoTexto}`;
       
-      fetch('https://script.google.com/macros/s/AKfycbw5tlO49aCbDgpR8yecZqpw37d3e0vjPDUTRrsrvWLL1gm8rfqex6rKOSz92Q6n6DkBhw/exec', {
+      fetch('https://script.google.com/macros/s/AKfycbzmzBDlKfEDSi6tjPKVnlJLKIApiLpAxtZdCwCkfAAwy76noLpTZ7SOJexrNG6PIUcz_g/exec', {
         method: 'POST',
         body: formDataToSubmit
       })
