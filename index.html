@@ -263,28 +263,29 @@ input[type="time"] {
 </script>
     
 <!-- Script para subir la imagen -->
-
 <script>
-  const uploadURL = "https://script.google.com/macros/s/AKfycbzV4I-9EZeJqmfOHWgEskVMkAOlTe-0GLQwk8gZitvnDVJLgExoqoTBqGEHx4HX9_yQdQ/exec";
-
-  let imagenSubida = false;
+  const uploadURL = "https://script.google.com/macros/s/AKfycbz4Au_apSnBtKERqd116Ynf46CMTYlKi14uqvzNMcqHAHt7chzeYEeK97n5M0cWHwL-lw/exec";
 
   async function subirImagenDrive(file) {
     const reader = new FileReader();
+
     return new Promise((resolve, reject) => {
       reader.onload = async function () {
         const base64Data = reader.result.split(',')[1];
+
+        // Usar FormData para evitar problemas de CORS
+        const form = new FormData();
+        form.append("imagenBase64", base64Data);
+
         try {
           const response = await fetch(uploadURL, {
             method: "POST",
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ imagenBase64: base64Data })
+            body: form,
           });
+
           const result = await response.json();
+
           if (result.status === "success") {
-            imagenSubida = true;
             resolve(result.url);
           } else {
             reject("❌ Error subiendo imagen: " + result.message);
@@ -293,44 +294,13 @@ input[type="time"] {
           reject("❌ Error en la solicitud: " + e.message);
         }
       };
+
       reader.onerror = () => reject("❌ Error leyendo archivo");
       reader.readAsDataURL(file);
     });
   }
-
-  document.getElementById('imagen').addEventListener('change', async function (event) {
-    const file = event.target.files[0];
-    const preview = document.getElementById('previewImg');
-    const urlImagenInput = document.getElementById('urlImagen');
-
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        preview.src = e.target.result;
-        preview.style.display = 'block';
-      };
-      reader.readAsDataURL(file);
-
-      try {
-        const url = await subirImagenDrive(file);
-        urlImagenInput.value = url;
-        console.log("✅ Imagen subida:", url);
-      } catch (error) {
-        alert(error);
-        console.error(error);
-      }
-    }
-  });
-
-  // Evitar envío si no se ha subido la imagen
-  document.getElementById("formPedido").addEventListener("submit", function (e) {
-    const archivo = document.getElementById("imagen").files[0];
-    if (archivo && !imagenSubida) {
-      e.preventDefault();
-      alert("⏳ Por favor espera a que la imagen se suba completamente.");
-    }
-  });
 </script>
+
     
 <script>
   console.log("INICIO DEL SCRIPT TAG EJECUTADO"); 
