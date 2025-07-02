@@ -177,10 +177,10 @@ input[type="time"] {
       <input type="text" id="color" name="color" >
       <small style="display: block; margin-top: 4px; font-size: 0.85em; color: #666;" data-translate-key="hintColoresPredominantes">Ej: Azul primario, tonos pastel claros, rojo oscuro.</small>
 
-      <label for="imagen" data-translate-key="labelImagenReferencia">📷 Imagen de referencia:</label>
-      <input type="file" id="imagen" name="imagenReferencia" accept="image/*">
-      <input type="hidden" name="urlImagen" id="urlImagen">
-      <img class="preview" id="previewImg" style="display: none;" />
+   <label for="imagen" data-translate-key="labelImagenReferencia">📷 Imagen de referencia:</label>
+<input type="file" id="imagen" name="imagenReferencia" accept="image/*">
+<input type="hidden" name="urlImagen" id="urlImagen">
+<img class="preview" id="previewImg" style="display: none; max-width: 200px; margin-top: 10px;" />
     </div>
 
 <div class="section">
@@ -262,9 +262,9 @@ input[type="time"] {
   });
 </script>
     
-   
- <script>
-  const uploadURL = "https://script.google.com/macros/s/AKfycbxhMJmPJG8_Lkcn5yMdEW9_sldAHcWgNmt6OugicspTbY9WaJZlj7A35x4YZDi6MGq34g/exec";
+<!-- Script para subir la imagen -->
+<script>
+  const uploadURL = "https://script.google.com/macros/s/AKfycbz4Au_apSnBtKERqd116Ynf46CMTYlKi14uqvzNMcqHAHt7chzeYEeK97n5M0cWHwL-lw/exec";
 
   async function subirImagenDrive(file) {
     const reader = new FileReader();
@@ -299,14 +299,13 @@ input[type="time"] {
     });
   }
 
-  // Evento para manejar selección de imagen
   document.getElementById('imagen').addEventListener('change', async function (event) {
     const file = event.target.files[0];
     const preview = document.getElementById('previewImg');
     const urlImagenInput = document.getElementById('urlImagen');
 
     if (file) {
-      // Vista previa
+      // Mostrar vista previa
       const reader = new FileReader();
       reader.onload = function (e) {
         preview.src = e.target.result;
@@ -314,7 +313,7 @@ input[type="time"] {
       };
       reader.readAsDataURL(file);
 
-      // Subir al drive
+      // Subir imagen
       try {
         const url = await subirImagenDrive(file);
         urlImagenInput.value = url;
@@ -325,9 +324,7 @@ input[type="time"] {
       }
     }
   });
-</script>
-
-   
+</script>   
 
 <script>
   console.log("INICIO DEL SCRIPT TAG EJECUTADO"); 
