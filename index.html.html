@@ -100,7 +100,7 @@ input[type="time"] {
       <label for="fechaRecogida" data-translate-key="labelFechaRecogida">🗓 Fecha de recogida:</label>
       <input type="date" name="fechaRecogida" id="fechaRecogida" required>
 
-      <label for="hora" data-translate-key="labelHora">⏰ Hora de recogida/entrega:</label>
+      <label for="hora" data-translate-key="labelHora">⏰ Hora recogida/entrega:</label>
       <input type="time" name="hora" id="hora" required>
 
       <label for="entrega" data-translate-key="labelEntrega">🚚 ¿Cómo deseas recibirlo?</label>
@@ -237,18 +237,27 @@ input[type="time"] {
   });
 </script>
     
-   <script>
-window.onload = function () {
+   
+ <script>
+  const uploadURL = "https://script.google.com/macros/s/AKfycbxhMJmPJG8_Lkcn5yMdEW9_sldAHcWgNmt6OugicspTbY9WaJZlj7A35x4YZDi6MGq34g/exec";
+
   async function subirImagenDrive(file) {
     const reader = new FileReader();
     return new Promise((resolve, reject) => {
       reader.onload = async function () {
         const base64Data = reader.result.split(',')[1];
+
         try {
-          const response = await fetch("https://script.google.com/macros/s/AKfycbxhMJmPJG8_Lkcn5yMdEW9_sldAHcWgNmt6OugicspTbY9WaJZlj7A35x4YZDi6MGq34g/exec", {
+          const response = await fetch(uploadURL, {
             method: "POST",
-            body: base64Data
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              imagenBase64: base64Data
+            })
           });
+
           const result = await response.json();
           if (result.status === "success") {
             resolve(result.url);
@@ -259,19 +268,20 @@ window.onload = function () {
           reject("❌ Error en la solicitud: " + e.message);
         }
       };
+
       reader.onerror = () => reject("❌ Error leyendo archivo");
       reader.readAsDataURL(file);
     });
   }
 
-  const fileInput = document.getElementById('imagen');
-  const preview = document.getElementById('previewImg');
-  const urlImagenInput = document.getElementById('urlImagen');
-
-  fileInput.addEventListener('change', async function (event) {
+  // Evento para manejar selección de imagen
+  document.getElementById('imagen').addEventListener('change', async function (event) {
     const file = event.target.files[0];
+    const preview = document.getElementById('previewImg');
+    const urlImagenInput = document.getElementById('urlImagen');
 
     if (file) {
+      // Vista previa
       const reader = new FileReader();
       reader.onload = function (e) {
         preview.src = e.target.result;
@@ -279,6 +289,7 @@ window.onload = function () {
       };
       reader.readAsDataURL(file);
 
+      // Subir al drive
       try {
         const url = await subirImagenDrive(file);
         urlImagenInput.value = url;
@@ -289,25 +300,8 @@ window.onload = function () {
       }
     }
   });
-
-  document.getElementById('formPedido').addEventListener('submit', async function (e) {
-    const file = fileInput.files[0];
-
-    if (file && !urlImagenInput.value) {
-      e.preventDefault();
-      try {
-        const url = await subirImagenDrive(file);
-        urlImagenInput.value = url;
-        e.target.submit();
-      } catch (error) {
-        alert("❌ No se pudo subir la imagen.");
-        console.error(error);
-      }
-    }
-  });
-};
 </script>
- 
+
    
 
 <script>
@@ -332,7 +326,7 @@ window.onload = function () {
     labelTamanoVitrina: "Tamaño:",
     labelFechaPedido: "🗓 Fecha Pedido:",
     labelFechaRecogida: "🗓 Fecha de recogida:",
-    labelHora: "⏰ Hora de recogida/entrega:",
+    labelHora: "⏰ Hora recogida/entrega:",
     labelEntrega: "🚚 ¿Cómo deseas recibirlo?",
     optionSeleccione: "Seleccione",
     optionRecogerEnPasteleria: "Recoger en la pastelería",
