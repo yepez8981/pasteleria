@@ -214,10 +214,35 @@ input[type="time"] {
 
 <div class="section">
   <p id="textoEnvioConfirmacion" data-translate-key="textEnvioConfirmacion">
-    🍾 Al hacer clic en enviar, se generará tu número de orden y se confirmará el pedido a través <strong>WhatsApp</strong>.</p>
-<button type="submit" data-translate-key="buttonEnviarPedido">✅ Enviar Pedido</button>
+    🍾 Al hacer clic en enviar, se generará tu número de orden y se confirmará el pedido a través <strong>WhatsApp</strong>.
+  </p>
+<button id="btnEnviar" type="submit" data-translate-key="buttonEnviarPedido">
+    ✅ Enviar Pedido
+  </button>
+<span id="estadoEnvio" style="margin-left: 10px; display: none; color: #555;">
+    ⏳ Enviando pedido...
+  </span>
 </div>
 
+<script>
+  document.getElementById("formPedido").addEventListener("submit", function (e) {
+    const btn = document.getElementById("btnEnviar");
+    const estado = document.getElementById("estadoEnvio");
+
+    btn.disabled = true;
+    btn.style.opacity = "0.6";
+    estado.style.display = "inline";
+
+    // activar el botón luego de 20 segundos:
+    setTimeout(() => {
+      btn.disabled = false;
+      btn.style.opacity = "1";
+      estado.style.display = "none";
+    }, 20000); // 20 segundos
+  });
+</script>
+
+    
 <a class="whatsapp-button" href="https://wa.me/573027697351?text=Hola%2C%20necesito%20ayuda%20con%20mi%20pedido%20de%20pastel" target="_blank">
   <img src="https://cdn-icons-png.flaticon.com/512/220/220236.png" alt="WhatsApp"> <span data-translate-key="textNecesitasAyuda">¿Necesitas ayuda?</span>
 </a>
