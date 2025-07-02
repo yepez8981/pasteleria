@@ -177,10 +177,15 @@ input[type="time"] {
       <input type="text" id="color" name="color" >
       <small style="display: block; margin-top: 4px; font-size: 0.85em; color: #666;" data-translate-key="hintColoresPredominantes">Ej: Azul primario, tonos pastel claros, rojo oscuro.</small>
 
+
+      <form id="formPedido" action="https://script.google.com/macros/s/AKfycbz4Au_apSnBtKERqd116Ynf46CMTYlKi14uqvzNMcqHAHt7chzeYEeK97n5M0cWHwL-lw/exec" method="POST">
+
    <label for="imagen" data-translate-key="labelImagenReferencia">📷 Imagen de referencia:</label>
 <input type="file" id="imagen" name="imagenReferencia" accept="image/*">
 <input type="hidden" name="urlImagen" id="urlImagen">
 <img class="preview" id="previewImg" style="display: none; max-width: 200px; margin-top: 10px;" />
+</form>
+        
     </div>
 
 <div class="section">
@@ -299,6 +304,31 @@ input[type="time"] {
       reader.readAsDataURL(file);
     });
   }
+</script>
+
+    
+<script>
+  const form = document.getElementById('formPedido');
+  let imagenCargada = false;
+
+  form.addEventListener('submit', async function (event) {
+    const file = document.getElementById('imagen').files[0];
+    const urlImagenInput = document.getElementById('urlImagen');
+
+    // Si hay imagen seleccionada pero aún no se subió
+    if (file && !urlImagenInput.value) {
+      event.preventDefault(); // Evitar que se envíe el formulario
+      try {
+        const url = await subirImagenDrive(file);
+        urlImagenInput.value = url;
+        imagenCargada = true;
+        form.submit(); // Reenviar ahora sí
+      } catch (error) {
+        alert("❌ No se pudo subir la imagen. Por favor intenta de nuevo.");
+        console.error(error);
+      }
+    }
+  });
 </script>
 
     
