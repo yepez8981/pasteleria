@@ -179,6 +179,7 @@ input[type="time"] {
 
       <label for="imagen" data-translate-key="labelImagenReferencia">📷 Imagen de referencia:</label>
       <input type="file" id="imagen" name="imagenReferencia" accept="image/*">
+      <input type="hidden" name="urlImagen" id="urlImagen">
       <img class="preview" id="previewImg" style="display: none;" />
     </div>
 
@@ -331,7 +332,7 @@ window.onload = function () {
     labelTamanoVitrina: "Tamaño:",
     labelFechaPedido: "🗓 Fecha Pedido:",
     labelFechaRecogida: "🗓 Fecha de recogida:",
-    labelHora: "⏰ Hora:",
+    labelHora: "⏰ Hora de recogida/entrega:",
     labelEntrega: "🚚 ¿Cómo deseas recibirlo?",
     optionSeleccione: "Seleccione",
     optionRecogerEnPasteleria: "Recoger en la pastelería",
