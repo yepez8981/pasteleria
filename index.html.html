@@ -235,6 +235,76 @@ input[type="time"] {
     });
   });
 </script>
+    
+    <script>
+  async function subirImagenDrive(file) {
+    const reader = new FileReader();
+    return new Promise((resolve, reject) => {
+      reader.onload = async function () {
+        const base64Data = reader.result.split(',')[1];
+        try {
+          const response = await fetch("https://script.google.com/macros/s/AKfycbxhMJmPJG8_Lkcn5yMdEW9_sldAHcWgNmt6OugicspTbY9WaJZlj7A35x4YZDi6MGq34g/exec", {
+            method: "POST",
+            body: base64Data
+          });
+          const result = await response.json();
+          if (result.status === "success") {
+            resolve(result.url);
+          } else {
+            reject("❌ Error subiendo imagen: " + result.message);
+          }
+        } catch (e) {
+          reject("❌ Error en la solicitud: " + e.message);
+        }
+      };
+      reader.onerror = () => reject("❌ Error leyendo archivo");
+      reader.readAsDataURL(file);
+    });
+  }
+
+  document.getElementById('imagen').addEventListener('change', async function (event) {
+    const file = event.target.files[0];
+    const preview = document.getElementById('previewImg');
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        preview.src = e.target.result;
+        preview.style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+
+      try {
+        const url = await subirImagenDrive(file);
+        document.getElementById('urlImagen').value = url;
+        console.log("✅ Imagen subida:", url);
+      } catch (error) {
+        alert(error);
+        console.error(error);
+      }
+    }
+  });
+
+  document.getElementById('formPedido').addEventListener('submit', async function (e) {
+    const fileInput = document.getElementById('imagen');
+    const file = fileInput.files[0];
+    const urlImagenInput = document.getElementById('urlImagen');
+
+    if (file && !urlImagenInput.value) {
+      e.preventDefault();
+
+      try {
+        const url = await subirImagenDrive(file);
+        urlImagenInput.value = url;
+        console.log("✅ Imagen subida antes del envío");
+        e.target.submit();
+      } catch (error) {
+        alert("❌ No se pudo subir la imagen. Intenta nuevamente.");
+        console.error(error);
+      }
+    }
+  });
+</script>
 
 <script>
   console.log("INICIO DEL SCRIPT TAG EJECUTADO"); 
