@@ -285,7 +285,7 @@ input[type="time"] {
     estadoTexto.textContent = "⏳ Consultando estado...";
     resultado.style.display = "block";
     resultado.style.borderLeftColor = "#007bff"; // Azul
-    fetch(`https://script.google.com/macros/s/AKfycbxhMJmPJG8_Lkcn5yMdEW9_sldAHcWgNmt6OugicspTbY9WaJZlj7A35x4YZDi6MGq34g/exec?numeroOrden=${numero}`)
+    fetch(`https://script.google.com/macros/s/AKfycbyp4czl1MxQfI19yPDPqgmzunRObF-hGdP6codijlv6tgHRvWVm46upD52TgX9kb-WrVQ/exec?numeroOrden=${numero}`)
 
       .then(res => res.text())
       .then(texto => {
