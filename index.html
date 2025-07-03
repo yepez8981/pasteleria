@@ -1014,6 +1014,22 @@ window.location.href = "https://wa.me/57027697351?text=¡Hola! Ya hice mi pedido
   gtag('js', new Date());
  gtag('config', 'G-S67VHFS5MK');
 </script>
+    
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const btnEnviar = document.getElementById('btnEnviar');
+
+    if (btnEnviar) {
+      btnEnviar.addEventListener('click', function () {
+        gtag('event', 'enviar_pedido', {
+          'event_category': 'Formulario',
+          'event_label': 'Botón Enviar Pedido',
+          'value': 1
+        });
+      });
+    }
+  });
+</script>
 
     
 </body>
