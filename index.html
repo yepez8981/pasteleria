@@ -178,9 +178,9 @@ input[type="time"] {
       <small style="display: block; margin-top: 4px; font-size: 0.85em; color: #666;" data-translate-key="hintColoresPredominantes">Ej: Azul primario, tonos pastel claros, rojo oscuro.</small>
 
    <label for="imagen" data-translate-key="labelImagenReferencia">📷 Imagen de referencia:</label>
-<input type="file" id="imagen" name="imagenReferencia" accept="image/*">
-<input type="hidden" name="urlImagen" id="urlImagen">
-<img class="preview" id="previewImg" style="display: none; max-width: 200px; margin-top: 10px;" />
+   <input type="file" id="imagen" name="imagenReferencia" accept="image/*">
+   <input type="hidden" name="urlImagen" id="urlImagen">
+   <img class="preview" id="previewImg" style="display: none; max-width: 200px; margin-top: 10px;" />
         
     </div>
 
@@ -225,6 +225,16 @@ input[type="time"] {
   </span>
 </div>
 
+
+<input type="file" id="imagen" name="imagenReferencia" accept="image/*">
+<script>
+  // Evita que se abra el selector imagen, fase 2
+  document.getElementById('imagen').addEventListener('click', function (e) {
+    e.preventDefault(); // No permite que se abra el selector , borrar a futuro. 
+  });
+</script>
+
+    
 <script>
   document.getElementById("formPedido").addEventListener("submit", function (e) {
     const btn = document.getElementById("btnEnviar");
@@ -264,44 +274,8 @@ input[type="time"] {
 </script>
     
 <!-- Script para subir la imagen -->
-<script>
-  const uploadURL = "https://script.google.com/macros/s/AKfycbz4Au_apSnBtKERqd116Ynf46CMTYlKi14uqvzNMcqHAHt7chzeYEeK97n5M0cWHwL-lw/exec";
 
-  async function subirImagenDrive(file) {
-    const reader = new FileReader();
-
-    return new Promise((resolve, reject) => {
-      reader.onload = async function () {
-        const base64Data = reader.result.split(',')[1];
-
-        // Usar FormData para evitar problemas de CORS
-        const form = new FormData();
-        form.append("imagenBase64", base64Data);
-
-        try {
-          const response = await fetch(uploadURL, {
-            method: "POST",
-            body: form,
-          });
-
-          const result = await response.json();
-
-          if (result.status === "success") {
-            resolve(result.url);
-          } else {
-            reject("❌ Error subiendo imagen: " + result.message);
-          }
-        } catch (e) {
-          reject("❌ Error en la solicitud: " + e.message);
-        }
-      };
-
-      reader.onerror = () => reject("❌ Error leyendo archivo");
-      reader.readAsDataURL(file);
-    });
-  }
-</script>
-
+IMPLEMENTACION FASE 2
     
 <script>
   const form = document.getElementById('formPedido');
