@@ -195,13 +195,19 @@ input[type="time"] {
   <label for="correo" data-translate-key="labelCorreo">📧 Correo electrónico:</label>
   <input type="email" id="correo" name="correo" required>
 
+  
+<label for="comentarios" data-translate-key="labelComentarios">💬 Comentarios / Sugerencias:</label>
+<textarea id="comentarios" name="comentarios" rows="4" placeholder="Escribe aquí tus comentarios o sugerencias..."></textarea>
+
+  
+
   <div class="contact-preference-container" style="margin-top: 15px; margin-bottom: 10px;">
     <label data-translate-key="labelMetodoContactoPreferido" style="margin-bottom: 8px; display: block; font-weight: bold;">💬 ¿Cómo prefieres ser contactado?</label>
     <div style="display: flex; align-items: center; margin-bottom: 5px;">
       <input type="radio" id="contactoWhatsapp" name="metodoContacto" value="whatsapp" checked style="width: auto; margin-right: 8px;">
       <label for="contactoWhatsapp" data-translate-key="optionContactoWhatsapp" style="font-weight: normal; margin: 0;">WhatsApp</label>
     </div>
-    <div style="display: flex; align-items: center;">
+<div style="display: flex; align-items: center;">
       <input type="radio" id="contactoCorreo" name="metodoContacto" value="correo" style="width: auto; margin-right: 8px;">
       <label for="contactoCorreo" data-translate-key="optionContactoCorreo" style="font-weight: normal; margin: 0;">Correo Electrónico</label>
     </div>
