@@ -824,14 +824,16 @@ input[type="time"] {
       }
       resumen += `\n${T.resumenDecoracion} ${pedidoParaResumenLocal.decoracion || T.resumenDecoracionDefault}\n`;
       resumen += `${T.resumenMensaje} ${pedidoParaResumenLocal.mensajePastel || T.resumenMensajeDefault}\n`;
-      resumen += `${T.resumenCliente} ${pedidoParaResumenLocal.nombre} (${pedidoParaResumenLocal.telefono})\n`;
-      
-      resumen += `${T.resumenMetodoContacto} ${metodoContactoTexto}`;
+      resumen += `${T.resumenCliente} ${pedidoParaResumenLocal.nombre} (${pedidoParaResumenLocal.telefono})\n`; 
+
 const metodoSeleccionado = document.querySelector('input[name="metodoContacto"]:checked')?.value || '';
 const metodoContactoTexto = metodoSeleccionado === 'whatsapp'
   ? (T.optionContactoWhatsapp || 'WhatsApp')
   : (T.optionContactoCorreo || 'Correo Electrónico');
-      resumen += `${T.resumenMetodoContacto} ${metodoContactoTexto}`;
+  resumen += `${T.resumenMetodoContacto} ${metodoContactoTexto}`;
+
+      
+  
       fetch('https://script.google.com/macros/s/AKfycbxhMJmPJG8_Lkcn5yMdEW9_sldAHcWgNmt6OugicspTbY9WaJZlj7A35x4YZDi6MGq34g/exec', {
         method: 'POST',
         body: formDataToSubmit
