@@ -230,7 +230,56 @@ input[type="time"] {
     ⏳ Enviando pedido...
   </span>
 </div>
-    
+
+    <script>
+  document.getElementById("formPedido").addEventListener("submit", async function (e) {
+    e.preventDefault(); // Evita envío inmediato
+
+    const btn = document.getElementById("btnEnviar");
+    const estado = document.getElementById("estadoEnvio");
+    const metodoContacto = document.querySelector('input[name="metodoContacto"]:checked').value;
+
+    btn.disabled = true;
+    estado.style.display = "inline";
+    estado.textContent = "⏳ Enviando pedido...";
+
+    // Preparamos los datos del formulario
+    const form = e.target;
+    const formData = new FormData(form);
+
+    try {
+      const response = await fetch(form.action, {
+        method: "POST",
+        body: formData
+      });
+
+      const result = await response.json();
+
+      if (result.status === "success") {
+        alert("🎉 Pedido enviado correctamente.");
+
+        if (metodoContacto === "whatsapp") {
+          // Redirige a WhatsApp
+window.location.href = "https://wa.me/57027697351?text=¡Hola! Ya hice mi pedido en Manolo’s Bakery 🎂. Quedo atento(a) a la confirmación.";
+        } else {
+          // Solo correo: no redirigimos
+          btn.disabled = false;
+          estado.textContent = "✅ Pedido enviado.";
+        }
+      } else {
+        alert("❌ Hubo un error al enviar el pedido. Intenta de nuevo.");
+        btn.disabled = false;
+        estado.style.display = "none";
+      }
+    } catch (error) {
+      alert("❌ Error de red. Intenta más tarde.");
+      btn.disabled = false;
+      estado.style.display = "none";
+      console.error(error);
+    }
+  });
+</script>
+
     
 <script>
   // Evita que se abra el selector imagen de referencia para fase 2
