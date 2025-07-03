@@ -224,16 +224,6 @@ input[type="time"] {
     ⏳ Enviando pedido...
   </span>
 </div>
-
-
-<input type="file" id="imagen" name="imagenReferencia" accept="image/*">
-<script>
-  // Evita que se abra el selector imagen, fase 2
-  document.getElementById('imagen').addEventListener('click', function (e) {
-    e.preventDefault(); // No permite que se abra el selector , borrar a futuro. 
-  });
-</script>
-
     
 <script>
   document.getElementById("formPedido").addEventListener("submit", function (e) {
@@ -272,36 +262,7 @@ input[type="time"] {
     });
   });
 </script>
-    
-<!-- Script para subir la imagen -->
-
-IMPLEMENTACION FASE 2
-    
-<script>
-  const form = document.getElementById('formPedido');
-  let imagenCargada = false;
-
-  form.addEventListener('submit', async function (event) {
-    const file = document.getElementById('imagen').files[0];
-    const urlImagenInput = document.getElementById('urlImagen');
-
-    // Si hay imagen seleccionada pero aún no se subió
-    if (file && !urlImagenInput.value) {
-      event.preventDefault(); // Evitar que se envíe el formulario
-      try {
-        const url = await subirImagenDrive(file);
-        urlImagenInput.value = url;
-        imagenCargada = true;
-        form.submit(); // Reenviar ahora sí
-      } catch (error) {
-        alert("❌ No se pudo subir la imagen. Por favor intenta de nuevo.");
-        console.error(error);
-      }
-    }
-  });
-</script>
-
-    
+        
 <script>
   console.log("INICIO DEL SCRIPT TAG EJECUTADO"); 
 
