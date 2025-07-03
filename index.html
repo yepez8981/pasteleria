@@ -199,7 +199,6 @@ input[type="time"] {
 <label for="comentarios" data-translate-key="labelComentarios">💬 Comentarios/Sugerencias:</label>
 <textarea id="comentarios" name="comentarios" rows="4" placeholder="Escribe aquí tus comentarios o sugerencias..."></textarea>
 
-  
 
   <div class="contact-preference-container" style="margin-top: 15px; margin-bottom: 10px;">
     <label data-translate-key="labelMetodoContactoPreferido" style="margin-bottom: 8px; display: block; font-weight: bold;">💬 ¿Cómo prefieres ser contactado?</label>
@@ -828,10 +827,11 @@ input[type="time"] {
       resumen += `${T.resumenCliente} ${pedidoParaResumenLocal.nombre} (${pedidoParaResumenLocal.telefono})\n`;
       
       resumen += `${T.resumenMetodoContacto} ${metodoContactoTexto}`;
-      const metodoSeleccionado = document.querySelector('input[name="metodoContacto"]:checked')?.value || '';
+const metodoSeleccionado = document.querySelector('input[name="metodoContacto"]:checked')?.value || '';
 const metodoContactoTexto = metodoSeleccionado === 'whatsapp'
   ? (T.optionContactoWhatsapp || 'WhatsApp')
   : (T.optionContactoCorreo || 'Correo Electrónico');
+      resumen += `${T.resumenMetodoContacto} ${metodoContactoTexto}`;
       fetch('https://script.google.com/macros/s/AKfycbxhMJmPJG8_Lkcn5yMdEW9_sldAHcWgNmt6OugicspTbY9WaJZlj7A35x4YZDi6MGq34g/exec', {
         method: 'POST',
         body: formDataToSubmit
