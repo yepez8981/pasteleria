@@ -254,37 +254,63 @@ input[type="time"] {
   });
 </script>
 
-<div class="section">
-  <h3>🔎 Consultar estado de pedido</h3>
-  <label for="numeroConsulta">Ingresa tu número de orden:</label>
-  <input type="text" id="numeroConsulta" placeholder="Ej: 20250703-023">
-  <button onclick="consultarEstado()">Consultar estado</button>
-  <p id="resultadoEstado" style="margin-top: 10px; color: #444;"></p>
+<div class="section" style="margin-top: 40px; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+  <h3 style="font-size: 20px; margin-bottom: 10px;">🔎 Consultar estado de pedido</h3>
+  <label for="numeroConsulta" style="display: block; margin-bottom: 5px;">Ingresa tu número de orden:</label>
+  <input type="text" id="numeroConsulta" placeholder="Ej: 20250703-023"
+         style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; margin-bottom: 10px;">
+
+  <button onclick="consultarEstado()" style="background-color: #28a745; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+    Consultar estado
+  </button>
+
+  <div id="resultadoEstado" style="margin-top: 15px; padding: 12px; border-left: 5px solid #ccc; border-radius: 5px; display: none;">
+    <strong>Estado:</strong> <span id="estadoTexto">Esperando...</span>
+  </div>
 </div>
 
 <script>
   function consultarEstado() {
     const numero = document.getElementById("numeroConsulta").value.trim();
     const resultado = document.getElementById("resultadoEstado");
+    const estadoTexto = document.getElementById("estadoTexto");
 
     if (!numero) {
-      resultado.textContent = "⚠️ Por favor ingresa un número de orden.";
+      estadoTexto.textContent = "⚠️ Por favor ingresa un número de orden.";
+      resultado.style.display = "block";
+      resultado.style.borderLeftColor = "#ffc107"; // Amarillo
       return;
     }
 
-    resultado.textContent = "⏳ Consultando estado...";
+    estadoTexto.textContent = "⏳ Consultando estado...";
+    resultado.style.display = "block";
+    resultado.style.borderLeftColor = "#007bff"; // Azul
 
     fetch(`https://script.google.com/macros/s/AKfycbxhMJmPJG8_Lkcn5yMdEW9_sldAHcWgNmt6OugicspTbY9WaJZlj7A35x4YZDi6MGq34g/exec?numeroOrden=${numero}`)
       .then(res => res.text())
       .then(texto => {
-        resultado.textContent = texto;
+        estadoTexto.textContent = texto;
+
+        // Ajustar color según estado
+        const textoLimpio = texto.toLowerCase();
+        if (textoLimpio.includes("entregado")) {
+          resultado.style.borderLeftColor = "#28a745"; // Verde
+        } else if (textoLimpio.includes("listo")) {
+          resultado.style.borderLeftColor = "#17a2b8"; // Celeste
+        } else if (textoLimpio.includes("pendiente")) {
+          resultado.style.borderLeftColor = "#ffc107"; // Amarillo
+        } else {
+          resultado.style.borderLeftColor = "#dc3545"; // Rojo (error u otro)
+        }
       })
       .catch(error => {
-        resultado.textContent = "❌ Error consultando el estado. Intenta nuevamente.";
+        estadoTexto.textContent = "❌ Error consultando el estado. Intenta nuevamente.";
+        resultado.style.borderLeftColor = "#dc3545"; // Rojo
         console.error(error);
       });
   }
 </script>
+
 
     <a class="whatsapp-button" href="https://wa.me/573027697351?text=Hola%2C%20necesito%20ayuda%20con%20mi%20pedido%20de%20pastel" target="_blank">
   <img src="https://cdn-icons-png.flaticon.com/512/220/220236.png" alt="WhatsApp"> <span data-translate-key="textNecesitasAyuda">¿Necesitas ayuda?</span>
