@@ -231,6 +231,23 @@ input[type="time"] {
 </div>
 
 <script>
+  const radiosMetodo = document.querySelectorAll('input[name="metodoContacto"]');
+  const textoEnvio = document.getElementById('textoEnvioConfirmacion');
+
+  radiosMetodo.forEach(radio => {
+    radio.addEventListener('change', () => {
+      const metodo = document.querySelector('input[name="metodoContacto"]:checked')?.value || '';
+      if (metodo === 'whatsapp') {
+        textoEnvio.innerHTML = '🍾 Al hacer clic en enviar, se generará tu número de orden y se confirmará el pedido a través <strong>WhatsApp</strong>.';
+      } else {
+        textoEnvio.innerHTML = '🍾 Al hacer clic en enviar, se generará tu número de orden y se confirmará el pedido a través de <strong>Correo Electrónico</strong>.';
+      }
+    });
+  });
+</script>
+
+    
+<script>
   // Evita que se abra el selector imagen de referencia para fase 2
   document.getElementById('imagen').addEventListener('click', function (e) {
     e.preventDefault(); // No permite que se abra el selector de imagenes
