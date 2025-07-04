@@ -972,8 +972,39 @@ const metodoContactoTexto = metodoSeleccionado === 'whatsapp'
     }
   });
 </script>
+    
+<!-- 🔎 SECCIÓN DE CONSULTA DE PEDIDO -->
+<div id="seccionConsulta" style="margin-top: 40px; padding: 20px; border-top: 1px solid #ddd;">
+  <h3 style="text-align: center;">📦 Consultar estado de tu pedido</h3>
+  <div style="text-align: center; margin-top: 15px;">
+    <input type="text" id="numeroConsulta" placeholder="Ej: 20250703-023" style="padding: 10px; font-size: 16px; width: 80%; max-width: 300px;">
+    <button onclick="consultarEstado()" style="margin-left: 10px; padding: 10px 16px; font-size: 16px;">Consultar</button>
+  </div>
+  <p id="resultadoEstado" style="margin-top: 15px; text-align: center; font-size: 16px; color: #444;"></p>
+</div>
+<script>
+  function consultarEstado() {
+    const numero = document.getElementById("numeroConsulta").value.trim();
+    const resultado = document.getElementById("resultadoEstado");
 
+    if (!numero) {
+      resultado.textContent = "⚠️ Por favor ingresa un número de orden.";
+      return;
+    }
+
+    resultado.textContent = "⏳ Consultando estado...";
+
+    fetch(`https://script.google.com/macros/s/AKfycbyp4czl1MxQfI19yPDPqgmzunRObF-hGdP6codijlv6tgHRvWVm46upD52TgX9kb-WrVQ/exec?numeroOrden=${numero}`)
+      .then(res => res.text())
+      .then(texto => {
+        resultado.textContent = texto;
+        resultado.scrollIntoView({ behavior: "smooth", block: "center" });
+      })
+      .catch(error => {
+        resultado.textContent = "❌ Error consultando el estado. Intenta nuevamente.";
+        console.error(error);
+      });
+  }
+</script>    
 </body>
 </html>
-
-    
