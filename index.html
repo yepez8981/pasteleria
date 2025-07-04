@@ -254,12 +254,7 @@ input[type="time"] {
   });
 </script>
 
-<div class="section" style="margin-top: 40px; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
-  <h3 style="font-size: 20px; margin-bottom: 10px;">🔎 Consultar estado de pedido</h3>
-  <label for="numeroConsulta" style="display: block; margin-bottom: 5px;">Ingresa tu número de orden:</label>
-  <input type="text" id="numeroConsulta" placeholder="Ej: 20250703-023"
-         style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; margin-bottom: 10px;">
-
+    
 <!-- BOTÓN FLOTANTE DE CONSULTAR PEDIDO -->
 <a href="#" id="btnFlotanteEstado" onclick="mostrarConsultaPedido()" 
    style="position: fixed; bottom: 90px; right: 20px; background-color: #4CAF50; color: white; 
@@ -267,16 +262,6 @@ input[type="time"] {
           font-size: 16px; z-index: 9999; text-decoration: none;">
   📦 Estado Pedido
 </a>
-
-    <!-- SECCIÓN DE CONSULTA DE PEDIDO -->
-<div id="seccionConsulta" style="display: none; margin-top: 50px;">
-  <h3>🔎 Consultar estado de tu pedido</h3>
-  <label for="numeroConsulta">Número de orden:</label>
-  <input type="text" id="numeroConsulta" placeholder="Ej: 20250703-023">
-  <button onclick="consultarEstado()">Consultar</button>
-  <p id="resultadoEstado" style="margin-top: 10px; color: #444;"></p>
-  <button onclick="volverFormulario()" style="margin-top: 15px;">⬅️ Volver al formulario</button>
-</div>
 
 <script>
   function mostrarConsultaPedido() {
