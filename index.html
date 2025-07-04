@@ -948,13 +948,21 @@ const infoTamanoVitrinaDiv = document.getElementById('infoTamanoVitrina');
 
 if (tamanoVitrinaSelect && infoTamanoVitrinaDiv) {
   tamanoVitrinaSelect.addEventListener('change', function () {
+    const currentLang = idiomaSelect ? (idiomaSelect.value || 'es') : 'es';
+    const T = translations[currentLang] || translations.es;
+    
     if (this.value === '8"') {
-      infoTamanoVitrinaDiv.innerHTML = "🎉 ¡Genial elección! El tamaño de 8” es perfecto para reuniones familiares o con amigos. Rinde aproximadamente para 11 deliciosas porciones.";
+      infoTamanoVitrinaDiv.innerHTML = T.infoTamano8 || "🎉 ¡Genial elección! El tamaño de 8” es perfecto para reuniones familiares o con amigos. Rinde aproximadamente para 11 deliciosas porciones.";
       infoTamanoVitrinaDiv.style.display = 'block';
     } else {
       infoTamanoVitrinaDiv.style.display = 'none';
       infoTamanoVitrinaDiv.innerHTML = '';
     }
+  });
+
+  // Ejecutar el cambio al cargar por si ya viene preseleccionado
+  tamanoVitrinaSelect.dispatchEvent(new Event('change'));
+}
   });
 
   // Mostrar mensaje si ya estaba seleccionado al cargar
