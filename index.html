@@ -859,7 +859,9 @@ const metodoContactoTexto = metodoSeleccionado === 'whatsapp'
           if (pedidoParaResumenLocal.metodoContacto === 'correo') { 
             mensajeConfirmacionEspecifico = T.alertConfirmacionCorreo || "✅ Te confirmaremos por correo electrónico en breve.";
           }
-          alert(`${T.alertPedidoExito}\n${T.alertNumeroOrden}${numeroOrden}\n${T.alertTuPedidoEs}\n${resumen}\n${mensajeConfirmacionEspecifico}`);
+document.getElementById("ordenGenerada").textContent = numeroOrden;
+document.getElementById("mensajeResumenPedido").textContent = `${resumen}\n${mensajeConfirmacionEspecifico}`;
+document.getElementById("modalConfirmacion").style.display = "flex";
 
           const mensajeWhatsApp = `${T.whatsappHolaPedidoWeb}%0A${T.whatsappMiNumeroOrdenEs} *${numeroOrden}*%0A${T.whatsappMiPedidoEs}%0A${resumen.replace(/\n/g, '%0A')}%0A${T.whatsappPorFavorConfirmen}`;
           const telefonoWhatsApp = '573027697351';
@@ -938,6 +940,51 @@ const metodoContactoTexto = metodoSeleccionado === 'whatsapp'
     if (entregaSelect) entregaSelect.dispatchEvent(new Event('change'));
     
   });
+
+
+
+
+fetch('https://script.google.com/macros/s/AKfycbxhMJmPJG8_Lkcn5yMdEW9_sldAHcWgNmt6OugicspTbY9WaJZlj7A35x4YZDi6MGq34g/exec', {
+  method: 'POST',
+  body: formDataToSubmit
+})
+.then(response => response.json()) 
+.then(result => {
+  if (result.status === "success") {
+    console.log("Respuesta del Apps Script:", result);
+
+    // ✅ Aquí insertamos el segundo fetch para generar PDF:
+    fetch('https://script.google.com/macros/s/AKfycbzIf09mkQQb8KmouIL_Soejtv962zxi2XwJJverL4dUetaEUkixkmg9uuLo2GRCshUZPw/exec', {
+      method: 'POST',
+      body: formDataToSubmit
+    })
+    .then(res => res.json())
+    .then(res => {
+      console.log("📄 PDF generado y enviado:", res.pdfUrl);
+
+      // Opcional: mostrar link al cliente en el modal
+      const link = document.createElement("a");
+      link.href = res.pdfUrl;
+      link.target = "_blank";
+      link.textContent = "📄 Ver resumen PDF de tu pedido";
+      link.style.display = "block";
+      link.style.marginTop = "10px";
+      link.style.fontWeight = "bold";
+      document.getElementById("modalConfirmacion").appendChild(link);
+    })
+    .catch(err => {
+      console.error("❌ Error al generar PDF:", err);
+    });
+
+    // Tu lógica de confirmación actual
+    let mensajeConfirmacionEspecifico = T.alertConfirmacionWhatsApp; 
+    if (pedidoParaResumenLocal.metodoContacto === 'correo') { 
+      mensajeConfirmacionEspecifico = T.alertConfirmacionCorreo || "✅ Te confirmaremos por correo electrónico en breve.";
+    }
+
+   
+  }
+})
 
 </script>
 
@@ -1051,6 +1098,23 @@ const metodoContactoTexto = metodoSeleccionado === 'whatsapp'
       alert("🚫 Por favor, completa todos los campos necesarios antes de enviar.");
     }
   });
+</script>
+
+<script>
+  function copiarOrden() {
+    const texto = document.getElementById("ordenGenerada").textContent;
+    navigator.clipboard.writeText(texto).then(() => {
+      alert("✅ Número de orden copiado al portapapeles.");
+    });
+  }
+
+  function irAConsulta() {
+    document.getElementById("modalConfirmacion").style.display = "none";
+    const orden = document.getElementById("ordenGenerada").textContent;
+    document.getElementById("numeroConsulta").value = orden;
+    document.getElementById("numeroConsulta").scrollIntoView({ behavior: "smooth" });
+    consultarEstado(); // ejecuta la consulta directa
+  }
 </script>
 
 </body>
