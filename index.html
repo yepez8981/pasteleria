@@ -1020,5 +1020,38 @@ const metodoContactoTexto = metodoSeleccionado === 'whatsapp'
   }
 </script>
 
+   <script>
+  document.getElementById("formPedido").addEventListener("submit", function (e) {
+    const camposObligatorios = [
+      "nombre",
+      "correo",
+      "telefono",
+      "fecha",
+      "fechaRecogida",
+      "hora",
+      "entrega"
+    ];
+
+    let formularioValido = true;
+
+    camposObligatorios.forEach(function (id) {
+      const campo = document.getElementById(id);
+      if (campo && campo.value.trim() === "") {
+        campo.style.border = "2px solid red";
+        campo.style.backgroundColor = "#ffe6e6";
+        formularioValido = false;
+      } else if (campo) {
+        campo.style.border = "1px solid #ccc";
+        campo.style.backgroundColor = "white";
+      }
+    });
+
+    if (!formularioValido) {
+      e.preventDefault();
+      alert("🚫 Por favor, completa todos los campos necesarios antes de enviar.");
+    }
+  });
+</script>
+
 </body>
 </html>
