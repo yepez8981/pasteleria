@@ -943,6 +943,7 @@ const metodoContactoTexto = metodoSeleccionado === 'whatsapp'
     if (entregaSelect) entregaSelect.dispatchEvent(new Event('change'));
     
   });
+  
 const tamanoVitrinaSelect = document.getElementById('tamanoVitrina');
 const infoTamanoVitrinaDiv = document.getElementById('infoTamanoVitrina');
 
@@ -963,7 +964,7 @@ if (tamanoVitrinaSelect && infoTamanoVitrinaDiv) {
   // Ejecutar el cambio al cargar por si ya viene preseleccionado
   tamanoVitrinaSelect.dispatchEvent(new Event('change'));
 }
-  });
+
 
   // Mostrar mensaje si ya estaba seleccionado al cargar
   tamanoVitrinaSelect.dispatchEvent(new Event('change'));
