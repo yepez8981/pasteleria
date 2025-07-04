@@ -969,7 +969,7 @@ const metodoContactoTexto = metodoSeleccionado === 'whatsapp'
   
 <!-- SECCIÓN DE CONSULTA DE PEDIDO -->
 <div class="section" style="max-width: 500px; margin: 0 auto; text-align: center; background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
-  <h3 style="margin-bottom: 15px;">📦 Consultar estado de tu pedido</h3>
+  <h3 style="margin-bottom: 15px;">🎉Verifica si tu torta está lista para entrega🎉</h3>
   
   <input type="text" id="numeroConsulta" placeholder="Ej: 20250703-023" 
          style="padding: 10px; font-size: 16px; width: 100%; margin-bottom: 12px; border: 1px solid #ccc; border-radius: 6px;">
@@ -984,40 +984,64 @@ const metodoContactoTexto = metodoSeleccionado === 'whatsapp'
 
 <script>
   function consultarEstado() {
-    const numero = document.getElementById("numeroConsulta").value.trim();
-    const resultado = document.getElementById("resultadoEstado");
+  const numero = document.getElementById("numeroConsulta").value.trim();
+  const resultado = document.getElementById("resultadoEstado");
 
-    if (!numero) {
-      resultado.innerHTML = "⚠️ Por favor ingresa un número de orden.";
-      resultado.style.color = "#cc0000";
-      return;
-    }
-
-    resultado.textContent = "⏳ Consultando estado...";
-    resultado.style.color = "#555";
-
-    fetch(`https://script.google.com/macros/s/AKfycbyp4czl1MxQfI19yPDPqgmzunRObF-hGdP6codijlv6tgHRvWVm46upD52TgX9kb-WrVQ/exec?numeroOrden=${numero}`)
-      .then(res => res.text())
-      .then(texto => {
-        resultado.innerHTML = texto;
-
-        // Colorea según estado
-        if (texto.includes("Listo")) {
-          resultado.style.color = "#28a745"; // verde
-        } else if (texto.includes("En proceso")) {
-          resultado.style.color = "#eab308"; // amarillo
-        } else if (texto.includes("Cancelado")) {
-          resultado.style.color = "#e53935"; // rojo
-        } else {
-          resultado.style.color = "#333"; // color neutro
-        }
-      })
-      .catch(error => {
-        resultado.textContent = "❌ Error consultando el estado. Intenta nuevamente.";
-        resultado.style.color = "#cc0000";
-        console.error(error);
-      });
+  if (!numero) {
+    resultado.innerHTML = `
+      <div style="background:#fff3cd; color:#856404; padding:12px; border-radius:8px; border:1px solid #ffeeba;">
+        ⚠️ Por favor ingresa un número de orden válido.
+      </div>`;
+    return;
   }
+
+  resultado.innerHTML = `
+    <div style="background:#e2e3e5; color:#41464b; padding:12px; border-radius:8px; border:1px solid #d6d8db;">
+      ⏳ Consultando estado...
+    </div>`;
+
+  fetch(`https://script.google.com/macros/s/AKfycbyp4czl1MxQfI19yPDPqgmzunRObF-hGdP6codijlv6tgHRvWVm46upD52TgX9kb-WrVQ/exec?numeroOrden=${numero}`)
+    .then(res => res.text())
+    .then(texto => {
+      let colorFondo = "#f0f0f0";
+      let colorTexto = "#333";
+      let borde = "#ccc";
+
+      if (texto.includes("Listo")) {
+        colorFondo = "#d4edda";
+        colorTexto = "#155724";
+        borde = "#c3e6cb";
+        texto = `🎉 <strong>Tu torta ya está lista para entrega.</strong>`;
+      } else if (texto.includes("En proceso")) {
+        colorFondo = "#fff8e1";
+        colorTexto = "#8a6d3b";
+        borde = "#ffe0a3";
+        texto = `🕒 <strong>Tu torta sigue en preparación.</strong>`;
+      } else if (texto.includes("Cancelado")) {
+        colorFondo = "#f8d7da";
+        colorTexto = "#721c24";
+        borde = "#f5c6cb";
+        texto = `❌ <strong>Tu pedido fue cancelado.</strong>`;
+      } else if (texto.includes("No encontrado")) {
+        colorFondo = "#e2e3e5";
+        colorTexto = "#41464b";
+        borde = "#d6d8db";
+        texto = `🔍 <strong>No encontramos ninguna orden con ese número.</strong>`;
+      }
+
+      resultado.innerHTML = `
+        <div style="background:${colorFondo}; color:${colorTexto}; padding:12px; border-radius:8px; border:1px solid ${borde};">
+          ${texto}
+        </div>`;
+    })
+    .catch(error => {
+      resultado.innerHTML = `
+        <div style="background:#f8d7da; color:#721c24; padding:12px; border-radius:8px; border:1px solid #f5c6cb;">
+          ❌ Error consultando el estado. Intenta nuevamente.
+        </div>`;
+      console.error(error);
+    });
+}
 </script>
 
    <script>
