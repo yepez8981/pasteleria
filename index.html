@@ -1018,9 +1018,16 @@ const metodoContactoTexto = metodoSeleccionado === 'whatsapp'
         borde = "#ffe0a3";
         texto = `🕒 <strong>Su torta sigue en preparación.</strong>`;
       } 
-
-RESTAURAR 1020 
-      
+else if (texto.includes("Cancelado")) {
+  const motivo = datos[i]["MotivoCancelacion"] || "No especificado";
+  colorFondo = "#f8d7da";
+  colorTexto = "#721c24";
+  borde = "#f5c6cb";
+  texto = `❌ <strong>Su pedido ${numero} fue cancelado.</strong><br><br>
+  📝 Motivo: <em>${motivo}</em><br><br>
+  📞 Por favor comuníquese con nosotros para más información.<br><br>
+  <a href="https://wa.me/573027697351" target="_blank" style="color: #721c24; text-decoration: underline;">📲 Contactar por WhatsApp</a>`;
+}
       resultado.innerHTML = `
         <div style="background:${colorFondo}; color:${colorTexto}; padding:12px; border-radius:8px; border:1px solid ${borde};">
           ${texto}
