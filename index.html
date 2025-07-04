@@ -975,7 +975,13 @@ const metodoContactoTexto = metodoSeleccionado === 'whatsapp'
   });
 </script>
 
-    <!-- SECCIÓN DE CONSULTA DE ESTADO -->
+<div id="formularioPrincipal">
+  <form id="formPedido" ... >
+    <!-- Todo el contenido original del formulario aquí -->
+  </form>
+</div>
+
+<!-- SECCIÓN DE CONSULTA DE ESTADO -->
 <div id="seccionConsulta" style="display: none; margin-top: 50px; text-align:center;">
   <h3>🔎 Consultar estado de tu pedido</h3>
   <input type="text" id="numeroConsulta" placeholder="Ej: 20250703-023" style="padding: 8px; font-size: 16px;">
@@ -986,14 +992,14 @@ const metodoContactoTexto = metodoSeleccionado === 'whatsapp'
 
 <script>
   function mostrarConsultaPedido() {
-    document.getElementById("formPedido").style.display = "none";
+    document.getElementById("formularioPrincipal").style.display = "none";
     document.getElementById("seccionConsulta").style.display = "block";
     document.getElementById("btnFlotanteEstado").style.display = "none";
     document.querySelector(".whatsapp-button").style.display = "none";
   }
 
   function volverFormulario() {
-    document.getElementById("formPedido").style.display = "block";
+    document.getElementById("formularioPrincipal").style.display = "block";
     document.getElementById("seccionConsulta").style.display = "none";
     document.getElementById("btnFlotanteEstado").style.display = "block";
     document.querySelector(".whatsapp-button").style.display = "flex";
@@ -1022,6 +1028,7 @@ const metodoContactoTexto = metodoSeleccionado === 'whatsapp'
   }
 </script>
 
-    
 </body>
 </html>
+
+    
