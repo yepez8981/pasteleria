@@ -943,22 +943,18 @@ const metodoContactoTexto = metodoSeleccionado === 'whatsapp'
     if (entregaSelect) entregaSelect.dispatchEvent(new Event('change'));
     
   });
-  const formaSelect = document.getElementById('forma'); 
-  const infoTamanoPastelDiv = document.getElementById('infoTamanoPastel'); 
-  if (formaSelect && infoTamanoPastelDiv) {
-    formaSelect.addEventListener('change', function () {
-      const currentLang = idiomaSelect ? (idiomaSelect.value || 'es') : 'es';
-      const T = translations[currentLang] || translations.es;
-      if (this.value === 'Circular 8"') {
-        infoTamanoPastelDiv.innerHTML = T.infoCircular8 || "🎉 ¡Genial elección! El tamaño de 8” es perfecto para reuniones familiares o con amigos. Rinde aproximadamente para 11 deliciosas porciones.";
-        infoTamanoPastelDiv.style.display = 'block';
-      } else {
-        infoTamanoPastelDiv.style.display = 'none';
-        infoTamanoPastelDiv.innerHTML = '';
-      }
-    });
-    formaSelect.dispatchEvent(new Event('change'));
-  }
+const tamanoVitrinaSelect = document.getElementById('tamanoVitrina');
+const infoTamanoVitrinaDiv = document.getElementById('infoTamanoVitrina');
+
+if (tamanoVitrinaSelect && infoTamanoVitrinaDiv) {
+  tamanoVitrinaSelect.addEventListener('change', function () {
+    if (this.value === '8"') {
+      infoTamanoVitrinaDiv.innerHTML = "🎉 ¡Genial elección! El tamaño de 8” es perfecto para reuniones familiares o con amigos. Rinde aproximadamente para 11 deliciosas porciones.";
+      infoTamanoVitrinaDiv.style.display = 'block';
+    } else {
+      infoTamanoVitrinaDiv.style.display = 'none';
+      infoTamanoVitrinaDiv.innerHTML = '';
+    }
   });
 
   // Mostrar mensaje si ya estaba seleccionado al cargar
@@ -1120,6 +1116,9 @@ function consultarEstado() {
   <img src="https://cdn-icons-png.flaticon.com/512/124/124034.png" alt="WhatsApp">
   Escríbenos
 </a>
+
+</body>
+</html>
 
 </body>
 </html>
