@@ -86,16 +86,15 @@ input[type="time"] {
       </select>
 
       <label for="tamanoVitrina" data-translate-key="labelTamanoVitrina">Tamaño:</label>
-      <select id="tamanoVitrina" name="tamanoVitrina">
-        <option value="" data-translate-key="optionTamanoVitrinaDefault">--</option>
-        <option value="6\"">6"</option>
-        <option value="8\"">8"</option>
-        <option value="10\"">10"</option>
-      </select>
-      
- <!-- Mensaje para tamaños de tortas de vitrina personalizado -->
-<div id="infoTamanoVitrina" style="display: none; margin-top: 8px; font-size: 0.9em; color: #2E7D32; padding: 8px; background-color: #E8F5E9; border-radius: 4px;"></div>
 
+      <select id="tamanoVitrina" name="tamanoVitrina">
+  <option value="">--</option>
+  <option value='6"'>6"</option>
+  <option value='8"'>8"</option>
+  <option value='10"'>10"</option>
+</select>
+
+<div id="infoTamanoVitrina" style="display: none; margin-top: 8px; font-size: 0.9em; color: #2E7D32; padding: 8px; background-color: #E8F5E9; border-radius: 4px;"></div>
 
       <label for="fecha" data-translate-key="labelFechaPedido">🗓 Fecha Pedido:</label>
       <input type="date" name="fecha" id="fecha">
@@ -949,14 +948,19 @@ const infoTamanoVitrinaDiv = document.getElementById('infoTamanoVitrina');
 
 if (tamanoVitrinaSelect && infoTamanoVitrinaDiv) {
   tamanoVitrinaSelect.addEventListener('change', function () {
-    const valorSeleccionado = this.value.replace(/"/g, '').replace(/&quot;/g, '').trim();
-    if (valorSeleccionado === '8') {
+    const valor = this.value.trim();
+    if (valor === '8"') {
       infoTamanoVitrinaDiv.innerHTML = "🎉 ¡Genial elección! El tamaño de 8” es perfecto para reuniones familiares o con amigos. Rinde aproximadamente para 11 deliciosas porciones.";
       infoTamanoVitrinaDiv.style.display = 'block';
     } else {
       infoTamanoVitrinaDiv.style.display = 'none';
       infoTamanoVitrinaDiv.innerHTML = '';
     }
+  });
+
+  tamanoVitrinaSelect.dispatchEvent(new Event('change'));
+}
+
   });
 
   // Ejecutar una vez al cargar
