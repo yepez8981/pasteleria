@@ -253,17 +253,15 @@ input[type="time"] {
     e.preventDefault(); // No permite que se abra el selector de imagenes
   });
 </script>
-
     
 <!-- BOTÓN FLOTANTE DE CONSULTAR PEDIDO -->
-<a id="btnFlotanteEstado" onclick="mostrarConsultaPedido()" class="whatsapp-button" style="background-color:#4CAF50; bottom: 90px;">
+<a id="btnFlotanteEstado"
+   onclick="mostrarConsultaPedido()"
+   class="whatsapp-button"
+   style="background-color: #A8E6CF; color: #2c3e50; bottom: 90px; border-radius: 50px; padding: 12px 20px; font-weight: bold;">
   📦 Estado Pedido
 </a>
-       
-    <a class="whatsapp-button" href="https://wa.me/573027697351?text=Hola%2C%20necesito%20ayuda%20con%20mi%20pedido%20de%20pastel" target="_blank">
-  <img src="https://cdn-icons-png.flaticon.com/512/220/220236.png" alt="WhatsApp"> <span data-translate-key="textNecesitasAyuda"></span>
-</a>
-        
+             
 <script>
   console.log("INICIO DEL SCRIPT TAG EJECUTADO"); 
 
@@ -973,59 +971,6 @@ const metodoContactoTexto = metodoSeleccionado === 'whatsapp'
       });
     }
   });
-</script>
-
-<div id="formularioPrincipal">
-  <form id="formPedido" ... >
-    <!-- Todo el contenido original del formulario aquí -->
-  </form>
-</div>
-
-<!-- SECCIÓN DE CONSULTA DE ESTADO -->
-<div id="seccionConsulta" style="display: none; margin-top: 50px; text-align:center;">
-  <h3>🔎 Consultar estado de tu pedido</h3>
-  <input type="text" id="numeroConsulta" placeholder="Ej: 20250703-023" style="padding: 8px; font-size: 16px;">
-  <button onclick="consultarEstado()" style="margin-left: 10px;">Consultar</button>
-  <p id="resultadoEstado" style="margin-top: 15px; color: #444;"></p>
-  <button onclick="volverFormulario()" style="margin-top: 20px;">⬅️ Volver al formulario</button>
-</div>
-
-<script>
-  function mostrarConsultaPedido() {
-    document.getElementById("formularioPrincipal").style.display = "none";
-    document.getElementById("seccionConsulta").style.display = "block";
-    document.getElementById("btnFlotanteEstado").style.display = "none";
-    document.querySelector(".whatsapp-button").style.display = "none";
-  }
-
-  function volverFormulario() {
-    document.getElementById("formularioPrincipal").style.display = "block";
-    document.getElementById("seccionConsulta").style.display = "none";
-    document.getElementById("btnFlotanteEstado").style.display = "block";
-    document.querySelector(".whatsapp-button").style.display = "flex";
-  }
-
-  function consultarEstado() {
-    const numero = document.getElementById("numeroConsulta").value.trim();
-    const resultado = document.getElementById("resultadoEstado");
-
-    if (!numero) {
-      resultado.textContent = "⚠️ Por favor ingresa un número de orden.";
-      return;
-    }
-
-    resultado.textContent = "⏳ Consultando estado...";
-
-    fetch(`https://script.google.com/macros/s/AKfycbyp4czl1MxQfI19yPDPqgmzunRObF-hGdP6codijlv6tgHRvWVm46upD52TgX9kb-WrVQ/exec?numeroOrden=${numero}`)
-      .then(res => res.text())
-      .then(texto => {
-        resultado.textContent = texto;
-      })
-      .catch(error => {
-        resultado.textContent = "❌ Error consultando el estado. Intenta nuevamente.";
-        console.error(error);
-      });
-  }
 </script>
 
 </body>
