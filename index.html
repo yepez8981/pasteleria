@@ -974,28 +974,26 @@ if (tamanoVitrinaSelect && infoTamanoVitrinaDiv) {
 </script>
     
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const btnEnviar = document.getElementById('btnEnviar');
-
-    if (btnEnviar) {
-      btnEnviar.addEventListener('click', function () {
-        gtag('event', 'enviar_pedido', {
-          'event_category': 'Formulario',
-          'event_label': 'Botón Enviar Pedido',
-          'value': 1
-        });
+document.addEventListener('DOMContentLoaded', function () {
+  // 🎯 EVENTO de botón Enviar
+  const btnEnviar = document.getElementById('btnEnviar');
+  if (btnEnviar) {
+    btnEnviar.addEventListener('click', function () {
+      gtag('event', 'enviar_pedido', {
+        'event_category': 'Formulario',
+        'event_label': 'Botón Enviar Pedido',
+        'value': 1
       });
-    }
-  });
-  document.addEventListener("DOMContentLoaded", function () {
-  formaSelect = document.getElementById('forma'); 
-  infoTamanoPastelDiv = document.getElementById('infoTamanoPastel'); 
+    });
+  }
 
+  // 🎂 PASTEL PERSONALIZADO (forma)
+  const formaSelect = document.getElementById('forma'); 
+  const infoTamanoPastelDiv = document.getElementById('infoTamanoPastel'); 
   if (formaSelect && infoTamanoPastelDiv) {
-    formaSelect.addEventListener('change', function() {
+    formaSelect.addEventListener('change', function () {
       const currentLang = idiomaSelect ? (idiomaSelect.value || 'es') : 'es';
       const T = translations[currentLang] || translations.es;
-
       if (this.value === 'Circular 8"') {
         infoTamanoPastelDiv.innerHTML = T.infoCircular8 || "🎉 ¡Genial elección! El tamaño de 8” es perfecto para reuniones familiares o con amigos. Rinde aproximadamente para 11 deliciosas porciones.";
         infoTamanoPastelDiv.style.display = 'block';
@@ -1007,14 +1005,14 @@ if (tamanoVitrinaSelect && infoTamanoVitrinaDiv) {
     formaSelect.dispatchEvent(new Event('change'));
   }
 
-  // ✅ Este bloque debe ir dentro del mismo DOMContentLoaded:
+  // 🍰 VITRINA (tamaño)
   const tamanoVitrinaSelect = document.getElementById('tamanoVitrina');
   const infoTamanoVitrinaDiv = document.getElementById('infoTamanoVitrina');
 
   if (tamanoVitrinaSelect && infoTamanoVitrinaDiv) {
     tamanoVitrinaSelect.addEventListener('change', function () {
-      const valorSeleccionado = this.value.replace(/"/g, '').replace(/&quot;/g, '').trim();
-      if (valorSeleccionado === '8') {
+      const valor = this.value.replace(/"/g, '').replace(/&quot;/g, '').trim();
+      if (valor === '8') {
         infoTamanoVitrinaDiv.innerHTML = "🎉 ¡Genial elección! El tamaño de 8” es perfecto para reuniones familiares o con amigos. Rinde aproximadamente para 11 deliciosas porciones.";
         infoTamanoVitrinaDiv.style.display = 'block';
       } else {
@@ -1022,10 +1020,10 @@ if (tamanoVitrinaSelect && infoTamanoVitrinaDiv) {
         infoTamanoVitrinaDiv.innerHTML = '';
       }
     });
-
     tamanoVitrinaSelect.dispatchEvent(new Event('change'));
   }
 
+  // Otros selectores
   if (modeloSelect) modeloSelect.dispatchEvent(new Event('change'));
   if (rellenosSelect) rellenosSelect.dispatchEvent(new Event('change'));
   if (entregaSelect) entregaSelect.dispatchEvent(new Event('change'));
