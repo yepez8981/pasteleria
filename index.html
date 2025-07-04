@@ -847,7 +847,99 @@ const metodoContactoTexto = metodoSeleccionado === 'whatsapp'
 
       
   
-      </script>
+      fetch('https://script.google.com/macros/s/AKfycbxhMJmPJG8_Lkcn5yMdEW9_sldAHcWgNmt6OugicspTbY9WaJZlj7A35x4YZDi6MGq34g/exec', {
+        method: 'POST',
+        body: formDataToSubmit
+      })
+      .then(response => response.json()) 
+      .then(result => {
+        if (result.status === "success") {
+          console.log("Respuesta del Apps Script:", result);
+          let mensajeConfirmacionEspecifico = T.alertConfirmacionWhatsApp; 
+          if (pedidoParaResumenLocal.metodoContacto === 'correo') { 
+            mensajeConfirmacionEspecifico = T.alertConfirmacionCorreo || "✅ Te confirmaremos por correo electrónico en breve.";
+          }
+          alert(`${T.alertPedidoExito}\n${T.alertNumeroOrden}${numeroOrden}\n${T.alertTuPedidoEs}\n${resumen}\n${mensajeConfirmacionEspecifico}`);
+
+          const mensajeWhatsApp = `${T.whatsappHolaPedidoWeb}%0A${T.whatsappMiNumeroOrdenEs} *${numeroOrden}*%0A${T.whatsappMiPedidoEs}%0A${resumen.replace(/\n/g, '%0A')}%0A${T.whatsappPorFavorConfirmen}`;
+          const telefonoWhatsApp = '573027697351';
+          window.open(`https://wa.me/${telefonoWhatsApp}?text=${mensajeWhatsApp}`, '_blank');
+
+          form.reset();
+          if (preview) {
+              preview.src = '';
+              preview.style.display = 'none';
+          }
+          if (direccionSection) direccionSection.style.display = 'none';
+          if (modeloSelect) modeloSelect.dispatchEvent(new Event('change')); 
+          if (rellenosSelect) rellenosSelect.dispatchEvent(new Event('change'));
+        } else {
+          console.error("Error del Apps Script:", result.message, result.details || '');
+          alert(T.alertErrorPedido + (result.message ? `\nDetalle: ${result.message}` : ''));
+        }
+      })
+      .catch(error => {
+        console.error("Error en fetch:", error);
+        alert(T.alertErrorPedido);
+      });
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log("DOM completamente cargado y procesado."); 
+
+    const campoFechaPedido = document.getElementById('fecha');
+    if (campoFechaPedido) {
+      const hoy = new Date();
+      const anio = hoy.getFullYear();
+      const mes = String(hoy.getMonth() + 1).padStart(2, '0'); 
+      const dia = String(hoy.getDate()).padStart(2, '0');
+      const fechaFormateada = `${anio}-${mes}-${dia}`;
+      campoFechaPedido.value = fechaFormateada;
+      campoFechaPedido.readOnly = true;
+    }
+
+    if (idiomaSelect) { // Asegurarse que idiomaSelect existe
+        cambiarIdioma(idiomaSelect.value || 'es');
+    }
+    
+    formaSelect = document.getElementById('forma'); 
+    infoTamanoPastelDiv = document.getElementById('infoTamanoPastel'); 
+
+    console.log("formaSelect encontrado (DOMContentLoaded):", formaSelect); 
+    console.log("infoTamanoPastelDiv encontrado (DOMContentLoaded):", infoTamanoPastelDiv); 
+    
+    if (formaSelect && infoTamanoPastelDiv) { 
+      console.log("Adjuntando listener a formaSelect (DOMContentLoaded)."); 
+      formaSelect.addEventListener('change', function() {
+        console.log("Forma select cambió. Valor:", this.value); 
+        const currentLang = idiomaSelect ? (idiomaSelect.value || 'es') : 'es';
+        const T = translations[currentLang] || translations.es;
+        // console.log("Idioma actual:", currentLang, "Traducción para infoCircular8:", T.infoCircular8); 
+
+        if (this.value === 'Circular 8"') {
+          // console.log("Condición Circular 8\" CUMPLIDA"); 
+          infoTamanoPastelDiv.innerHTML = T.infoCircular8 || "Mensaje no disponible (fallback).";
+          infoTamanoPastelDiv.style.display = 'block';
+          // console.log("Mensaje DIV display:", infoTamanoPastelDiv.style.display, "HTML:", infoTamanoPastelDiv.innerHTML); 
+        } else {
+          // console.log("Condición Circular 8\" NO CUMPLIDA, ocultando mensaje."); 
+          infoTamanoPastelDiv.style.display = 'none';
+          infoTamanoPastelDiv.innerHTML = '';
+        }
+      });
+      formaSelect.dispatchEvent(new Event('change')); 
+    } else {
+      console.error("Error: No se pudo encontrar formaSelect o infoTamanoPastelDiv en DOMContentLoaded.");
+    }
+
+    if (modeloSelect) modeloSelect.dispatchEvent(new Event('change'));
+    if (rellenosSelect) rellenosSelect.dispatchEvent(new Event('change'));
+    if (entregaSelect) entregaSelect.dispatchEvent(new Event('change'));
+    
+  });
+
+</script>
 
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-S67VHFS5MK"></script>
@@ -959,23 +1051,6 @@ const metodoContactoTexto = metodoSeleccionado === 'whatsapp'
       alert("🚫 Por favor, completa todos los campos necesarios antes de enviar.");
     }
   });
-</script>
-
-<script>
-  function copiarOrden() {
-    const texto = document.getElementById("ordenGenerada").textContent;
-    navigator.clipboard.writeText(texto).then(() => {
-      alert("✅ Número de orden copiado al portapapeles.");
-    });
-  }
-
-  function irAConsulta() {
-    document.getElementById("modalConfirmacion").style.display = "none";
-    const orden = document.getElementById("ordenGenerada").textContent;
-    document.getElementById("numeroConsulta").value = orden;
-    document.getElementById("numeroConsulta").scrollIntoView({ behavior: "smooth" });
-    consultarEstado(); // ejecuta la consulta directa
-  }
 </script>
 
 </body>
