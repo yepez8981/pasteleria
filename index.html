@@ -256,62 +256,10 @@ input[type="time"] {
 
     
 <!-- BOTÓN FLOTANTE DE CONSULTAR PEDIDO -->
-<a href="#" id="btnFlotanteEstado" onclick="mostrarConsultaPedido()" 
-   style="position: fixed; bottom: 90px; right: 20px; background-color: #4CAF50; color: white; 
-          padding: 14px 18px; border-radius: 50px; box-shadow: 0 4px 6px rgba(0,0,0,0.2); 
-          font-size: 16px; z-index: 9999; text-decoration: none;">
+<a id="btnFlotanteEstado" onclick="mostrarConsultaPedido()" class="whatsapp-button" style="background-color:#4CAF50; bottom: 90px;">
   📦 Estado Pedido
 </a>
-
-<!-- SECCIÓN DE CONSULTA DE ESTADO -->
-<div id="seccionConsulta" style="display: none; margin-top: 50px; text-align:center;">
-  <h3>🔎 Consultar estado de tu pedido</h3>
-  <input type="text" id="numeroConsulta" placeholder="Ej: 20250703-023" style="padding: 8px; font-size: 16px;">
-  <button onclick="consultarEstado()" style="margin-left: 10px;">Consultar</button>
-  <p id="resultadoEstado" style="margin-top: 15px; color: #444;"></p>
-  <button onclick="volverFormulario()" style="margin-top: 20px;">⬅️ Volver al formulario</button>
-</div>
-
-    
-<script>
-  function mostrarConsultaPedido() {
-    document.getElementById("formPedido").style.display = "none";
-    document.getElementById("btnEnviar").style.display = "none";
-    document.getElementById("seccionConsulta").style.display = "block";
-    document.getElementById("btnFlotanteEstado").style.display = "none"; // Oculta botón flotante
-  }
-
-  function volverFormulario() {
-    document.getElementById("formPedido").style.display = "block";
-    document.getElementById("btnEnviar").style.display = "inline-block";
-    document.getElementById("seccionConsulta").style.display = "none";
-    document.getElementById("btnFlotanteEstado").style.display = "block"; // Muestra botón flotante
-  }
-
-  function consultarEstado() {
-    const numero = document.getElementById("numeroConsulta").value.trim();
-    const resultado = document.getElementById("resultadoEstado");
-
-    if (!numero) {
-      resultado.textContent = "⚠️ Por favor ingresa un número de orden.";
-      return;
-    }
-
-    resultado.textContent = "⏳ Consultando estado...";
-
-    fetch(`https://script.google.com/macros/s/AKfycbyp4czl1MxQfI19yPDPqgmzunRObF-hGdP6codijlv6tgHRvWVm46upD52TgX9kb-WrVQ/exec?numeroOrden=${numero}`)
-      .then(res => res.text())
-      .then(texto => {
-        resultado.textContent = texto;
-      })
-      .catch(error => {
-        resultado.textContent = "❌ Error consultando el estado. Intenta nuevamente.";
-        console.error(error);
-      });
-  }
-</script>
-
-    
+       
     <a class="whatsapp-button" href="https://wa.me/573027697351?text=Hola%2C%20necesito%20ayuda%20con%20mi%20pedido%20de%20pastel" target="_blank">
   <img src="https://cdn-icons-png.flaticon.com/512/220/220236.png" alt="WhatsApp"> <span data-translate-key="textNecesitasAyuda"></span>
 </a>
@@ -1025,6 +973,53 @@ const metodoContactoTexto = metodoSeleccionado === 'whatsapp'
       });
     }
   });
+</script>
+
+    <!-- SECCIÓN DE CONSULTA DE ESTADO -->
+<div id="seccionConsulta" style="display: none; margin-top: 50px; text-align:center;">
+  <h3>🔎 Consultar estado de tu pedido</h3>
+  <input type="text" id="numeroConsulta" placeholder="Ej: 20250703-023" style="padding: 8px; font-size: 16px;">
+  <button onclick="consultarEstado()" style="margin-left: 10px;">Consultar</button>
+  <p id="resultadoEstado" style="margin-top: 15px; color: #444;"></p>
+  <button onclick="volverFormulario()" style="margin-top: 20px;">⬅️ Volver al formulario</button>
+</div>
+
+<script>
+  function mostrarConsultaPedido() {
+    document.getElementById("formPedido").style.display = "none";
+    document.getElementById("seccionConsulta").style.display = "block";
+    document.getElementById("btnFlotanteEstado").style.display = "none";
+    document.querySelector(".whatsapp-button").style.display = "none";
+  }
+
+  function volverFormulario() {
+    document.getElementById("formPedido").style.display = "block";
+    document.getElementById("seccionConsulta").style.display = "none";
+    document.getElementById("btnFlotanteEstado").style.display = "block";
+    document.querySelector(".whatsapp-button").style.display = "flex";
+  }
+
+  function consultarEstado() {
+    const numero = document.getElementById("numeroConsulta").value.trim();
+    const resultado = document.getElementById("resultadoEstado");
+
+    if (!numero) {
+      resultado.textContent = "⚠️ Por favor ingresa un número de orden.";
+      return;
+    }
+
+    resultado.textContent = "⏳ Consultando estado...";
+
+    fetch(`https://script.google.com/macros/s/AKfycbyp4czl1MxQfI19yPDPqgmzunRObF-hGdP6codijlv6tgHRvWVm46upD52TgX9kb-WrVQ/exec?numeroOrden=${numero}`)
+      .then(res => res.text())
+      .then(texto => {
+        resultado.textContent = texto;
+      })
+      .catch(error => {
+        resultado.textContent = "❌ Error consultando el estado. Intenta nuevamente.";
+        console.error(error);
+      });
+  }
 </script>
 
     
