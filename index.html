@@ -1000,8 +1000,8 @@ function consultarEstado() {
       ⏳ Consultando estado...
     </div>`;
 
-  fetch(`https://script.google.com/macros/s/AKfycbyp4czl1MxQfI19yPDPqgmzunRObF-hGdP6codijlv6tgHRvWVm46upD52TgX9kb-WrVQ/exec?numeroOrden=${numero}`)
-    .then(res => res.json())
+fetch(`https://script.google.com/macros/s/AKfycbyVikCXBz4SgDwlkOd-qsNTQZ08FRI-e9BMlbt2eAacp1MpjF1l36I05fctbb8l8qXzxQ/exec?numeroOrden=${numero}`)
+  .then(res => res.json())
     .then(datos => {
       let colorFondo = "#f0f0f0";
       let colorTexto = "#333";
