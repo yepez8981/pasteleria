@@ -260,60 +260,65 @@ input[type="time"] {
   <input type="text" id="numeroConsulta" placeholder="Ej: 20250703-023"
          style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; margin-bottom: 10px;">
 
-  <button onclick="consultarEstado()" style="background-color: #28a745; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
-    Consultar estado
-  </button>
+<!-- BOTÓN FLOTANTE DE CONSULTAR PEDIDO -->
+<a href="#" id="btnFlotanteEstado" onclick="mostrarConsultaPedido()" 
+   style="position: fixed; bottom: 90px; right: 20px; background-color: #4CAF50; color: white; 
+          padding: 14px 18px; border-radius: 50px; box-shadow: 0 4px 6px rgba(0,0,0,0.2); 
+          font-size: 16px; z-index: 9999; text-decoration: none;">
+  📦 Estado Pedido
+</a>
 
-  <div id="resultadoEstado" style="margin-top: 15px; padding: 12px; border-left: 5px solid #ccc; border-radius: 5px; display: none;">
-    <strong>Estado:</strong> <span id="estadoTexto">Esperando...</span>
-  </div>
+    <!-- SECCIÓN DE CONSULTA DE PEDIDO -->
+<div id="seccionConsulta" style="display: none; margin-top: 50px;">
+  <h3>🔎 Consultar estado de tu pedido</h3>
+  <label for="numeroConsulta">Número de orden:</label>
+  <input type="text" id="numeroConsulta" placeholder="Ej: 20250703-023">
+  <button onclick="consultarEstado()">Consultar</button>
+  <p id="resultadoEstado" style="margin-top: 10px; color: #444;"></p>
+  <button onclick="volverFormulario()" style="margin-top: 15px;">⬅️ Volver al formulario</button>
 </div>
 
 <script>
+  function mostrarConsultaPedido() {
+    document.getElementById("formPedido").style.display = "none";
+    document.getElementById("btnEnviar").style.display = "none";
+    document.getElementById("seccionConsulta").style.display = "block";
+    document.getElementById("btnFlotanteEstado").style.display = "none"; // Oculta botón flotante
+  }
+
+  function volverFormulario() {
+    document.getElementById("formPedido").style.display = "block";
+    document.getElementById("btnEnviar").style.display = "inline-block";
+    document.getElementById("seccionConsulta").style.display = "none";
+    document.getElementById("btnFlotanteEstado").style.display = "block"; // Muestra botón flotante
+  }
+
   function consultarEstado() {
     const numero = document.getElementById("numeroConsulta").value.trim();
     const resultado = document.getElementById("resultadoEstado");
-    const estadoTexto = document.getElementById("estadoTexto");
 
     if (!numero) {
-      estadoTexto.textContent = "⚠️ Por favor ingresa un número de orden.";
-      resultado.style.display = "block";
-      resultado.style.borderLeftColor = "#ffc107"; // Amarillo
+      resultado.textContent = "⚠️ Por favor ingresa un número de orden.";
       return;
     }
 
-    estadoTexto.textContent = "⏳ Consultando estado...";
-    resultado.style.display = "block";
-    resultado.style.borderLeftColor = "#007bff"; // Azul
-    fetch(`https://script.google.com/macros/s/AKfycbyp4czl1MxQfI19yPDPqgmzunRObF-hGdP6codijlv6tgHRvWVm46upD52TgX9kb-WrVQ/exec?numeroOrden=${numero}`)
+    resultado.textContent = "⏳ Consultando estado...";
 
+    fetch(`https://script.google.com/macros/s/AKfycbyp4czl1MxQfI19yPDPqgmzunRObF-hGdP6codijlv6tgHRvWVm46upD52TgX9kb-WrVQ/exec?numeroOrden=${numero}`)
       .then(res => res.text())
       .then(texto => {
-        estadoTexto.textContent = texto;
-
-        // Ajustar color según estado
-        const textoLimpio = texto.toLowerCase();
-        if (textoLimpio.includes("entregado")) {
-          resultado.style.borderLeftColor = "#28a745"; // Verde
-        } else if (textoLimpio.includes("listo")) {
-          resultado.style.borderLeftColor = "#17a2b8"; // Celeste
-        } else if (textoLimpio.includes("pendiente")) {
-          resultado.style.borderLeftColor = "#ffc107"; // Amarillo
-        } else {
-          resultado.style.borderLeftColor = "#dc3545"; // Rojo (error u otro)
-        }
+        resultado.textContent = texto;
       })
       .catch(error => {
-        estadoTexto.textContent = "❌ Error consultando el estado. Intenta nuevamente.";
-        resultado.style.borderLeftColor = "#dc3545"; // Rojo
+        resultado.textContent = "❌ Error consultando el estado. Intenta nuevamente.";
         console.error(error);
       });
   }
 </script>
 
-
+    
     <a class="whatsapp-button" href="https://wa.me/573027697351?text=Hola%2C%20necesito%20ayuda%20con%20mi%20pedido%20de%20pastel" target="_blank">
-  <img src="https://cdn-icons-png.flaticon.com/512/220/220236.png" alt="WhatsApp"> <span data-translate-key="textNecesitasAyuda">¿Necesitas ayuda?</span>
+  <img src="https://cdn-icons-png.flaticon.com/512/220/220236.png" alt="WhatsApp"> <span data-translate-key="textNecesitasAyuda"></span>
 </a>
         
 <script>
