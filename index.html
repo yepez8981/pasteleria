@@ -126,19 +126,20 @@ input[type="time"] {
       </select>
 
 
-            
-      <div id="infoTamanoPastel" style="display: none; margin-top: 8px; font-size: 0.9em; color: #2E7D32; padding: 8px; background-color: #E8F5E9; border-radius: 4px;"></div>
 <label for="tipoMasa" data-translate-key="labelTipoPastel">Tipo de Pastel:</label>
-      <select id="tipoMasa" name="tipoMasa">
-        <option value="Tres Leches Vainilla" data-translate-key="optionTresLechesVainilla">Tres Leches / Vainilla</option>
-        <option value="Tres Leches Chocolate" data-translate-key="optionTresLechesChocolate">Tres Leches / Chocolate</option>
-        <option value="Vainilla seco" data-translate-key="optionVainillaSeco">Vainilla seco</option>
-        <option value="Chocolate seco" data-translate-key="optionChocolateSeco">Chocolate seco</option>
-        <option value="Marmolado" data-translate-key="optionMarmolado">Marmolado</option>
-        <option value="Mocca" data-translate-key="optionMoccaPersonalizado">Mocca</option>
-        <option value="Maracuya" data-translate-key="optionMaracuya">Maracuyá</option>
-        <option value="Otro" data-translate-key="optionOtroTipoPastel">Otro</option>
-      </select>
+<select id="tipoMasa" name="tipoMasa">
+  <option value="Tres Leches Vainilla" data-translate-key="optionTresLechesVainilla">Tres Leches / Vainilla</option>
+  <option value="Tres Leches Chocolate" data-translate-key="optionTresLechesChocolate">Tres Leches / Chocolate</option>
+  <option value="Vainilla seco" data-translate-key="optionVainillaSeco">Vainilla seco</option>
+  <option value="Chocolate seco" data-translate-key="optionChocolateSeco">Chocolate seco</option>
+  <option value="Marmolado" data-translate-key="optionMarmolado">Marmolado</option>
+  <option value="Mocca" data-translate-key="optionMoccaPersonalizado">Mocca</option>
+  <option value="Maracuya" data-translate-key="optionMaracuya">Maracuyá</option>
+  <option value="Otro" data-translate-key="optionOtroTipoPastel">Otro</option>
+</select>
+<!--mostrar el mensaje dinámico -->
+<div id="infoTipoMasa" style="display: none; margin-top: 8px; font-size: 0.9em; color: #6D4C41; padding: 8px; background-color: #FBE9E7; border-radius: 4px;"></div>
+
 
       <label for="capas" data-translate-key="labelCapas">Capas:</label>
       <input type="number" name="capas" min="1" max="5" placeholder="Ej: 2" data-translate-key="placeholderCapas">
@@ -265,6 +266,10 @@ input[type="time"] {
 
   const translations = {
   es: {
+    infoTresLeches: "🎂 ¡Mmmm! Nuestro pastel Tres Leches es uno de los favoritos, suave, jugoso y delicioso. ¡Va a encantar a todos!",
+    infoMocca: "☕🍫 ¡El sabor intenso del café y el chocolate! Nuestra torta Mocca es perfecta para los que buscan algo sofisticado y delicioso.",
+    infoMarmolado: "🍰 ¡Un clásico! El pastel marmolado combina lo mejor del chocolate y la vainilla en cada bocado.",
+    infoTresLeches: "🎂 ¡Mmmm! Nuestro pastel Tres Leches es uno de los favoritos, suave, jugoso y delicioso. ¡Va a encantar a todos!",
     pageTitle: "Manolo’s Bakery",
     formHeading: "🎂Manolo’s Bakery🎂",
     labelIdioma: "🌐 Idioma:",
@@ -375,8 +380,23 @@ input[type="time"] {
     errorRecogidaAnticipacion: "El pedido debe realizarse con al menos 12 horas de anticipación. Por favor, ajusta la fecha/hora de recogida o contáctanos para pedidos urgentes.",
     alertConfirmacionCorreo: "✅ Te confirmaremos por correo electrónico en breve.",
     infoCircular8: "¡Genial elección! El tamaño de 8” es perfecto para reuniones familiares o con amigos. Rinde aproximadamente para 11 deliciosas porciones."
+    consultaTitulo: "Verifica si su torta está lista para entrega",
+placeholderConsulta: "Ej: 20250703-023",
+botonConsultar: "🔍 Consultar",
+mensajeSinNumero: "⚠️ Por favor ingresa un número de orden válido.",
+mensajeConsultando: "⏳ Consultando estado...",
+estadoListo: "🎉 <strong>Su torta ya está lista para entrega.</strong>",
+estadoProceso: "🕒 <strong>Su torta sigue en preparación.</strong>",
+estadoCancelado: "❌ <strong>Su pedido {numeroOrden} fue cancelado.</strong><br><br>📝 Motivo: <em>{motivo}</em><br><br>📞 Por favor comuníquese con nosotros para más información.<br><br><a href='https://wa.me/19802878716' target='_blank' style='color: #721c24; text-decoration: underline;'>📲 Contactar por WhatsApp</a>",
+estadoDesconocido: "📦 Estado del pedido {numeroOrden}: {estado}",
+errorConsulta: "❌ Error consultando el estado. Intenta nuevamente.",
+errorNumeroInvalido: "❌ {error}<br><br>📌 Verifica que el número de orden sea correcto.",
   },
   en: { // ... (Traducciones EN completas incluyendo optionMezclaDefault: "--") ...
+    infoTresLeches: "🎂 Mmmm! Our Tres Leches cake is a fan favorite—soft, moist, and delicious. Everyone will love it!",
+    infoMocca: "☕🍫 The bold taste of coffee and chocolate! Our Mocca cake is perfect for those who want something rich and refined.",
+    infoMarmolado: "🍰 A classic! Marble cake brings together the best of vanilla and chocolate in every bite.",
+    infoTresLeches: "🎂 Mmmm! Our Tres Leches cake is a fan favorite—soft, moist, and delicious. Everyone will love it!",
     pageTitle: "Manolos Bakery",
     formHeading: "🎂Manolo’s Bakery🎂",
     labelIdioma: "🌐 Language:",
@@ -487,8 +507,34 @@ input[type="time"] {
     errorRecogidaAnticipacion: "The order must be placed at least 12 hours in advance. Please adjust the pickup date/time or contact us for rush orders.",
     alertConfirmacionCorreo: "✅ We will confirm your request by email shortly.",
     infoCircular8: "Great choice! The 8\" size is perfect for family or friends gatherings. Makes approximately 11 delicious servings."
+    consultaTitulo: "Check if your cake is ready for pickup",
+placeholderConsulta: "Ex: 20250703-023",
+botonConsultar: "🔍 Check",
+mensajeSinNumero: "⚠️ Please enter a valid order number.",
+mensajeConsultando: "⏳ Checking status...",
+estadoListo: "🎉 <strong>Your cake is ready for pickup.</strong>",
+estadoProceso: "🕒 <strong>Your cake is still being prepared.</strong>",
+estadoCancelado: "❌ <strong>Your order {numeroOrden} was canceled.</strong><br><br>📝 Reason: <em>{motivo}</em><br><br>📞 Please contact us for more information.<br><br><a href='https://wa.me/19802878716' target='_blank' style='color: #721c24; text-decoration: underline;'>📲 Contact via WhatsApp</a>",
+estadoDesconocido: "📦 Order status {numeroOrden}: {estado}",
+errorConsulta: "❌ Error checking the status. Please try again.",
+errorNumeroInvalido: "❌ {error}<br><br>📌 Please verify the order number is correct.",
   },
   it: { // ... (Traducciones IT completas incluyendo optionMezclaDefault: "--") ...
+    consultaTitulo: "Verifica se la tua torta è pronta per il ritiro",
+placeholderConsulta: "Es: 20250703-023",
+botonConsultar: "🔍 Verifica",
+mensajeSinNumero: "⚠️ Inserisci un numero d'ordine valido.",
+mensajeConsultando: "⏳ Verifica dello stato...",
+estadoListo: "🎉 <strong>La tua torta è pronta per il ritiro.</strong>",
+estadoProceso: "🕒 <strong>La tua torta è ancora in preparazione.</strong>",
+estadoCancelado: "❌ <strong>Il tuo ordine {numeroOrden} è stato annullato.</strong><br><br>📝 Motivo: <em>{motivo}</em><br><br>📞 Contattaci per maggiori informazioni.<br><br><a href='https://wa.me/19802878716' target='_blank' style='color: #721c24; text-decoration: underline;'>📲 Contattaci su WhatsApp</a>",
+estadoDesconocido: "📦 Stato dell’ordine {numeroOrden}: {estado}",
+errorConsulta: "❌ Errore nella verifica dello stato. Riprova.",
+errorNumeroInvalido: "❌ {error}<br><br>📌 Verifica che il numero d'ordine sia corretto.",
+    infoTresLeches: "🎂 Mmmm! La nostra torta Tres Leches è una delle preferite: soffice, umida e deliziosa. Piacerà a tutti!",
+    infoMocca: "☕🍫 Il gusto deciso di caffè e cioccolato! La nostra torta Mocca è perfetta per chi cerca qualcosa di sofisticato e delizioso.",
+    infoMarmolado: "🍰 Un classico! La torta marmorizzata unisce il meglio di cioccolato e vaniglia in ogni morso.",
+    infoTresLeches: "🎂 Mmmm! La nostra torta Tres Leches è una delle preferite: soffice, umida e deliziosa. Piacerà a tutti!",
     pageTitle: "Panificio Manolos",
     formHeading: "🎂Panificio Manolo🎂",
     labelIdioma: "🌐 Lingua:",
@@ -950,7 +996,9 @@ if (tamanoVitrinaSelect && infoTamanoVitrinaDiv) {
   tamanoVitrinaSelect.addEventListener('change', function () {
     const valor = this.value.trim();
     if (valor === '8"') {
-      infoTamanoVitrinaDiv.innerHTML = "🎉 ¡Genial elección! El tamaño de 8” es perfecto para reuniones familiares o con amigos. Rinde aproximadamente para 11 deliciosas porciones.";
+      const currentLang = idiomaSelect ? (idiomaSelect.value || 'es') : 'es';
+      const T = translations[currentLang] || translations.es;
+      infoTamanoVitrinaDiv.innerHTML = T.infoTamano8 || translations.es.infoTamano8;
       infoTamanoVitrinaDiv.style.display = 'block';
     } else {
       infoTamanoVitrinaDiv.style.display = 'none';
@@ -960,6 +1008,7 @@ if (tamanoVitrinaSelect && infoTamanoVitrinaDiv) {
 
   tamanoVitrinaSelect.dispatchEvent(new Event('change'));
 }
+
 
   });
 
@@ -1032,40 +1081,72 @@ document.addEventListener('DOMContentLoaded', function () {
   if (rellenosSelect) rellenosSelect.dispatchEvent(new Event('change'));
   if (entregaSelect) entregaSelect.dispatchEvent(new Event('change'));
 });
+
+  const tipoMasaSelect = document.getElementById('tipoMasa');
+const infoTipoMasaDiv = document.getElementById('infoTipoMasa');
+
+if (tipoMasaSelect && infoTipoMasaDiv) {
+  tipoMasaSelect.addEventListener('change', function () {
+    const valor = this.value.toLowerCase();
+    const currentLang = idiomaSelect ? (idiomaSelect.value || 'es') : 'es';
+    const T = translations[currentLang] || translations.es;
+
+    let mensaje = '';
+
+    if (valor.includes('tres leches')) {
+      mensaje = T.infoTresLeches;
+    } else if (valor.includes('mocca')) {
+      mensaje = T.infoMocca;
+    } else if (valor.includes('marmolado')) {
+      mensaje = T.infoMarmolado;
+    }
+
+    if (mensaje) {
+      infoTipoMasaDiv.innerHTML = mensaje;
+      infoTipoMasaDiv.style.display = 'block';
+    } else {
+      infoTipoMasaDiv.innerHTML = '';
+      infoTipoMasaDiv.style.display = 'none';
+    }
+  });
+
+  tipoMasaSelect.dispatchEvent(new Event('change'));
+}
 </script>
     </form>
   
 <!-- SECCIÓN DE CONSULTA DE PEDIDO -->
 <div class="section" style="max-width: 500px; margin: 0 auto; text-align: center; background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
-  <h3 style="margin-bottom: 15px;">Verifica si su torta está lista para entrega</h3>
-  
-  <input type="text" id="numeroConsulta" placeholder="Ej: 20250703-023" 
+  <h3 id="consultaTitulo" style="margin-bottom: 15px;">...</h3>
+
+  <input type="text" id="numeroConsulta" placeholder="..." 
          style="padding: 10px; font-size: 16px; width: 100%; margin-bottom: 12px; border: 1px solid #ccc; border-radius: 6px;">
-  
-  <button onclick="consultarEstado()" 
+
+  <button id="btnConsulta" onclick="consultarEstado()" 
           style="padding: 12px; font-size: 16px; width: 100%; background-color: #4CAF50; color: white; border: none; border-radius: 6px; cursor: pointer;">
-    🔍 Consultar
+    ...
   </button>
-  
+
   <p id="resultadoEstado" style="margin-top: 20px; font-size: 16px; font-weight: bold;"></p>
 </div>
-
 <script>
 function consultarEstado() {
   const numero = document.getElementById("numeroConsulta").value.trim();
   const resultado = document.getElementById("resultadoEstado");
+  const lang = idiomaSelect ? (idiomaSelect.value || 'es') : 'es';
+  const T = translations[lang] || translations.es;
 
   if (!numero) {
     resultado.innerHTML = `
       <div style="background:#fff3cd; color:#856404; padding:12px; border-radius:8px; border:1px solid #ffeeba;">
-        ⚠️ Por favor ingresa un número de orden válido.
+        ${T.mensajeSinNumero}
       </div>`;
     return;
   }
 
   resultado.innerHTML = `
     <div style="background:#e2e3e5; color:#41464b; padding:12px; border-radius:8px; border:1px solid #d6d8db;">
-      ⏳ Consultando estado...
+      ${T.mensajeConsultando}
     </div>`;
 
   fetch(`https://script.google.com/macros/s/AKfycbyVikCXBz4SgDwlkOd-qsNTQZ08FRI-e9BMlbt2eAacp1MpjF1l36I05fctbb8l8qXzxQ/exec?numeroOrden=${numero}`)
@@ -1077,11 +1158,7 @@ function consultarEstado() {
       let texto = "";
 
       if (datos.error) {
-        // Manejo de errores desde el backend
-        colorFondo = "#e2e3e5";
-        colorTexto = "#41464b";
-        borde = "#d6d8db";
-        texto = `❌ ${datos.error}<br><br>📌 Verifica que el número de orden sea correcto.`;
+        texto = T.errorNumeroInvalido.replace("{error}", datos.error);
       } else {
         const estado = datos.estado?.toLowerCase() || "pendiente";
 
@@ -1089,23 +1166,23 @@ function consultarEstado() {
           colorFondo = "#d4edda";
           colorTexto = "#155724";
           borde = "#c3e6cb";
-          texto = `🎉 <strong>Su torta ya está lista para entrega.</strong>`;
+          texto = T.estadoListo;
         } else if (estado.includes("proceso")) {
           colorFondo = "#fff8e1";
           colorTexto = "#8a6d3b";
           borde = "#ffe0a3";
-          texto = `🕒 <strong>Su torta sigue en preparación.</strong>`;
+          texto = T.estadoProceso;
         } else if (estado.includes("cancelado")) {
-          const motivo = datos.motivo || "No especificado";
           colorFondo = "#f8d7da";
           colorTexto = "#721c24";
           borde = "#f5c6cb";
-          texto = `❌ <strong>Su pedido ${datos.numeroOrden} fue cancelado.</strong><br><br>
-          📝 Motivo: <em>${motivo}</em><br><br>
-          📞 Por favor comuníquese con nosotros para más información.<br><br>
-          <a href="https://wa.me/19802878716" target="_blank" style="color: #721c24; text-decoration: underline;">📲 Contactar por WhatsApp</a>`;
+          texto = T.estadoCancelado
+            .replace("{numeroOrden}", datos.numeroOrden)
+            .replace("{motivo}", datos.motivo || "No especificado");
         } else {
-          texto = `📦 Estado del pedido ${datos.numeroOrden}: ${datos.estado}`;
+          texto = T.estadoDesconocido
+            .replace("{numeroOrden}", datos.numeroOrden)
+            .replace("{estado}", datos.estado);
         }
       }
 
@@ -1117,13 +1194,16 @@ function consultarEstado() {
     .catch(error => {
       resultado.innerHTML = `
         <div style="background:#f8d7da; color:#721c24; padding:12px; border-radius:8px; border:1px solid #f5c6cb;">
-          ❌ Error consultando el estado. Intenta nuevamente.
+          ${T.errorConsulta}
         </div>`;
       console.error(error);
     });
 }
 </script>
+<!-- SECCIÓN DE CONSULTA DE PEDIDO -->
 
+
+  
    <script>
   document.getElementById("formPedido").addEventListener("submit", function (e) {
     const camposObligatorios = [
