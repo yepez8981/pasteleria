@@ -65,6 +65,60 @@ input[type="time"] {
 
   <form id="formPedido">
 
+    <!-- SECCIÓN CONSULTAR ESTADO -->
+<div id="consultarPedidoSection" style="margin-top: 40px; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); display: none;">
+  <h3 style="margin-bottom: 10px; color: #333;">📦 Consultar estado de tu pedido</h3>
+  
+  <label for="numeroConsulta" style="display:block; font-weight: bold; margin-bottom: 5px;">Ingresa tu número de orden:</label>
+  <input type="text" id="numeroConsulta" placeholder="Ej: 20250703-023" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 16px; margin-bottom: 15px;">
+
+  <button onclick="consultarEstado()" style="background-color:#4CAF50; color:white; padding:10px 20px; border:none; border-radius:6px; font-size:16px; cursor:pointer;">
+    🔍 Consultar
+  </button>
+
+  <p id="resultadoEstado" style="margin-top: 20px; font-weight: 500; color: #333;"></p>
+
+  <button onclick="volverFormulario()" style="margin-top: 20px; background: transparent; border: none; color: #4CAF50; text-decoration: underline; cursor: pointer;">
+    ⬅️ Volver al formulario
+  </button>
+</div>
+
+<script>
+  function mostrarConsultaPedido() {
+    document.getElementById("formPedido").style.display = "none";
+    document.getElementById("consultarPedidoSection").style.display = "block";
+    document.getElementById("btnFlotanteEstado").style.display = "none";
+  }
+
+  function volverFormulario() {
+    document.getElementById("formPedido").style.display = "block";
+    document.getElementById("consultarPedidoSection").style.display = "none";
+    document.getElementById("btnFlotanteEstado").style.display = "flex";
+  }
+
+  function consultarEstado() {
+    const numero = document.getElementById("numeroConsulta").value.trim();
+    const resultado = document.getElementById("resultadoEstado");
+
+    if (!numero) {
+      resultado.textContent = "⚠️ Por favor ingresa un número de orden.";
+      return;
+    }
+
+    resultado.textContent = "⏳ Consultando estado...";
+
+    fetch(`https://script.google.com/macros/s/AKfycbyp4czl1MxQfI19yPDPqgmzunRObF-hGdP6codijlv6tgHRvWVm46upD52TgX9kb-WrVQ/exec?numeroOrden=${numero}`)
+      .then(res => res.text())
+      .then(texto => {
+        resultado.textContent = texto;
+      })
+      .catch(error => {
+        resultado.textContent = "❌ Error consultando el estado. Intenta nuevamente.";
+        console.error(error);
+      });
+  }
+</script>
+
     <div class="section">
       <label for="idioma" data-translate-key="labelIdioma">🌐 Idioma:</label>
       <select id="idioma" name="idioma" required>
@@ -973,38 +1027,5 @@ const metodoContactoTexto = metodoSeleccionado === 'whatsapp'
   });
 </script>
     
-<!-- 🔎 SECCIÓN DE CONSULTA DE PEDIDO -->
-<div id="seccionConsulta" style="margin-top: 40px; padding: 20px; border-top: 1px solid #ddd;">
-  <h3 style="text-align: center;">📦 Consultar estado de tu pedido</h3>
-  <div style="text-align: center; margin-top: 15px;">
-    <input type="text" id="numeroConsulta" placeholder="Ej: 20250703-023" style="padding: 10px; font-size: 16px; width: 80%; max-width: 300px;">
-    <button onclick="consultarEstado()" style="margin-left: 10px; padding: 10px 16px; font-size: 16px;">Consultar</button>
-  </div>
-  <p id="resultadoEstado" style="margin-top: 15px; text-align: center; font-size: 16px; color: #444;"></p>
-</div>
-<script>
-  function consultarEstado() {
-    const numero = document.getElementById("numeroConsulta").value.trim();
-    const resultado = document.getElementById("resultadoEstado");
-
-    if (!numero) {
-      resultado.textContent = "⚠️ Por favor ingresa un número de orden.";
-      return;
-    }
-
-    resultado.textContent = "⏳ Consultando estado...";
-
-    fetch(`https://script.google.com/macros/s/AKfycbyp4czl1MxQfI19yPDPqgmzunRObF-hGdP6codijlv6tgHRvWVm46upD52TgX9kb-WrVQ/exec?numeroOrden=${numero}`)
-      .then(res => res.text())
-      .then(texto => {
-        resultado.textContent = texto;
-        resultado.scrollIntoView({ behavior: "smooth", block: "center" });
-      })
-      .catch(error => {
-        resultado.textContent = "❌ Error consultando el estado. Intenta nuevamente.";
-        console.error(error);
-      });
-  }
-</script>    
 </body>
 </html>
