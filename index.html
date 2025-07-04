@@ -263,6 +263,16 @@ input[type="time"] {
   📦 Estado Pedido
 </a>
 
+<!-- SECCIÓN DE CONSULTA DE ESTADO -->
+<div id="seccionConsulta" style="display: none; margin-top: 50px; text-align:center;">
+  <h3>🔎 Consultar estado de tu pedido</h3>
+  <input type="text" id="numeroConsulta" placeholder="Ej: 20250703-023" style="padding: 8px; font-size: 16px;">
+  <button onclick="consultarEstado()" style="margin-left: 10px;">Consultar</button>
+  <p id="resultadoEstado" style="margin-top: 15px; color: #444;"></p>
+  <button onclick="volverFormulario()" style="margin-top: 20px;">⬅️ Volver al formulario</button>
+</div>
+
+    
 <script>
   function mostrarConsultaPedido() {
     document.getElementById("formPedido").style.display = "none";
