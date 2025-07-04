@@ -983,7 +983,7 @@ const metodoContactoTexto = metodoSeleccionado === 'whatsapp'
 </div>
 
 <script>
-  function consultarEstado() {
+function consultarEstado() {
   const numero = document.getElementById("numeroConsulta").value.trim();
   const resultado = document.getElementById("resultadoEstado");
 
@@ -1001,33 +1001,38 @@ const metodoContactoTexto = metodoSeleccionado === 'whatsapp'
     </div>`;
 
   fetch(`https://script.google.com/macros/s/AKfycbyp4czl1MxQfI19yPDPqgmzunRObF-hGdP6codijlv6tgHRvWVm46upD52TgX9kb-WrVQ/exec?numeroOrden=${numero}`)
-    .then(res => res.text())
-    .then(texto => {
+    .then(res => res.json())
+    .then(datos => {
       let colorFondo = "#f0f0f0";
       let colorTexto = "#333";
       let borde = "#ccc";
+      let texto = "";
 
-      if (texto.includes("Listo")) {
+      const estado = datos.estado?.toLowerCase() || "pendiente";
+
+      if (estado.includes("listo")) {
         colorFondo = "#d4edda";
         colorTexto = "#155724";
         borde = "#c3e6cb";
         texto = `🎉 <strong>Su torta ya está lista para entrega.</strong>`;
-      } else if (texto.includes("En proceso")) {
+      } else if (estado.includes("proceso")) {
         colorFondo = "#fff8e1";
         colorTexto = "#8a6d3b";
         borde = "#ffe0a3";
         texto = `🕒 <strong>Su torta sigue en preparación.</strong>`;
-      } 
-else if (texto.includes("Cancelado")) {
-  const motivo = datos[i]["MotivoCancelacion"] || "No especificado";
-  colorFondo = "#f8d7da";
-  colorTexto = "#721c24";
-  borde = "#f5c6cb";
-  texto = `❌ <strong>Su pedido ${numero} fue cancelado.</strong><br><br>
-  📝 Motivo: <em>${motivo}</em><br><br>
-  📞 Por favor comuníquese con nosotros para más información.<br><br>
-  <a href="https://wa.me/573027697351" target="_blank" style="color: #721c24; text-decoration: underline;">📲 Contactar por WhatsApp</a>`;
-}
+      } else if (estado.includes("cancelado")) {
+        const motivo = datos.motivo || "No especificado";
+        colorFondo = "#f8d7da";
+        colorTexto = "#721c24";
+        borde = "#f5c6cb";
+        texto = `❌ <strong>Su pedido ${datos.numeroOrden} fue cancelado.</strong><br><br>
+        📝 Motivo: <em>${motivo}</em><br><br>
+        📞 Por favor comuníquese con nosotros para más información.<br><br>
+        <a href="https://wa.me/573027697351" target="_blank" style="color: #721c24; text-decoration: underline;">📲 Contactar por WhatsApp</a>`;
+      } else {
+        texto = `📦 Estado del pedido ${datos.numeroOrden}: ${datos.estado}`;
+      }
+
       resultado.innerHTML = `
         <div style="background:${colorFondo}; color:${colorTexto}; padding:12px; border-radius:8px; border:1px solid ${borde};">
           ${texto}
