@@ -92,6 +92,9 @@ input[type="time"] {
         <option value="8\"">8"</option>
         <option value="10\"">10"</option>
       </select>
+ <!-- Mensaje para tamaños de tortas de vitrina personalizado -->
+<div id="infoTamanoVitrina" style="display: none; margin-top: 8px; font-size: 0.9em; color: #2E7D32; padding: 8px; background-color: #E8F5E9; border-radius: 4px;"></div>
+
 
       <label for="fecha" data-translate-key="labelFechaPedido">🗓 Fecha Pedido:</label>
       <input type="date" name="fecha" id="fecha">
@@ -121,9 +124,11 @@ input[type="time"] {
         <option value="Cuadrado 1/4 Sheet" data-translate-key="optionCuadrado1_4Sheet">Cuadrado 1/4 Sheet</option>
         <option value="Rectangular 1/2 Sheet" data-translate-key="optionRectangular1_2Sheet">Rectangular 1/2 Sheet</option>
       </select>
-      <div id="infoTamanoPastel" style="display: none; margin-top: 8px; font-size: 0.9em; color: #2E7D32; padding: 8px; background-color: #E8F5E9; border-radius: 4px;"></div>
 
-      <label for="tipoMasa" data-translate-key="labelTipoPastel">Tipo de Pastel:</label>
+
+            
+      <div id="infoTamanoPastel" style="display: none; margin-top: 8px; font-size: 0.9em; color: #2E7D32; padding: 8px; background-color: #E8F5E9; border-radius: 4px;"></div>
+<label for="tipoMasa" data-translate-key="labelTipoPastel">Tipo de Pastel:</label>
       <select id="tipoMasa" name="tipoMasa">
         <option value="Tres Leches Vainilla" data-translate-key="optionTresLechesVainilla">Tres Leches / Vainilla</option>
         <option value="Tres Leches Chocolate" data-translate-key="optionTresLechesChocolate">Tres Leches / Chocolate</option>
@@ -938,7 +943,23 @@ const metodoContactoTexto = metodoSeleccionado === 'whatsapp'
     if (entregaSelect) entregaSelect.dispatchEvent(new Event('change'));
     
   });
+const tamanoVitrinaSelect = document.getElementById('tamanoVitrina');
+const infoTamanoVitrinaDiv = document.getElementById('infoTamanoVitrina');
 
+if (tamanoVitrinaSelect && infoTamanoVitrinaDiv) {
+  tamanoVitrinaSelect.addEventListener('change', function () {
+    if (this.value === '8"') {
+      infoTamanoVitrinaDiv.innerHTML = "🎉 ¡Genial elección! El tamaño de 8” es perfecto para reuniones familiares o con amigos. Rinde aproximadamente para 11 deliciosas porciones.";
+      infoTamanoVitrinaDiv.style.display = 'block';
+    } else {
+      infoTamanoVitrinaDiv.style.display = 'none';
+      infoTamanoVitrinaDiv.innerHTML = '';
+    }
+  });
+
+  // Mostrar mensaje si ya estaba seleccionado al cargar
+  tamanoVitrinaSelect.dispatchEvent(new Event('change'));
+}
 </script>
 
 <!-- Google tag (gtag.js) -->
@@ -1035,7 +1056,7 @@ function consultarEstado() {
           texto = `❌ <strong>Su pedido ${datos.numeroOrden} fue cancelado.</strong><br><br>
           📝 Motivo: <em>${motivo}</em><br><br>
           📞 Por favor comuníquese con nosotros para más información.<br><br>
-          <a href="https://wa.me/573027697351" target="_blank" style="color: #721c24; text-decoration: underline;">📲 Contactar por WhatsApp</a>`;
+          <a href="https://wa.me/19802878716" target="_blank" style="color: #721c24; text-decoration: underline;">📲 Contactar por WhatsApp</a>`;
         } else {
           texto = `📦 Estado del pedido ${datos.numeroOrden}: ${datos.estado}`;
         }
@@ -1088,6 +1109,16 @@ function consultarEstado() {
     }
   });
 </script>
+</script>
+
+<!--BOTÓN flotante de WhatsApp -->
+<a href="https://wa.me/19802878716" target="_blank" class="whatsapp-button">
+  <img src="https://cdn-icons-png.flaticon.com/512/124/124034.png" alt="WhatsApp">
+  Escríbenos
+</a>
+
+</body>
+</html>
 
 </body>
 </html>
