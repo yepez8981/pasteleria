@@ -990,7 +990,7 @@ if (tamanoVitrinaSelect && infoTamanoVitrinaDiv) {
   
 <!-- SECCIÓN DE CONSULTA DE PEDIDO -->
 <div class="section" style="max-width: 500px; margin: 0 auto; text-align: center; background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
-  <h3 style="margin-bottom: 15px;">Verifica si su torta está lista para entrega</h3>
+  <h3 style="margin-bottom: 15px;">🍰 ¿Está lista tu torta? ¡Compruébalo aquí! 🎀</h3>
   
   <input type="text" id="numeroConsulta" placeholder="Ej: 20250703-023" 
          style="padding: 10px; font-size: 16px; width: 100%; margin-bottom: 12px; border: 1px solid #ccc; border-radius: 6px;">
@@ -1034,7 +1034,7 @@ function consultarEstado() {
         colorFondo = "#e2e3e5";
         colorTexto = "#41464b";
         borde = "#d6d8db";
-        texto = `❌ ${datos.error}<br><br>📌 Verifica que el número de orden sea correcto.`;
+        texto = ` ${datos.error}<br><br>📌 Verifica que el número de orden sea correcto.`;
       } else {
         const estado = datos.estado?.toLowerCase() || "pendiente";
 
