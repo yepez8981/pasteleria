@@ -224,7 +224,7 @@ input[type="time"] {
 
 <div class="section">
   <p id="textoEnvioConfirmacion" data-translate-key="textEnvioConfirmacion">
-🍾 Al hacer clic en enviar, generaremos tu número de orden y confirmaremos el pedido por <strong>WhatsApp</strong> o <strong>Correo</strong> según tu elección.
+🍾 Al hacer clic en Quiero este pastel , generaremos tu número de orden y confirmaremos el pedido por <strong>WhatsApp</strong> o <strong>Correo</strong> según tu elección.
   </p>
 <button id="btnEnviar" type="submit" data-translate-key="buttonEnviarPedido" style="
   background-color: #f8d7e3;
@@ -261,9 +261,9 @@ input[type="time"] {
     radio.addEventListener('change', () => {
       const metodo = document.querySelector('input[name="metodoContacto"]:checked')?.value || '';
       if (metodo === 'whatsapp') {
-        textoEnvio.innerHTML = '🍾 Al hacer clic en enviar, se generará tu número de orden y se confirmará el pedido a través <strong>WhatsApp</strong>.';
+        textoEnvio.innerHTML = '🍾 Al hacer clic en Quiero este pastel, se generará tu número de orden y se confirmará el pedido a través <strong>WhatsApp</strong>.';
       } else {
-        textoEnvio.innerHTML = '🍾 Al hacer clic en enviar, se generará tu número de orden y se confirmará el pedido a través de <strong>Correo Electrónico</strong>.';
+        textoEnvio.innerHTML = '🍾 Al hacer clic en Quiero este pastel, se generará tu número de orden y se confirmará el pedido a través de <strong>Correo Electrónico</strong>.';
       }
     });
   });
@@ -355,7 +355,7 @@ input[type="time"] {
     optionContactoCorreo: "Correo Electrónico",
     labelDireccion: "📍 Dirección:",
     placeholderDireccion: "Ingresa tu dirección completa para el domicilio",
-    textEnvioConfirmacion: "🍾 Al hacer clic en enviar, se generará tu número de orden y se confirmará el pedido a través WhatsApp.",
+    textEnvioConfirmacion: "🍾 Al hacer clic en Quiero este pastel, se generará tu número de orden y se confirmará el pedido a través WhatsApp.",
     buttonEnviarPedido: "🍓 ¡Quiero este pastel! 🍓",
     textNecesitasAyuda: "¿Necesitas ayuda?",
     alertPedidoExito: "🎂 Tu pedido ha sido registrado con éxito.",
