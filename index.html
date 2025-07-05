@@ -226,14 +226,33 @@ input[type="time"] {
   <p id="textoEnvioConfirmacion" data-translate-key="textEnvioConfirmacion">
 🍾 Al hacer clic en enviar, generaremos tu número de orden y confirmaremos el pedido por <strong>WhatsApp</strong> o <strong>Correo</strong> según tu elección.
   </p>
-<button id="btnEnviar" type="submit" data-translate-key="buttonEnviarPedido">
-    🍓 ¡Quiero este pastel! 🍓
+<button id="btnEnviar" type="submit" data-translate-key="buttonEnviarPedido" style="
+  background-color: #f8d7e3;
+  color: #6b0037;
+  border: 1.5px solid #f5b7c2;
+  border-radius: 12px;
+  padding: 10px 20px;
+  font-size: 15px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+">
+  🍓 ¡Quiero este pastel! 🍓
   </button>
 <span id="estadoEnvio" style="margin-left: 10px; display: none; color: #555;">
     ⏳ Preparando tu pedido dulce...
   </span>
 </div>
 
+<style>
+  #btnEnviar:hover {
+    background-color: #f5b7c2;
+    transform: scale(1.03);
+  }
+</style>
+
+    
 <script>
   const radiosMetodo = document.querySelectorAll('input[name="metodoContacto"]');
   const textoEnvio = document.getElementById('textoEnvioConfirmacion');
@@ -258,8 +277,7 @@ input[type="time"] {
   });
 </script>
     
-<!-- BOTÓN FLOTANTE  -->
-      
+    
 <script>
   console.log("INICIO DEL SCRIPT TAG EJECUTADO"); 
 
