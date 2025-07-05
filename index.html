@@ -989,6 +989,7 @@ if (tamanoVitrinaSelect && infoTamanoVitrinaDiv) {
     </form>
   
 <!-- SECCIÓN DE CONSULTA DE PEDIDO -->
+
 <div class="section" style="max-width: 500px; margin: 30px auto; text-align: center; background: #fffafc; padding: 25px; border-radius: 16px; border: 2px dashed #ffb6c1; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
   <h3 style="margin-bottom: 20px; color: #d63384; font-family: 'Poppins', sans-serif; font-size: 22px;">
     🍰 ¿Está lista tu torta? ¡Compruébalo aquí! 🎀
@@ -1002,9 +1003,10 @@ if (tamanoVitrinaSelect && infoTamanoVitrinaDiv) {
     🔍 Consultar
   </button>
   
-  <p id="resultadoEstado" style="margin-top: 20px; font-size: 16px; font-weight: bold;"></p>
+  <div id="resultadoEstado" style="margin-top: 20px;"></div>
 </div>
 
+<!-- FUNCIONALIDAD CONSULTAR ESTADO -->
 <script>
 function consultarEstado() {
   const numero = document.getElementById("numeroConsulta").value.trim();
@@ -1012,106 +1014,75 @@ function consultarEstado() {
 
   if (!numero) {
     resultado.innerHTML = `
-      <div style="background:#fff3cd; color:#856404; padding:12px; border-radius:8px; border:1px solid #ffeeba;">
+      <div style="background:#fff3cd; color:#856404; padding:16px; border-radius:12px; border:1.5px dashed #ffeeba; font-family: 'Poppins', sans-serif; font-size: 15px;">
         ⚠️ Por favor ingresa un número de orden válido.
       </div>`;
     return;
   }
 
   resultado.innerHTML = `
-    <div style="background:#e2e3e5; color:#41464b; padding:12px; border-radius:8px; border:1px solid #d6d8db;">
+    <div style="background:#f0f0f0; color:#41464b; padding:16px; border-radius:12px; border:1.5px solid #d6d8db; font-family: 'Poppins', sans-serif; font-size: 15px;">
       ⏳ Consultando estado...
     </div>`;
-fetch(`https://script.google.com/macros/s/AKfycbyVikCXBz4SgDwlkOd-qsNTQZ08FRI-e9BMlbt2eAacp1MpjF1l36I05fctbb8l8qXzxQ/exec?numeroOrden=${numero}`)
-  .then(res => res.json())
-  .then(datos => {
-    let colorFondo = "#f0f0f0";
-    let colorTexto = "#333";
-    let borde = "#ccc";
-    let texto = "";
 
-    if (datos.error) {
-      // Manejo de errores desde el backend
-      colorFondo = "#fff3cd";
-      colorTexto = "#856404";
-      borde = "#ffeeba";
-      texto = `⚠️ ${datos.error}<br><br>📌 Verifica que el número de orden sea correcto.`;
-    } else {
-      const estado = datos.estado?.toLowerCase() || "pendiente";
+  fetch(`https://script.google.com/macros/s/AKfycbyVikCXBz4SgDwlkOd-qsNTQZ08FRI-e9BMlbt2eAacp1MpjF1l36I05fctbb8l8qXzxQ/exec?numeroOrden=${numero}`)
+    .then(res => res.json())
+    .then(datos => {
+      let colorFondo = "#f0f0f0";
+      let colorTexto = "#333";
+      let borde = "#ccc";
+      let texto = "";
 
-      if (estado.includes("listo")) {
-        colorFondo = "#e1f3e8";
-        colorTexto = "#2e7d32";
-        borde = "#a5d6a7";
-        texto = `🎉 <strong>Tu torta está lista para entrega. ¡Te esperamos! 🧁</strong>`;
-      } else if (estado.includes("proceso")) {
+      if (datos.error) {
         colorFondo = "#fff8e1";
-        colorTexto = "#8a6d3b";
-        borde = "#ffe0a3";
-        texto = `🕒 <strong>Tu torta sigue en preparación con mucho amor. 🎂</strong>`;
-      } else if (estado.includes("cancelado")) {
-        const motivo = datos.motivo || "No especificado";
-        colorFondo = "#fdecea";
-        colorTexto = "#c62828";
-        borde = "#f5c6cb";
-        texto = `❌ <strong>Tu pedido ${datos.numeroOrden} fue cancelado.</strong><br><br>
-        📝 Motivo: <em>${motivo}</em><br><br>
-        📞 Comunícate con nosotros para más información.<br><br>
-        <a href="https://wa.me/19802878716" target="_blank" style="color: #c62828; text-decoration: underline;">📲 Escríbenos por WhatsApp</a>`;
+        colorTexto = "#856404";
+        borde = "#ffeeba";
+        texto = `⚠️ ${datos.error}<br><br>📌 Verifica que el número de orden sea correcto.`;
       } else {
-        colorFondo = "#e3f2fd";
-        colorTexto = "#0277bd";
-        borde = "#90caf9";
-        texto = `📦 Estado del pedido <strong>${datos.numeroOrden}</strong>: ${datos.estado}`;
+        const estado = datos.estado?.toLowerCase() || "pendiente";
+
+        if (estado.includes("listo")) {
+          colorFondo = "#e6ffed";
+          colorTexto = "#2e7d32";
+          borde = "#a5d6a7";
+          texto = `🎉 <strong>Tu torta está lista para entrega. ¡Te esperamos con gusto! 🧁</strong>`;
+        } else if (estado.includes("proceso")) {
+          colorFondo = "#fff9e6";
+          colorTexto = "#8a6d3b";
+          borde = "#ffe0a3";
+          texto = `🕒 <strong>Tu torta sigue en preparación con mucho amor. 🎂</strong>`;
+        } else if (estado.includes("cancelado")) {
+          const motivo = datos.motivo || "No especificado";
+          colorFondo = "#ffe6e6";
+          colorTexto = "#c62828";
+          borde = "#f5c6cb";
+          texto = `❌ <strong>Tu pedido ${datos.numeroOrden} fue cancelado.</strong><br><br>
+          📝 Motivo: <em>${motivo}</em><br><br>
+          📞 Comunícate con nosotros para más información.<br><br>
+          <a href="https://wa.me/19802878716" target="_blank" style="color: #c62828; text-decoration: underline;">📲 Escríbenos por WhatsApp</a>`;
+        } else {
+          colorFondo = "#e3f2fd";
+          colorTexto = "#0277bd";
+          borde = "#90caf9";
+          texto = `📦 Estado del pedido <strong>${datos.numeroOrden}</strong>: ${datos.estado}`;
+        }
       }
-    }
 
-    resultado.innerHTML = `
-      <div style="background:${colorFondo}; color:${colorTexto}; padding:16px; border-radius:10px; border:1px solid ${borde}; font-size: 16px; text-align: left;">
-        ${texto}
-      </div>`;
-  })
-  .catch(error => {
-    resultado.innerHTML = `
-      <div style="background:#fdecea; color:#c62828; padding:16px; border-radius:10px; border:1px solid #f5c6cb; font-size: 16px;">
-        ❌ Error consultando el estado. Intenta nuevamente más tarde.
-      </div>`;
-    console.error(error);
-  });
-</script>
-
-   <script>
-  document.getElementById("formPedido").addEventListener("submit", function (e) {
-    const camposObligatorios = [
-      "nombre",
-      "correo",
-      "telefono",
-      "fecha",
-      "fechaRecogida",
-      "hora",
-      "entrega"
-    ];
-
-    let formularioValido = true;
-
-    camposObligatorios.forEach(function (id) {
-      const campo = document.getElementById(id);
-      if (campo && campo.value.trim() === "") {
-        campo.style.border = "2px solid red";
-        campo.style.backgroundColor = "#ffe6e6";
-        formularioValido = false;
-      } else if (campo) {
-        campo.style.border = "1px solid #ccc";
-        campo.style.backgroundColor = "white";
-      }
+      resultado.innerHTML = `
+        <div style="background:${colorFondo}; color:${colorTexto}; padding:18px; border-radius:12px; border:1.5px solid ${borde}; font-family: 'Poppins', sans-serif; font-size: 15px; text-align: left;">
+          ${texto}
+        </div>`;
+    })
+    .catch(error => {
+      resultado.innerHTML = `
+        <div style="background:#ffe6e6; color:#c62828; padding:16px; border-radius:12px; border:1.5px solid #f5c6cb; font-family: 'Poppins', sans-serif; font-size: 15px;">
+          ❌ Error consultando el estado. Intenta nuevamente más tarde.
+        </div>`;
+      console.error(error);
     });
-
-    if (!formularioValido) {
-      e.preventDefault();
-      alert("🚫 Por favor, completa todos los campos necesarios antes de enviar.");
-    }
-  });
+}
 </script>
+
 
 <!--BOTÓN flotante de WhatsApp -->
 <a href="https://wa.me/19802878716" target="_blank" class="whatsapp-button">
