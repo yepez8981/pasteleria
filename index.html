@@ -252,6 +252,19 @@ input[type="time"] {
   }
 </style>
 
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const fechaInput = document.getElementById('fechaPedido');
+    const hoy = new Date();
+    const yyyy = hoy.getFullYear();
+    const mm = String(hoy.getMonth() + 1).padStart(2, '0');
+    const dd = String(hoy.getDate()).padStart(2, '0');
+    const fechaHoy = `${yyyy}-${mm}-${dd}`;
+    fechaInput.min = fechaHoy;
+  });
+</script>
+
+
     
 <script>
   const radiosMetodo = document.querySelectorAll('input[name="metodoContacto"]');
@@ -868,9 +881,9 @@ const metodoContactoTexto = metodoSeleccionado === 'whatsapp'
   : (T.optionContactoCorreo || 'Correo Electrónico');
   resumen += `${T.resumenMetodoContacto} ${metodoContactoTexto}`;
 
-      
+      ---------------APPS SCRIT URL-------------
   
-      fetch('https://script.google.com/macros/s/AKfycbxhMJmPJG8_Lkcn5yMdEW9_sldAHcWgNmt6OugicspTbY9WaJZlj7A35x4YZDi6MGq34g/exec', {
+      fetch('https://script.google.com/macros/s/AKfycbztcEgIZqq1gnSLRohkJQOjvuj4ZW5pUse8BPiDI94pHNEcVEqaU4GJelklAzv3zIlI4A/exec', {
         method: 'POST',
         body: formDataToSubmit
       })
