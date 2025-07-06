@@ -251,56 +251,7 @@ input[type="time"] {
     transform: scale(1.03);
   }
 </style>
-    <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const fechaPedido = document.getElementById('fecha');
-    const fechaRecogida = document.getElementById('fechaRecogida');
-
-    const hoy = new Date();
-    const yyyy = hoy.getFullYear();
-    const mm = String(hoy.getMonth() + 1).padStart(2, '0');
-    const dd = String(hoy.getDate()).padStart(2, '0');
-    const fechaHoy = `${yyyy}-${mm}-${dd}`;
-
     
-    fechaPedido.value = fechaHoy;
-    fechaPedido.min = fechaHoy;
-
-   
-    fechaRecogida.min = fechaHoy;
-
-   
-    fechaPedido.addEventListener('change', function () {
-      const nuevaFecha = fechaPedido.value;
-      fechaRecogida.min = nuevaFecha;
-
-      
-      if (fechaRecogida.value < nuevaFecha) {
-        fechaRecogida.value = nuevaFecha;
-      }
-    });
-  });
-      
-const form = document.querySelector('form'); 
-form.addEventListener('submit', function (e) {
-  const fechaPedidoVal = fechaPedido.value;
-  const fechaRecogidaVal = fechaRecogida.value;
-
-  if (fechaPedidoVal < fechaHoy) {
-    e.preventDefault();
-    alert("⚠️ La fecha de pedido no puede ser anterior a hoy.");
-    fechaPedido.focus();
-    return;
-  }
-
-  if (fechaRecogidaVal < fechaPedidoVal) {
-    e.preventDefault();
-    alert("⚠️ La fecha de recogida no puede ser anterior a la fecha de pedido.");
-    fechaRecogida.focus();
-    return;
-  }
-});
-</script>
 
 <script>
   const radiosMetodo = document.querySelectorAll('input[name="metodoContacto"]');
