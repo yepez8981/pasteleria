@@ -97,7 +97,7 @@ input[type="time"] {
 
 
       <label for="fecha" data-translate-key="labelFechaPedido">🗓 Fecha Pedido:</label>
-      <input type="date" name="fecha" id="fecha" required>
+      <input type="date" name="fecha" id="fecha">
 
       <label for="fechaRecogida" data-translate-key="labelFechaRecogida">🗓 Fecha de recogida:</label>
       <input type="date" name="fechaRecogida" id="fechaRecogida" required>
@@ -224,34 +224,15 @@ input[type="time"] {
 
 <div class="section">
   <p id="textoEnvioConfirmacion" data-translate-key="textEnvioConfirmacion">
-🍾 Al hacer clic en Quiero este pastel , generaremos tu número de orden y confirmaremos el pedido por <strong>WhatsApp</strong> o <strong>Correo</strong> según tu elección.
+🍾 Al hacer clic en enviar, generaremos tu número de orden y confirmaremos el pedido por <strong>WhatsApp</strong> o <strong>Correo</strong> según tu elección.
   </p>
-<button id="btnEnviar" type="submit" data-translate-key="buttonEnviarPedido" style="
-  background-color: #f8d7e3;
-  color: #6b0037;
-  border: 1.5px solid #f5b7c2;
-  border-radius: 12px;
-  padding: 10px 20px;
-  font-size: 15px;
-  font-family: 'Poppins', sans-serif;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-">
-  🍓 ¡Quiero este pastel! 🍓
+<button id="btnEnviar" type="submit" data-translate-key="buttonEnviarPedido">
+    ✅ Enviar Pedido
   </button>
 <span id="estadoEnvio" style="margin-left: 10px; display: none; color: #555;">
-    ⏳ Preparando tu pedido dulce...
+    ⏳ Enviando pedido...
   </span>
 </div>
-
-<style>
-  #btnEnviar:hover {
-    background-color: #f5b7c2;
-    transform: scale(1.03);
-  }
-</style>
-    
 
 <script>
   const radiosMetodo = document.querySelectorAll('input[name="metodoContacto"]');
@@ -261,9 +242,9 @@ input[type="time"] {
     radio.addEventListener('change', () => {
       const metodo = document.querySelector('input[name="metodoContacto"]:checked')?.value || '';
       if (metodo === 'whatsapp') {
-        textoEnvio.innerHTML = '🍾 Al hacer clic en Quiero este pastel, se generará tu número de orden y se confirmará el pedido a través <strong>WhatsApp</strong>.';
+        textoEnvio.innerHTML = '🍾 Al hacer clic en enviar, se generará tu número de orden y se confirmará el pedido a través <strong>WhatsApp</strong>.';
       } else {
-        textoEnvio.innerHTML = '🍾 Al hacer clic en Quiero este pastel, se generará tu número de orden y se confirmará el pedido a través de <strong>Correo Electrónico</strong>.';
+        textoEnvio.innerHTML = '🍾 Al hacer clic en enviar, se generará tu número de orden y se confirmará el pedido a través de <strong>Correo Electrónico</strong>.';
       }
     });
   });
@@ -277,7 +258,8 @@ input[type="time"] {
   });
 </script>
     
-    
+<!-- BOTÓN FLOTANTE  -->
+      
 <script>
   console.log("INICIO DEL SCRIPT TAG EJECUTADO"); 
 
@@ -355,8 +337,8 @@ input[type="time"] {
     optionContactoCorreo: "Correo Electrónico",
     labelDireccion: "📍 Dirección:",
     placeholderDireccion: "Ingresa tu dirección completa para el domicilio",
-    textEnvioConfirmacion: "🍾 Al hacer clic en Quiero este pastel, se generará tu número de orden y se confirmará el pedido a través WhatsApp.",
-    buttonEnviarPedido: "🍓 ¡Quiero este pastel! 🍓",
+    textEnvioConfirmacion: "🍾 Al hacer clic en enviar, se generará tu número de orden y se confirmará el pedido a través WhatsApp.",
+    buttonEnviarPedido: "✅ Enviar Pedido",
     textNecesitasAyuda: "¿Necesitas ayuda?",
     alertPedidoExito: "🎂 Tu pedido ha sido registrado con éxito.",
     alertNumeroOrden: "🧾 Número de orden: ",
@@ -867,8 +849,10 @@ const metodoContactoTexto = metodoSeleccionado === 'whatsapp'
   ? (T.optionContactoWhatsapp || 'WhatsApp')
   : (T.optionContactoCorreo || 'Correo Electrónico');
   resumen += `${T.resumenMetodoContacto} ${metodoContactoTexto}`;
+
+      
   
-      fetch('https://script.google.com/macros/s/AKfycbztcEgIZqq1gnSLRohkJQOjvuj4ZW5pUse8BPiDI94pHNEcVEqaU4GJelklAzv3zIlI4A/exec', {
+      fetch('https://script.google.com/macros/s/AKfycbxhMJmPJG8_Lkcn5yMdEW9_sldAHcWgNmt6OugicspTbY9WaJZlj7A35x4YZDi6MGq34g/exec', {
         method: 'POST',
         body: formDataToSubmit
       })
@@ -1114,25 +1098,11 @@ function consultarEstado() {
 }
 </script>
 
-  <!--BOTÓN flotante de WhatsApp -->
-<a href="https://wa.me/19802878716" target="_blank" style="
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: #f0f0f0;
-  color: #41464b;
-  padding: 10px 16px;
-  border-radius: 12px;
-  border: 1.5px solid #d6d8db;
-  font-family: 'Poppins', sans-serif;
-  font-size: 14px;
-  text-decoration: none;
-  font-weight: 500;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  z-index: 999;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-">
-  🍰 ¿Hablamos por WhatsApp?
+
+<!--BOTÓN flotante de WhatsApp -->
+<a href="https://wa.me/19802878716" target="_blank" class="whatsapp-button">
+  <img src="https://cdn-icons-png.flaticon.com/512/124/124034.png" alt="WhatsApp">
+  Escríbenos
 </a>
 
 </body>
