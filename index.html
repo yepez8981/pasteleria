@@ -222,18 +222,36 @@ input[type="time"] {
   </div>
 </div>
 
-<div class="section">
+    <div class="section">
   <p id="textoEnvioConfirmacion" data-translate-key="textEnvioConfirmacion">
-🍾 Al hacer clic en enviar, generaremos tu número de orden y confirmaremos el pedido por <strong>WhatsApp</strong> o <strong>Correo</strong> según tu elección.
+🍾 Al hacer clic en Quiero este pastel , generaremos tu número de orden y confirmaremos el pedido por <strong>WhatsApp</strong> o <strong>Correo</strong> según tu elección.
   </p>
-<button id="btnEnviar" type="submit" data-translate-key="buttonEnviarPedido">
-    ✅ Enviar Pedido
+<button id="btnEnviar" type="submit" data-translate-key="buttonEnviarPedido" style="
+  background-color: #f8d7e3;
+  color: #6b0037;
+  border: 1.5px solid #f5b7c2;
+  border-radius: 12px;
+  padding: 10px 20px;
+  font-size: 15px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+">
+  🍓 ¡Quiero este pastel! 🍓
   </button>
 <span id="estadoEnvio" style="margin-left: 10px; display: none; color: #555;">
-    ⏳ Enviando pedido...
+    ⏳ Preparando tu pedido dulce...
   </span>
 </div>
 
+<style>
+  #btnEnviar:hover {
+    background-color: #f5b7c2;
+    transform: scale(1.03);
+  }
+</style>
+    
 <script>
   const radiosMetodo = document.querySelectorAll('input[name="metodoContacto"]');
   const textoEnvio = document.getElementById('textoEnvioConfirmacion');
@@ -920,15 +938,11 @@ const metodoContactoTexto = metodoSeleccionado === 'whatsapp'
         console.log("Forma select cambió. Valor:", this.value); 
         const currentLang = idiomaSelect ? (idiomaSelect.value || 'es') : 'es';
         const T = translations[currentLang] || translations.es;
-        // console.log("Idioma actual:", currentLang, "Traducción para infoCircular8:", T.infoCircular8); 
 
         if (this.value === 'Circular 8"') {
-          // console.log("Condición Circular 8\" CUMPLIDA"); 
           infoTamanoPastelDiv.innerHTML = T.infoCircular8 || "Mensaje no disponible (fallback).";
           infoTamanoPastelDiv.style.display = 'block';
-          // console.log("Mensaje DIV display:", infoTamanoPastelDiv.style.display, "HTML:", infoTamanoPastelDiv.innerHTML); 
         } else {
-          // console.log("Condición Circular 8\" NO CUMPLIDA, ocultando mensaje."); 
           infoTamanoPastelDiv.style.display = 'none';
           infoTamanoPastelDiv.innerHTML = '';
         }
@@ -957,12 +971,11 @@ if (tamanoVitrinaSelect && infoTamanoVitrinaDiv) {
     }
   });
 
-  // Mostrar mensaje si ya estaba seleccionado al cargar
+ 
   tamanoVitrinaSelect.dispatchEvent(new Event('change'));
 }
 </script>
 
-<!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-S67VHFS5MK"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -987,8 +1000,6 @@ if (tamanoVitrinaSelect && infoTamanoVitrinaDiv) {
   });
 </script>
     </form>
-  
-<!-- SECCIÓN DE CONSULTA DE PEDIDO -->
 
 <div class="section" style="max-width: 500px; margin: 30px auto; text-align: center; background: #fffafc; padding: 25px; border-radius: 16px; border: 2px dashed #ffb6c1; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
   <h3 style="margin-bottom: 20px; color: #d63384; font-family: 'Poppins', sans-serif; font-size: 22px;">
@@ -1098,12 +1109,25 @@ function consultarEstado() {
 }
 </script>
 
-
-<!--BOTÓN flotante de WhatsApp -->
-<a href="https://wa.me/19802878716" target="_blank" class="whatsapp-button">
-  <img src="https://cdn-icons-png.flaticon.com/512/124/124034.png" alt="WhatsApp">
-  Escríbenos
+<a href="https://wa.me/19802878716" target="_blank" style="
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #f0f0f0;
+  color: #41464b;
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: 1.5px solid #d6d8db;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  text-decoration: none;
+  font-weight: 500;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  z-index: 999;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+">
+  🍰 ¿Hablamos por WhatsApp?
 </a>
-
+  
 </body>
 </html>
