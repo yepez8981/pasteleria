@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Panel Interno - Manolo's Bakery</title>
+  <style>
+    body { font-family: 'Poppins', sans-serif; background: #f5f5f5; padding: 20px; }
+    .login-box, .panel-box { max-width: 600px; margin: auto; padding: 30px; background: #fff; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    input[type="password"], button { width: 100%; padding: 12px; margin-top: 10px; border-radius: 8px; border: 1px solid #ccc; font-size: 16px; }
+    .pedido-card { border: 1px solid #eee; border-radius: 10px; padding: 15px; margin-bottom: 15px; background: #fafafa; }
+    .estado-btn { padding: 8px 12px; margin: 4px; border: none; border-radius: 6px; cursor: pointer; }
+    .proceso { background: #fff3cd; color: #856404; }
+    .listo { background: #d4edda; color: #155724; }
+    .cancelado { background: #f8d7da; color: #721c24; }
+  </style>
+</head>
+<body>
+
+  <div class="login-box" id="loginBox">
+    <h2>🔐 Acceso al Panel</h2>
+    <input type="password" id="password" placeholder="Contraseña">
+    <button onclick="verificarLogin()">Ingresar</button>
+    <p id="loginError" style="color:red;"></p>
+  </div>
+
+  <div class="panel-box" id="panelBox" style="display:none;">
+    <h2>📋 Pedidos Recibidos</h2>
+    <div id="pedidosContainer">Cargando pedidos...</div>
+  </div>
+
+  <script>
+    const CLAVE = "manolos2025";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxhMJmPJG8_Lkcn5yMdEW9_sldAHcWgNmt6OugicspTbY9WaJZlj7A35x4YZDi6MGq34g/exec";
+
+    function verificarLogin() {
+      const pass = document.getElementById('password').value;
+      if (pass === CLAVE) {
+        document.getElementById('loginBox').style.display = 'none';
+        document.getElementById('panelBox').style.display = 'block';
+        cargarPedidos();
+      } else {
+        document.getElementById('loginError').innerText = "❌ Contraseña incorrecta.";
+      }
+    }
+
+    function cargarPedidos() {
+      fetch(SCRIPT_URL)
+        .then(res => res.json())
+        .then(data => {
+          const container = document.getElementById('pedidosContainer');
+          container.innerHTML = '';
+          data.forEach(pedido => {
+            const div = document.createElement('div');
+            div.className = 'pedido-card';
+            div.innerHTML = `
+              <strong>Orden:</strong> ${pedido.NumeroOrden}<br>
+              <strong>Cliente:</strong> ${pedido.NombreCompleto || pedido.Nombre || "—"}<br>
+              <strong>Fecha Recogida:</strong> ${pedido.FechaRecogida || "—"}<br>
+              <strong>Estado:</strong> ${pedido.EstadoPedido || '🕒 Pendiente'}<br>
+              <button class="estado-btn proceso" onclick="cambiarEstado('${pedido.NumeroOrden}', 'En proceso')">🕐 En proceso</button>
+              <button class="estado-btn listo" onclick="cambiarEstado('${pedido.NumeroOrden}', 'Listo')">✅ Listo</button>
+              <button class="estado-btn cancelado" onclick="cancelarPedido('${pedido.NumeroOrden}')">❌ Cancelar</button>
+              <br><button onclick="imprimirPedido('${pedido.NumeroOrden}')" style="margin-top:8px;">🧾 Imprimir</button>
+            `;
+            container.appendChild(div);
+          });
+        })
+        .catch(err => {
+          document.getElementById('pedidosContainer').innerHTML = "❌ Error al cargar pedidos.";
+        });
+    }
+
+    function cambiarEstado(numero, estado) {
+      fetch(SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify({ accion: 'actualizarEstado', numeroOrden: numero, nuevoEstado: estado }),
+        headers: { 'Content-Type': 'application/json' }
+      }).then(() => cargarPedidos());
+    }
+
+    function cancelarPedido(numero) {
+      const motivo = prompt("Motivo de cancelación:");
+      if (!motivo) return;
+      fetch(SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify({ accion: 'cancelarPedido', numeroOrden: numero, nuevoEstado: 'Cancelado', motivo: motivo }),
+        headers: { 'Content-Type': 'application/json' }
+      }).then(() => cargarPedidos());
+    }
+
+    function imprimirPedido(numero) {
+      window.open(`imprimir.html?orden=${numero}`, '_blank');
+    }
+  </script>
+
+</body>
+</html>
