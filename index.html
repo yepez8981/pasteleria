@@ -251,20 +251,6 @@ input[type="time"] {
     transform: scale(1.03);
   }
 </style>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const fechaInput = document.getElementById('fechaPedido');
-    const hoy = new Date();
-    const yyyy = hoy.getFullYear();
-    const mm = String(hoy.getMonth() + 1).padStart(2, '0');
-    const dd = String(hoy.getDate()).padStart(2, '0');
-    const fechaHoy = `${yyyy}-${mm}-${dd}`;
-    fechaInput.min = fechaHoy;
-  });
-</script>
-
-
     
 <script>
   const radiosMetodo = document.querySelectorAll('input[name="metodoContacto"]');
