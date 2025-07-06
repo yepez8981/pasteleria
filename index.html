@@ -1063,12 +1063,26 @@ function consultarEstado() {
           colorFondo = "#e6ffed";
           colorTexto = "#2e7d32";
           borde = "#a5d6a7";
-          texto = `🎉 <strong>Tu torta está lista para entrega. ¡Te esperamos con gusto! 🧁</strong>`;
+          texto = `🎉 <strong>¡Tu pastel está listo para entrega!</strong><br><br>
+          Te esperamos con una gran sonrisa y mucha dulzura. 🧁✨`;
         } else if (estado.includes("proceso")) {
           colorFondo = "#fff9e6";
           colorTexto = "#8a6d3b";
           borde = "#ffe0a3";
-          texto = `🕒 <strong>Tu torta sigue en preparación con mucho amor. 🎂</strong>`;
+          texto = `🕒 <strong>Estamos preparando tu pastel con mucho amor.</strong><br><br>
+          Gracias por tu paciencia, ¡pronto estará listo para disfrutar! 🎂💕`;
+        } else if (estado.includes("aceptado")) {
+          colorFondo = "#e3f2fd";
+          colorTexto = "#0277bd";
+          borde = "#90caf9";
+          texto = `✅ <strong>Hemos aceptado tu pedido.</strong><br><br>
+          Pronto comenzaremos a hornear magia para ti. 🎉🍰`;
+        } else if (estado.includes("pendiente")) {
+          colorFondo = "#f0f0f0";
+          colorTexto = "#666";
+          borde = "#ccc";
+          texto = `⌛ <strong>Tu pedido está pendiente de confirmación.</strong><br><br>
+          En breve uno de nuestros asesores se comunicará contigo. 📞💬`;
         } else if (estado.includes("cancelado")) {
           const motivo = datos.motivo || "No especificado";
           colorFondo = "#ffe6e6";
@@ -1076,13 +1090,14 @@ function consultarEstado() {
           borde = "#f5c6cb";
           texto = `❌ <strong>Tu pedido ${datos.numeroOrden} fue cancelado.</strong><br><br>
           📝 Motivo: <em>${motivo}</em><br><br>
-          📞 Comunícate con nosotros para más información.<br><br>
+          📞 Si tienes dudas, con gusto te atenderemos.<br><br>
           <a href="https://wa.me/19802878716" target="_blank" style="color: #c62828; text-decoration: underline;">📲 Escríbenos por WhatsApp</a>`;
         } else {
           colorFondo = "#e3f2fd";
           colorTexto = "#0277bd";
           borde = "#90caf9";
-          texto = `📦 Estado del pedido <strong>${datos.numeroOrden}</strong>: ${datos.estado}`;
+          texto = `📦 <strong>Seguimiento de tu pedido ${datos.numeroOrden}</strong>: <em>${datos.estado}</em><br><br>
+          🍰 Estamos atentos para que tu pastel llegue como lo soñaste. 💕`;
         }
       }
 
@@ -1101,7 +1116,7 @@ function consultarEstado() {
 }
 </script>
 
-<!--BOTÓN flotante de WhatsApp -->
+  <!--BOTÓN flotante de WhatsApp -->
 <a href="https://wa.me/19802878716" target="_blank" style="
   position: fixed;
   bottom: 20px;
