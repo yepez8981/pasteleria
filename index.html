@@ -262,26 +262,26 @@ input[type="time"] {
     const dd = String(hoy.getDate()).padStart(2, '0');
     const fechaHoy = `${yyyy}-${mm}-${dd}`;
 
-    // Fecha de pedido: valor por defecto y mínimo
+    
     fechaPedido.value = fechaHoy;
     fechaPedido.min = fechaHoy;
 
-    // Fecha de recogida: mínimo igual a fecha de pedido
+   
     fechaRecogida.min = fechaHoy;
 
-    // Si cambia la fecha de pedido, actualiza el mínimo de recogida
+   
     fechaPedido.addEventListener('change', function () {
       const nuevaFecha = fechaPedido.value;
       fechaRecogida.min = nuevaFecha;
 
-      // Si la fecha de recogida quedó menor, se borra
+      
       if (fechaRecogida.value < nuevaFecha) {
         fechaRecogida.value = nuevaFecha;
       }
     });
   });
-      // Validación al enviar el formulario
-const form = document.querySelector('form'); // o usa el ID si lo tienes: document.getElementById('miFormulario')
+      
+const form = document.querySelector('form'); 
 form.addEventListener('submit', function (e) {
   const fechaPedidoVal = fechaPedido.value;
   const fechaRecogidaVal = fechaRecogida.value;
