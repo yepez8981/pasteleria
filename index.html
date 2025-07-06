@@ -97,7 +97,7 @@ input[type="time"] {
 
 
       <label for="fecha" data-translate-key="labelFechaPedido">🗓 Fecha Pedido:</label>
-      <input type="date" name="fecha" id="fecha">
+      <input type="date" name="fecha" id="fecha" required>
 
       <label for="fechaRecogida" data-translate-key="labelFechaRecogida">🗓 Fecha de recogida:</label>
       <input type="date" name="fechaRecogida" id="fechaRecogida" required>
@@ -251,7 +251,37 @@ input[type="time"] {
     transform: scale(1.03);
   }
 </style>
-    
+    <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const fechaPedido = document.getElementById('fecha');
+    const fechaRecogida = document.getElementById('fechaRecogida');
+
+    const hoy = new Date();
+    const yyyy = hoy.getFullYear();
+    const mm = String(hoy.getMonth() + 1).padStart(2, '0');
+    const dd = String(hoy.getDate()).padStart(2, '0');
+    const fechaHoy = `${yyyy}-${mm}-${dd}`;
+
+    // Fecha de pedido: valor por defecto y mínimo
+    fechaPedido.value = fechaHoy;
+    fechaPedido.min = fechaHoy;
+
+    // Fecha de recogida: mínimo igual a fecha de pedido
+    fechaRecogida.min = fechaHoy;
+
+    // Si cambia la fecha de pedido, actualiza el mínimo de recogida
+    fechaPedido.addEventListener('change', function () {
+      const nuevaFecha = fechaPedido.value;
+      fechaRecogida.min = nuevaFecha;
+
+      // Si la fecha de recogida quedó menor, se borra
+      if (fechaRecogida.value < nuevaFecha) {
+        fechaRecogida.value = nuevaFecha;
+      }
+    });
+  });
+</script>
+
 <script>
   const radiosMetodo = document.querySelectorAll('input[name="metodoContacto"]');
   const textoEnvio = document.getElementById('textoEnvioConfirmacion');
