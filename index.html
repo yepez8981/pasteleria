@@ -280,6 +280,26 @@ input[type="time"] {
       }
     });
   });
+      // Validación al enviar el formulario
+const form = document.querySelector('form'); // o usa el ID si lo tienes: document.getElementById('miFormulario')
+form.addEventListener('submit', function (e) {
+  const fechaPedidoVal = fechaPedido.value;
+  const fechaRecogidaVal = fechaRecogida.value;
+
+  if (fechaPedidoVal < fechaHoy) {
+    e.preventDefault();
+    alert("⚠️ La fecha de pedido no puede ser anterior a hoy.");
+    fechaPedido.focus();
+    return;
+  }
+
+  if (fechaRecogidaVal < fechaPedidoVal) {
+    e.preventDefault();
+    alert("⚠️ La fecha de recogida no puede ser anterior a la fecha de pedido.");
+    fechaRecogida.focus();
+    return;
+  }
+});
 </script>
 
 <script>
