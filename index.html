@@ -1036,7 +1036,7 @@ function consultarEstado() {
       ⏳ Consultando estado...
     </div>`;
 
-  fetch(`https://script.google.com/macros/s/AKfycbwMIhD7QKK1GvNNMUxjWxtyJV9jesFxNm1M22G7yGu8U2XWeep8Wu0VRWYl2nPK6kLoXQ/exec?numeroOrden=${numero}`)
+  fetch(`https://script.google.com/macros/s/AKfycbxP6QTBPIstHi7GMPt9N-aJ1WUzrRfdfdXNMmJScIbWvNPO9uiMPRFMKtwB_bI8_ByQ2w/exec?numeroOrden=${numero}`)
     .then(res => res.json())
     .then(datos => {
       if (datos.error) {
