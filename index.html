@@ -1036,62 +1036,62 @@ function consultarEstado() {
       ⏳ Consultando estado...
     </div>`;
 
-    fetch(`https://script.google.com/macros/s/AKfycbxWTMsUeTQr-4JbMkkHX4dTbumLFKJE2KKfYhN6uHE-tqXX3eg1dfpVheOIA9k5jKsFjA/exec?numeroOrden=${numero}`)
+  fetch(`https://script.google.com/macros/s/AKfycbwMIhD7QKK1GvNNMUxjWxtyJV9jesFxNm1M22G7yGu8U2XWeep8Wu0VRWYl2nPK6kLoXQ/exec?numeroOrden=${numero}`)
     .then(res => res.json())
     .then(datos => {
+      if (datos.error) {
+        resultado.innerHTML = `
+          <div style="background:#fff8e1; color:#856404; padding:16px; border-radius:12px; border:1.5px dashed #ffeeba; font-family: 'Poppins', sans-serif; font-size: 15px;">
+            ⚠️ ${datos.error}<br><br>📌 Verifica que el número de orden sea correcto.
+          </div>`;
+        return;
+      }
+
+      const estado = datos.estado?.toLowerCase() || "pendiente";
       let colorFondo = "#f0f0f0";
       let colorTexto = "#333";
       let borde = "#ccc";
       let texto = "";
 
-      if (datos.error) {
-        colorFondo = "#fff8e1";
-        colorTexto = "#856404";
-        borde = "#ffeeba";
-        texto = `⚠️ ${datos.error}<br><br>📌 Verifica que el número de orden sea correcto.`;
+      if (estado.includes("listo")) {
+        colorFondo = "#e6ffed";
+        colorTexto = "#2e7d32";
+        borde = "#a5d6a7";
+        texto = `🎉 <strong>¡Tu pastel está listo para entrega!</strong><br><br>
+        Te esperamos con una gran sonrisa y mucha dulzura. 🧁✨`;
+      } else if (estado.includes("proceso")) {
+        colorFondo = "#fff9e6";
+        colorTexto = "#8a6d3b";
+        borde = "#ffe0a3";
+        texto = `🕒 <strong>Estamos preparando tu pastel con mucho amor.</strong><br><br>
+        Gracias por tu paciencia, ¡pronto estará listo para disfrutar! 🎂💕`;
+      } else if (estado.includes("aceptado")) {
+        colorFondo = "#e3f2fd";
+        colorTexto = "#0277bd";
+        borde = "#90caf9";
+        texto = `✅ <strong>Hemos aceptado tu pedido.</strong><br><br>
+        Pronto comenzaremos a hornear magia para ti. 🎉🍰`;
+      } else if (estado.includes("pendiente")) {
+        colorFondo = "#f0f0f0";
+        colorTexto = "#666";
+        borde = "#ccc";
+        texto = `⌛ <strong>Tu pedido está pendiente de confirmación.</strong><br><br>
+        En breve uno de nuestros asesores se comunicará contigo. 📞💬`;
+      } else if (estado.includes("cancelado")) {
+        const motivo = datos.motivo || "No especificado";
+        colorFondo = "#ffe6e6";
+        colorTexto = "#c62828";
+        borde = "#f5c6cb";
+        texto = `❌ <strong>Tu pedido ${datos.numeroOrden} fue cancelado.</strong><br><br>
+        📝 Motivo: <em>${motivo}</em><br><br>
+        📞 Si tienes dudas, con gusto te atenderemos.<br><br>
+        <a href="https://wa.me/19802878716" target="_blank" style="color: #c62828; text-decoration: underline;">📲 Escríbenos por WhatsApp</a>`;
       } else {
-        const estado = datos.estado?.toLowerCase() || "pendiente";
-
-        if (estado.includes("listo")) {
-          colorFondo = "#e6ffed";
-          colorTexto = "#2e7d32";
-          borde = "#a5d6a7";
-          texto = `🎉 <strong>¡Tu pastel está listo para entrega!</strong><br><br>
-          Te esperamos con una gran sonrisa y mucha dulzura. 🧁✨`;
-        } else if (estado.includes("proceso")) {
-          colorFondo = "#fff9e6";
-          colorTexto = "#8a6d3b";
-          borde = "#ffe0a3";
-          texto = `🕒 <strong>Estamos preparando tu pastel con mucho amor.</strong><br><br>
-          Gracias por tu paciencia, ¡pronto estará listo para disfrutar! 🎂💕`;
-        } else if (estado.includes("aceptado")) {
-          colorFondo = "#e3f2fd";
-          colorTexto = "#0277bd";
-          borde = "#90caf9";
-          texto = `✅ <strong>Hemos aceptado tu pedido.</strong><br><br>
-          Pronto comenzaremos a hornear magia para ti. 🎉🍰`;
-        } else if (estado.includes("pendiente")) {
-          colorFondo = "#f0f0f0";
-          colorTexto = "#666";
-          borde = "#ccc";
-          texto = `⌛ <strong>Tu pedido está pendiente de confirmación.</strong><br><br>
-          En breve uno de nuestros asesores se comunicará contigo. 📞💬`;
-        } else if (estado.includes("cancelado")) {
-          const motivo = datos.motivo || "No especificado";
-          colorFondo = "#ffe6e6";
-          colorTexto = "#c62828";
-          borde = "#f5c6cb";
-          texto = `❌ <strong>Tu pedido ${datos.numeroOrden} fue cancelado.</strong><br><br>
-          📝 Motivo: <em>${motivo}</em><br><br>
-          📞 Si tienes dudas, con gusto te atenderemos.<br><br>
-          <a href="https://wa.me/19802878716" target="_blank" style="color: #c62828; text-decoration: underline;">📲 Escríbenos por WhatsApp</a>`;
-        } else {
-          colorFondo = "#e3f2fd";
-          colorTexto = "#0277bd";
-          borde = "#90caf9";
-          texto = `📦 <strong>Seguimiento de tu pedido ${datos.numeroOrden}</strong>: <em>${datos.estado}</em><br><br>
-          🍰 Estamos atentos para que tu pastel llegue como lo soñaste. 💕`;
-        }
+        colorFondo = "#e3f2fd";
+        colorTexto = "#0277bd";
+        borde = "#90caf9";
+        texto = `📦 <strong>Seguimiento de tu pedido ${datos.numeroOrden}</strong>: <em>${datos.estado}</em><br><br>
+        🍰 Estamos atentos para que tu pastel llegue como lo soñaste. 💕`;
       }
 
       resultado.innerHTML = `
